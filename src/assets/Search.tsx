@@ -1,13 +1,7 @@
 import { 
     Input, 
-    Table, 
-    Tr, 
-    Td, 
-    Tbody, 
     Grid, 
     Stack,
-    Container, 
-    Heading, 
     Button,
     Modal, 
     ModalOverlay, 
@@ -29,7 +23,7 @@ import {
     ListItem, 
     Flex,
  } from "@chakra-ui/react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubNames } from '../utils/universityUtils'
 import { postReview } from '../utils/reviewsUtils'
@@ -147,7 +141,7 @@ function Search({width}) {
         
     };
 
-    const handleClubChange = (e) => {
+    const handleClubChange = (e: { target: { name: string; value: unknown; }; } ) => {
         const { name, value } = e.target;
         setClubData(prevState => ({
             ...prevState,

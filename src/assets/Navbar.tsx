@@ -5,8 +5,7 @@ import {
 } from '@chakra-ui/react'
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useAuth } from '../contexts/authContext/authContext';
 import { logout } from '../utils/firebaseAuthUtils'
 import Search from './Search';
@@ -34,7 +33,7 @@ export default function Navbar(){
                     <HStack>
                         {location.pathname !== '/' 
                             && 
-                            <Search/>
+                            <Search width={undefined}/>
                         }
                         <Button ><Link to='/Browse'>Browse</Link></Button>
                             { userData?.role === "admin" ? 

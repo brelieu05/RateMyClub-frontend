@@ -1,6 +1,6 @@
 import { Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, Stack, FormLabel, Input, Select, RadioGroup, Grid, Radio, ModalFooter, HStack, Button, VStack } from "@chakra-ui/react";
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface DescriptionModalProps {
@@ -10,7 +10,6 @@ interface DescriptionModalProps {
 }
 
 export function DescriptionModal({isDescriptionModalOpen, onDescriptionModalClose, clubName} : DescriptionModalProps) {
-    const [selectedFiles, setSelectedFiles] = useState([]);
     const { club_name } = useParams();
     const [formData, setFormData] = useState({
         club_name: club_name,
