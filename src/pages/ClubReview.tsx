@@ -21,37 +21,37 @@ import { Box,
         Spacer,
         Tag,
         TagLabel,
-        Image,
-        SimpleGrid,
-        Tooltip,
         Popover,
         PopoverArrow,
         PopoverBody,
         PopoverCloseButton,
         PopoverContent,
-        PopoverHeader,
         PopoverTrigger,
         TagLeftIcon,
     } from "@chakra-ui/react";
 import { EditIcon, WarningTwoIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaRegFlag } from "react-icons/fa6";
 import { ReviewModal } from "../assets/ReviewModal";
 import { DescriptionModal } from "../assets/DescriptionModal";
-import { getClubReviews, deleteReview } from '../utils/reviewsUtils'
+import { getClubReviews } from '../utils/reviewsUtils'
 import { postReport } from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 import PhotoAlbum from "../assets/PhotoAlbum";
 
 interface ReviewFormData {
     description: string,
+    review_date: string;
     club_name: string
     rating: number,
-    university: string
+    club_id : number,
+    university: string | undefined,
 }
 
+
 interface Review {
+    club: Club[];
     club_name: string;
     review_date: string;
     rating: number;
@@ -63,6 +63,18 @@ interface Review {
 interface Report {
     review_id : number,
     report_description : string,
+}
+
+interface Club{
+    club_id : number,
+    club_name : string,
+    club_size : string,
+    university: string, 
+    uni_abbr : string,
+    photos : string[],
+    meeting_days : string[],
+    disclaimer : string,
+    club_type : string,
 }
 
 
@@ -86,7 +98,9 @@ export function ClubReview(){
         club_name: "",
         rating: 0,
         university: university,
-        club_id: "",
+        club_id: 0,
+        review_date : "",
+        
     });
 
     const [reportData, setReportData] = useState<Report>({
@@ -99,7 +113,7 @@ export function ClubReview(){
             const response = await getClubReviews(university, club_name);
             setallClubReviews(response);
             setClubName(response[0].club_name);
-            console.log(allClubReviews[0]?.club[0]);
+            console.log(response);
         }
         
         fetchClubReviews();
@@ -231,8 +245,8 @@ export function ClubReview(){
                             </HStack>
                             <HStack>
                                 {allClubReviews[0]?.club[0]?.meeting_days.map((day, index) => (
-                                    <Tag colorScheme='red'>
-                                        <TagLabel as='b'>
+                                    <Tag colorScheme='red' key={"Tag " + index}>
+                                        <TagLabel as='b' key={"TagLabel " + index}>
                                             {day}
                                         </TagLabel>
                                     </Tag>

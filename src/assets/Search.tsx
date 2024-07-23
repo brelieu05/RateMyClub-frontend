@@ -306,7 +306,7 @@ function Search({width}) {
                         p={2}
                         borderRadius='md'
                     >
-                        Don't see your club? Add a Review
+                        {"Don't see your club? Add a Review"}
                     </ListItem>
                     )}
                 </List>

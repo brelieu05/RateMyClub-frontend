@@ -1,6 +1,6 @@
 import React from 'react'
 import Search from '../assets/Search'
-import { Box, Center, Container, Heading, HStack, Spacer, VStack, Text } from '@chakra-ui/react'
+import { Center, HStack, VStack, Text } from '@chakra-ui/react'
 
 export default function HeroPage() {
   return (

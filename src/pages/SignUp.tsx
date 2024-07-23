@@ -1,8 +1,7 @@
-import { Container, Heading, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import { Container, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import { createUserInFirebase } from '../utils/firebaseAuthUtils.js'
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { createUserInDatabase } from '../utils/userUtils'
 import { useAuth } from "../contexts/authContext/authContext.js";
 

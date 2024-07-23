@@ -1,12 +1,10 @@
-import { Box, Card, Divider, Flex, Grid, Heading, HStack, Select, SimpleGrid, Tag, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  Card, Divider, Flex,  Heading, Select, SimpleGrid, Tag, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubs } from '../utils/universityUtils'
-import {getClubs } from '../utils/clubsUtils'
 
 export function Browse(){
-    const [clubs, setClubs] = useState([]);
+    // const [clubs, setClubs] = useState([]);
     const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState('');
     const [clubType, setClubType] = useState('');
@@ -32,7 +30,7 @@ export function Browse(){
           if (selectedUniversity) {
             const data = await getUniversityClubs(selectedUniversity);
             setClubJson(data);
-            setClubs(data.map((club: { club_name: string; }) => club.club_name));
+            // setClubs(data.map((club: { club_name: string; }) => club.club_name));
           }
         };
         fetchUniversityClubs();
@@ -69,9 +67,9 @@ export function Browse(){
                     <Select onChange={(e) => {setClubSize(e.target.value)}} w='sm'>
                         <option value=''>All Sizes</option>
                         <option disabled>---Club Sizes---</option>
-                        <option value='Small'>Small (1-15)</option>
-                        <option value='Medium'>Medium (15-40)</option>
-                        <option value='Large'>Large (40+)</option>
+                        <option value='Small (1-15)'>Small (1-15)</option>
+                        <option value='Medium (15-40)'>Medium (15-40)</option>
+                        <option value='Large (40+)'>Large (40+)</option>
                     </Select>
                 </Flex>
             ) 

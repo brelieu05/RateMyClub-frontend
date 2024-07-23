@@ -1,5 +1,6 @@
 import { Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Textarea } from "@chakra-ui/react";
 import axios from "axios";
+import React from "react";
 
 interface ReviewModalProps {
     isReviewModalOpen: boolean;
@@ -7,12 +8,14 @@ interface ReviewModalProps {
     clubName: string;
     setUserRating: React.Dispatch<React.SetStateAction<number>>;
     userRating: number;
+
     formData: {
         description: string;
         review_date: string;
         club_name: string;
         rating: number;
-        university: string;
+        university: string | undefined,
+        club_id : number,
     };
     setFormData: React.Dispatch<React.SetStateAction<{
         description: string;

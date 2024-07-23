@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, Divider, Heading, HStack, SimpleGrid, Stack, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {getAllReportsWithReview, deleteReviewAndReport, deleteReportAndResetNumReports} from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 import { useNavigate } from "react-router-dom";

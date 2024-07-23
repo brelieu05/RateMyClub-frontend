@@ -51,7 +51,7 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
   export const logInWithEmailAndPassword = async (email, password, redirect, navigate) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      // navigate(redirect);
+      navigate(redirect);
       return user.user
     } catch (error) {
       console.log(`${error.code}: ${error.message}`);

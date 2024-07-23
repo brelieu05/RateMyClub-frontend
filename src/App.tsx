@@ -1,9 +1,7 @@
-import { useState, useEffect, ChangeEvent } from 'react'
-import axios from 'axios';
-import { Stack, Grid, Flex, Center, HStack, VStack, Input, Textarea, Button, FormControl, Text, Spacer } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './assets/Navbar';
 import AuthContextProvider from './contexts/authContext/authContext';
+import React from 'react';
 function App() {
 
   // const [formData, setFormData] = useState({
