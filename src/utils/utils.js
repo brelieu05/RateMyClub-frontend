@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const Backend = axios.create({
-  baseURL: 'https://rate-my-club-backend.vercel.app/',
+  baseURL: 'http://18.144.10.209:5000/',
   withCredentials: true,
 });
 
