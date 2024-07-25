@@ -78,34 +78,39 @@ export function Browse(){
             }
 
             <SimpleGrid columns='3' m='24' spacing='24'>
-                {selectedUniversity ? (
-                    clubJson
-                        .filter(filterClubs)
-                        .map((club, index) => (
-                            <Card p='4' onClick={() => {navigate(`/${selectedUniversity}/${club.club_name}`)}}>
-                                <Heading key={'Club Text ' + index} textAlign='center' size='lg'>
-                                        {club.club_name}
-                                </Heading>
-                                <Divider m='3'/>
-                                <Flex justifyContent='center'>
-                                    <Tag mx='2'>{club.club_type}</Tag>
-                                    <Tag mx='2'>{club.club_size}</Tag>
-                                </Flex>
-                            </Card>
-                        ))
-                    )
-                    :
-                    (universities.map((uni : string, index) => (
-                        <Card key={"Card " + index} p='4' onClick={
-                            () => {
-                                setSelectedUniversity(uni.university);
-                            }}>
-                            <Heading textAlign='center' size='lg'>{uni.uni_abbr}</Heading>
-                            <Divider m='3'/>
-                            <Text fontSize='lg' textAlign='center' key={"Text " + index}>{uni.university}</Text>
-                        </Card>
-                    )))
-                }
+            {selectedUniversity ? (
+    Array.isArray(clubJson) && clubJson.length > 0 ? (
+        clubJson
+            .filter(filterClubs)
+            .map((club, index) => (
+                <Card key={'Club ' + index} p='4' onClick={() => navigate(`/${selectedUniversity}/${club.club_name}`)}>
+                    <Heading textAlign='center' size='lg'>
+                        {club.club_name}
+                    </Heading>
+                    <Divider m='3'/>
+                    <Flex justifyContent='center'>
+                        <Tag mx='2'>{club.club_type}</Tag>
+                        <Tag mx='2'>{club.club_size}</Tag>
+                    </Flex>
+                </Card>
+            ))
+    ) : (
+        <Text textAlign='center'>No clubs available</Text>
+    )
+) : (
+    Array.isArray(universities) && universities.length > 0 ? (
+        universities.map((uni, index) => (
+            <Card key={"Card " + index} p='4' onClick={() => setSelectedUniversity(uni.university)}>
+                <Heading textAlign='center' size='lg'>{uni.uni_abbr}</Heading>
+                <Divider m='3'/>
+                <Text fontSize='lg' textAlign='center'>{uni.university}</Text>
+            </Card>
+        ))
+    ) : (
+        <Text textAlign='center'>No universities available</Text>
+    )
+)}
+
             </SimpleGrid>
         </>
     );

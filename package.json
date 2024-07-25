@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource/inter": "^5.0.19",
     "axios": "^1.7.2",
+    "chakra-ui-simple-autocomplete": "^2.3.0",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.3",
     "framer-motion": "^11.2.13",

@@ -97,7 +97,6 @@ function Search({width}) {
         try {
             const response = await getUniversityClubNames(uni.university);
             setClubs(response);
-            console.log("clubs", response);
         }
         catch (err) {
             console.log(err)   
@@ -267,37 +266,38 @@ function Search({width}) {
             {isDropdownOpen && (
             <Box ref={dropdownRef} position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
                 <List spacing={2} w='sm'>
-                    {university === '' ? (
-                    universities.filter((uni : string) => {
-                        return query.toLowerCase() === '' ? '' : (uni.university.toLowerCase()).includes(query.toLowerCase())
-                    }).map((uni, index) => (
-                        <ListItem
-                        key={"University " + index}
-                        onClick={() => handleUniversityClick(uni)}
-                        cursor='pointer'
-                        _hover={{ bg: 'gray.100' }}
-                        p={2}
-                        borderRadius='md'
-                        >
-                        {uni.university}
-                        </ListItem>
-                    ))
-                    ) : (
-                        clubs.filter((club) => {
-                            return query.toLowerCase() === '' ? '' : (club.toLowerCase()).includes(query.toLowerCase())
-                        }).map((club, index) => (
-                        <ListItem
-                        key={"Club " + index}
-                        onClick={() => handleClubClick(club)}
-                        cursor='pointer'
-                        _hover={{ bg: 'gray.100' }}
-                        p={2}
-                        borderRadius='md'
-                        >
-                        {club}
-                        </ListItem>
-                    ))
-                    )}
+                {university === '' ? (
+                    (Array.isArray(universities) ? universities : [])
+                        .filter(uni => query.toLowerCase() === '' || uni.university.toLowerCase().includes(query.toLowerCase()))
+                        .map((uni, index) => (
+                            <ListItem
+                                key={"University " + index}
+                                onClick={() => handleUniversityClick(uni)}
+                                cursor='pointer'
+                                _hover={{ bg: 'gray.100' }}
+                                p={2}
+                                borderRadius='md'
+                            >
+                                {uni.university}
+                            </ListItem>
+                        ))
+                ) : (
+                    (Array.isArray(clubs) ? clubs : [])
+                        .filter(club => query.toLowerCase() === '' || club.toLowerCase().includes(query.toLowerCase()))
+                        .map((club, index) => (
+                            <ListItem
+                                key={"Club " + index}
+                                onClick={() => handleClubClick(club)}
+                                cursor='pointer'
+                                _hover={{ bg: 'gray.100' }}
+                                p={2}
+                                borderRadius='md'
+                            >
+                                {club}
+                            </ListItem>
+                        ))
+                )}
+
                     {query  && (
                     <ListItem
                         onClick={onOpen}
