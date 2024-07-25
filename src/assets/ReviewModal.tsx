@@ -1,6 +1,7 @@
 import { Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Textarea } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
+import { postReview } from "../utils/reviewsUtils";
 
 interface ReviewModalProps {
     isReviewModalOpen: boolean;
@@ -23,6 +24,7 @@ interface ReviewModalProps {
         club_name: string;
         rating: number;
         university: string;
+        club_id : number;
     }>>;
 }
 
@@ -43,8 +45,8 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
             rating: userRating,
         };
         try {
-            const response = await axios.post('http://localhost:5000/reviews', updatedFormData);
-            console.log(response.data);
+            // const response = await axios.post('http://localhost:5000/reviews', updatedFormData);
+            await postReview(updatedFormData);
             window.location.reload();
         } catch (error) {
             console.error('Error submitting review:', error);
