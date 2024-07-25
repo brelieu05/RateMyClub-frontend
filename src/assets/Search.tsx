@@ -22,6 +22,13 @@ import {
     List,
     ListItem, 
     Flex,
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverHeader,
+    PopoverTrigger,
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +43,7 @@ interface ClubData {
 
 interface UniversityData {
     university : string;
+    uni_abbr : string;
 }
 
 function Search({width}) {
@@ -48,8 +56,6 @@ function Search({width}) {
     const [userClubSize, setUserClubSize] = useState('Small');
 
     const { isOpen : isDropdownOpen, onOpen: openDropdown, onClose : onDropdownClose } = useDisclosure();
-    const dropdownRef = useRef();
-
 
     const [reviewData, setReviewData] = useState({
         club_name: "",
@@ -111,18 +117,34 @@ function Search({width}) {
         fetchUniversity();
     }, [])
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            onDropdownClose();
-        }
-        }
+    // useEffect(() => {
+    //     function handleClickOutside(event) {
+    //     if (searchDropdownRef.current && !searchDropdownRef.current.contains(event.target)) {
+    //         onDropdownClose();
+    //     }
+    //     }
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [onDropdownClose]);
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //     document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [onDropdownClose]);
+
+    // useEffect(() => {
+    //     function handleClickOutside(event: MouseEvent) {
+    //       if (
+    //         (searchDropdownRef.current && !searchDropdownRef.current.contains(event.target)) &&
+    //         (modalDropdownRef.current && !modalDropdownRef.current.contains(event.target))
+    //       ) {
+    //         onDropdownClose();
+    //       }
+    //     }
+    
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //       document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    //   }, [onDropdownClose]);
     
     const handleReviewChange = (e: { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
@@ -194,17 +216,96 @@ function Search({width}) {
                                 <FormLabel>Club Name</FormLabel>
                                 <Input name='club_name' value={reviewData.club_name} onChange={handleReviewChange} placeholder="Oozma Kappa (OK)"/>
                             </Stack>
-                            <Flex my='3'>
+                            <Flex mt='3'>
                                 <Stack flexGrow='1' pr='2'>
                                     <FormLabel>School Name</FormLabel>
-                                    <Input name='university' placeholder="Monsters University" onChange={handleReviewChange}/>
+                                    {/* <Input name='university' placeholder="Monsters University" onChange={handleReviewChange} value={reviewData.university} /> */}
+
+                                    <Popover closeOnBlur={true}>
+                                        <PopoverTrigger>
+                                        <Input name='university' placeholder="Monsters University" onChange={handleReviewChange} value={reviewData.university} />
+                                        </PopoverTrigger>
+                                        <PopoverContent w='250px'>
+                                            <PopoverBody>
+                                                <List>
+                                                    {universities
+                                                        .filter(uni => uni.university.toLowerCase().includes(reviewData.university.toLowerCase()))
+                                                        .map((uni, index) => (
+                                                            <ListItem
+                                                                key={"University " + index}
+                                                                onClick={() => {
+                                                                    setClubData({
+                                                                        ...clubData,
+                                                                        university: uni.university,
+                                                                        uni_abbr: uni.uni_abbr
+                                                                    });
+                                                                    setReviewData({
+                                                                        ...reviewData,
+                                                                        university: uni.university,
+                                                                    });
+                                                                }}
+                                                                    cursor='pointer'
+                                                                    _hover={{ bg: 'gray.100' }}
+                                                                    borderRadius='md'
+                                                                    fontSize='sm'
+                                                                >
+                                                            {uni.university}
+                                                            </ListItem>
+                                                        ))
+                                                    }
+                                                </List>
+                                            </PopoverBody>
+                                        </PopoverContent>
+                                    </Popover>
                                 </Stack>
                                 <Stack flexGrow='1' pl='2'>
                                     <FormLabel>School Abbreviation</FormLabel>
-                                    <Input name='uni_abbr' placeholder="MU" onChange={handleClubChange}/>
+                                    {/* <Input name='uni_abbr' placeholder="MU" onChange={handleClubChange} value={clubData.uni_abbr}/> */}
+
+                                    <Popover closeOnBlur={true}>
+                                        <PopoverTrigger>
+                                            <Input
+                                                name='uni_abbr'
+                                                placeholder="MU"
+                                                onChange={handleClubChange}
+                                                value={clubData.uni_abbr}
+                                            />
+                                        </PopoverTrigger>
+                                        <PopoverContent w='250px'>
+                                            <PopoverBody>
+                                                <List>
+                                                    {universities
+                                                        .filter(uni => uni.uni_abbr.toLowerCase().includes(clubData.uni_abbr.toLowerCase()))
+                                                        .map((uni, index) => (
+                                                            <ListItem
+                                                                key={index}
+                                                                onClick={() => {
+                                                                    setClubData({
+                                                                        ...clubData,
+                                                                        university: uni.university,
+                                                                        uni_abbr: uni.uni_abbr
+                                                                    });
+                                                                    setReviewData({
+                                                                        ...reviewData,
+                                                                        university: uni.university
+                                                                    })
+                                                                }}
+                                                                cursor='pointer'
+                                                                _hover={{ bg: 'gray.100' }}
+                                                                borderRadius='md'
+                                                                fontSize='sm'
+                                                            >
+                                                                {uni.uni_abbr}
+                                                            </ListItem>
+                                                        ))
+                                                    }
+                                                </List>
+                                            </PopoverBody>
+                                        </PopoverContent>
+                                    </Popover>
                                 </Stack>
                             </Flex>
-                        <Stack my='3'>
+                        <Stack my='5'>
                             <FormLabel>Club Type</FormLabel>
                                 <Select name='club_type' value={clubData.club_type} onChange={handleClubChange}>
                                     <option value='Sports'>Sports Club</option>
@@ -264,8 +365,8 @@ function Search({width}) {
                 w={width || 'sm'}
             />
             {isDropdownOpen && (
-            <Box ref={dropdownRef} position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
-                <List spacing={2} w='sm'>
+            <Box position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
+                <List spacing={2} w='md'>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
                         .filter(uni => query.toLowerCase() === '' || uni.university.toLowerCase().includes(query.toLowerCase()))
