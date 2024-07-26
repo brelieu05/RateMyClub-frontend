@@ -202,12 +202,12 @@ export function ClubReview(){
                         <FormControl isRequired>
                             <FormLabel mt='5'>Reason for Report</FormLabel>
                             <Textarea name='report_description' value={reportData.report_description} 
-                            onChange={(e) => 
-                            setReportData({
-                                ...reportData,
-                                report_description : e.target.value,
-                            }
-                            )}/>
+                                onChange={(e) => 
+                                setReportData({
+                                    ...reportData,
+                                    report_description : e.target.value,
+                                })
+                            }/>
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
@@ -266,7 +266,6 @@ export function ClubReview(){
                         </PopoverTrigger>
                         <PopoverContent>
                             <PopoverArrow />
-                            <PopoverCloseButton />
                             <PopoverBody>{allClubReviews[0]?.club[0]?.disclaimer}</PopoverBody>
                         </PopoverContent>
                     </Popover>

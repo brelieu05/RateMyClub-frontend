@@ -29,7 +29,7 @@ interface ReviewModalProps {
 }
 
 export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, setUserRating, userRating, formData, setFormData} : ReviewModalProps){
- 
+
     const handleChange = (e: { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
         setFormData({
@@ -56,7 +56,7 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
 
 
 
-    const isSubmitDisabled = userRating === 0 || formData.description.trim() === '';
+    const isSubmitDisabled = userRating === 0 || formData.description.trim() === '' || formData.description.length > 255;
 
     return(
             <Modal isOpen={isReviewModalOpen} onClose={onReviewModalClose}>
@@ -83,7 +83,9 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
                                 </RadioGroup>
                             </Stack>
                             <Stack my='5'>  
+                                <FormLabel>Review Description</FormLabel>
                                 <Textarea name='description' value={formData.description} onChange={handleChange}/>
+                                <Text textAlign='right'>{formData.description.length}/255</Text>
                             </Stack>
                         </FormControl>
                     </ModalBody>
