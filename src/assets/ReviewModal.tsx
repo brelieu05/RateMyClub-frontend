@@ -1,6 +1,6 @@
-import { Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Text, Button, Checkbox, CheckboxGroup, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Select, Stack, Textarea } from "@chakra-ui/react";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { postReview } from "../utils/reviewsUtils";
 
 interface ReviewModalProps {
@@ -53,6 +53,9 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
         }
     };
 
+
+
+
     const isSubmitDisabled = userRating === 0 || formData.description.trim() === '';
 
     return(
@@ -79,10 +82,9 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
                                     </HStack>
                                 </RadioGroup>
                             </Stack>
-                            {/* <FormLabel >Graduation Year</FormLabel>
-                            <Input type='month' mb='5'/> */}
-                            <FormLabel>Write a Review</FormLabel>
-                            <Textarea name='description' value={formData.description} onChange={handleChange}/>
+                            <Stack my='5'>  
+                                <Textarea name='description' value={formData.description} onChange={handleChange}/>
+                            </Stack>
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>

@@ -113,7 +113,6 @@ export function ClubReview(){
             const response = await getClubReviews(university, club_name);
             setallClubReviews(response);
             setClubName(response[0].club_name);
-            console.log(response);
         }
         
         fetchClubReviews();
@@ -188,7 +187,7 @@ export function ClubReview(){
         <>
            <ReviewModal isReviewModalOpen={isReviewModalOpen} onReviewModalClose={onReviewModalClose} clubName={clubName} setUserRating={setUserRating} formData={formData} setFormData={setFormData} userRating={userRating} />
 
-            <DescriptionModal isDescriptionModalOpen={isDescriptionModalOpen} onDescriptionModalClose={onDescriptionModalClose} clubName={clubName} />
+            <DescriptionModal isDescriptionModalOpen={isDescriptionModalOpen} onDescriptionModalClose={onDescriptionModalClose} clubName={clubName} clubId={allClubReviews[0]?.club[0]?.club_id} />
 
             <Modal isOpen={isReportModalOpen} onClose={onReportModalClose} >
                 <ModalOverlay />
@@ -244,7 +243,7 @@ export function ClubReview(){
                                 </Tag>
                             </HStack>
                             <HStack>
-                                {allClubReviews[0]?.club[0]?.meeting_days.map((day, index) => (
+                                {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
                                     <Tag colorScheme='red' key={"Tag " + index}>
                                         <TagLabel as='b' key={"TagLabel " + index}>
                                             {day}
