@@ -369,7 +369,7 @@ function Search({width}) {
                 <List spacing={2} w='md'>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
-                        .filter(uni => query.toLowerCase() === '' || uni.university.toLowerCase().includes(query.toLowerCase()))
+                        .filter(uni => query.toLowerCase() === '' || uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
                         .map((uni, index) => (
                             <ListItem
                                 key={"University " + index}
