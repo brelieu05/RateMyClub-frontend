@@ -142,18 +142,19 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                 </Grid>
                             </RadioGroup>
                         </Stack>
-                    <FormControl>
-                        <HStack>
+                        <HStack my='2'>
                             <Stack ml='2' mr='7'>
                                 <Text>Meeting Day</Text>
                             </Stack>
-                            <Stack mr='19'>
+                            <Stack ml='30px'>
                                 <Text>Start Time</Text>
                             </Stack>
-                            <Stack ml='50px'>
+                            <Stack ml='83px'>
                                 <Text>End Time</Text>
                             </Stack>
                         </HStack>
+                        <Stack my='2'>
+
                         {meetingDays.map((meetingDay, index) => (
                             <HStack key={index} mb={2}>
                                 <Stack flexGrow='1'>
@@ -161,7 +162,7 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                         placeholder="Select day"
                                         value={meetingDay.day}
                                         onChange={(e) => handleDayChange(index, e.target.value)}
-                                    >
+                                        >
                                         <option value="Sunday">Sunday</option>
                                         <option value="Monday">Monday</option>
                                         <option value="Tuesday">Tuesday</option>
@@ -176,14 +177,14 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                         type='time'
                                         value={meetingDay.time1}
                                         onChange={(e) => handleTimeChange1(index, e.target.value)}
-                                    />
+                                        />
                                 </Stack>
                                 <Stack flexGrow='1'>
                                     <Input
                                         type='time'
                                         value={meetingDay.time2}
                                         onChange={(e) => handleTimeChange2(index, e.target.value)}
-                                    />
+                                        />
                                 </Stack>
                                 <Stack>
                                     <IconButton
@@ -194,6 +195,7 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                 </Stack>
                             </HStack>
                         ))}
+                        </Stack>
                         <Box>
                             <IconButton
                                 aria-label='Add a meeting day/time'
@@ -201,7 +203,7 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                 onClick={handleAddMeetingDay}
                             />
                         </Box>
-                    </FormControl>
+                        </FormControl>
                     <Stack my='5'>
                         <FormLabel>Insert Up To 3 Photos</FormLabel>
                         <Input type="file" onChange={handleFileChange} />
@@ -217,7 +219,6 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                             </VStack>
                         )}
                     </Stack>
-                </FormControl>
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing='4'>

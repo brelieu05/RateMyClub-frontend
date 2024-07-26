@@ -208,7 +208,7 @@ function Search({width}) {
         <Modal isOpen={isOpen} onClose={onClose} size='xl' >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Add a Review to TKD</ModalHeader>
+                    <ModalHeader>Add a Review</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <FormControl isRequired>
