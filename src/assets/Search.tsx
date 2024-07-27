@@ -29,12 +29,15 @@ import {
     PopoverContent,
     PopoverHeader,
     PopoverTrigger,
+    InputGroup,
+    InputRightElement,
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubNames } from '../utils/universityUtils'
 import { postReview } from '../utils/reviewsUtils'
 import { postClub } from '../utils/clubsUtils'
+import { SearchIcon } from "@chakra-ui/icons";
 
 interface ClubData {
     club_name: string;
@@ -358,18 +361,27 @@ function Search({width}) {
 
 
         <Box alignSelf='center'>
-            <Input
-                placeholder={university ? `Find a club at ${university.university}` : 'Search your university'}
-                value={query}
-                onChange={handleSearchChange}
-                w={width || 'sm'}
-            />
+            <InputGroup>
+                <InputRightElement mr='1' mt='1'>
+                    <SearchIcon color='gray.300'/>
+                </InputRightElement>
+                <Input
+                    placeholder={university ? `Find a club at ${university.university}` : 'Search your university'}
+                    value={query}
+                    onChange={handleSearchChange}
+                    w={width || 'sm'}
+                    p='6'
+                    backgroundColor='white'
+                    
+                />
+            </InputGroup>
             {isDropdownOpen && (
             <Box position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
-                <List spacing={2} w='md'>
+                <List spacing={2} w='sm'>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
-                        .filter(uni => query.toLowerCase() === '' || uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
+                        .slice(0,5)
+                        .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
                         .map((uni, index) => (
                             <ListItem
                                 key={"University " + index}
@@ -384,6 +396,7 @@ function Search({width}) {
                         ))
                 ) : (
                     (Array.isArray(clubs) ? clubs : [])
+                        .slice(0,5)
                         .filter(club => query.toLowerCase() === '' || club.toLowerCase().includes(query.toLowerCase()))
                         .map((club, index) => (
                             <ListItem

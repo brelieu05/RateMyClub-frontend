@@ -39,6 +39,7 @@ import { getClubReviews } from '../utils/reviewsUtils'
 import { postReport } from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 import PhotoAlbum from "../assets/PhotoAlbum";
+import alexInTheAir from '../assets/images/alex_in_the_air.jpg';
 
 interface ReviewFormData {
     description: string,
@@ -219,7 +220,17 @@ export function ClubReview(){
                 </ModalContent>
             </Modal>
 
-            <Stack backgroundColor='#944D4D'>
+            <Stack position="relative" backgroundImage={`url(${alexInTheAir})`} backgroundSize='cover' backgroundPosition='center'>
+            <Box
+                        position='absolute'
+                        top='0'
+                        left='0'
+                        right='0'
+                        bottom='0'
+                        backgroundColor='rgba(197, 60, 60, 0.85)' // Adjust the alpha for desired transparency
+                        zIndex='1' // Ensure this is on top of the background image
+                    />
+            <Box zIndex='2'>
             <Flex m='20' justifyContent='space-between'>
                 <Box>
                     <Heading size='4xl' maxW="500px" wordBreak="break-word" color='white'>{clubName ? clubName : "Loading..."}</Heading>
@@ -280,13 +291,14 @@ export function ClubReview(){
                     </HStack>
                 </Box>
             </Flex>
+            </Box>
                 
             </Stack>
             <PhotoAlbum />
          <Container maxW='container.md'>
             {/* Give it a proper JSON type */}
            {allClubReviews.filter(item => item.num_reports < 3).sort((a, b) => new Date(b.review_date).getTime() - new Date(a.review_date).getTime()).map((item, index) => (
-                <Stack my='10' p='5' key={"Stack" + index} backgroundColor='#B67575' minH='200px'>
+                <Stack my='10' p='5' key={"Stack" + index} backgroundColor='#C35454' minH='200px'>
                     <HStack key={"HStack" + index} justifyContent='space-between'>
                         <Heading size='lg' key={"Item Rating" + index}>{item.rating}</Heading>
                         <Heading size='lg' key={"Item Review Date" + index}>{item.review_date.substring(0,10)}</Heading>

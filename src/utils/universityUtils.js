@@ -16,6 +16,7 @@ const getUniversityClubNames = async university => {
     return response.data;
 }
 
+
 export {
     getUniversities,
     getUniversityClubs,

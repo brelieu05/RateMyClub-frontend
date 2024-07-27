@@ -20,6 +20,11 @@ const updateClub = async (club_id, formData) => {
     return response.data;
 }
 
+// const getTopClubs = async () => {
+//     const respones = await Backend.get('/clubs/top/');
+//     return response.data;
+// }
+
 
 export {
     getClubs,
