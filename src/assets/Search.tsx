@@ -380,8 +380,8 @@ function Search({width}) {
                 <List spacing={2} w='sm'>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
-                        .slice(0,5)
                         .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
+                        .slice(0,5)
                         .map((uni, index) => (
                             <ListItem
                                 key={"University " + index}
@@ -396,8 +396,8 @@ function Search({width}) {
                         ))
                 ) : (
                     (Array.isArray(clubs) ? clubs : [])
-                        .slice(0,5)
                         .filter(club => query.toLowerCase() === '' || club.toLowerCase().includes(query.toLowerCase()))
+                        .slice(0,5)
                         .map((club, index) => (
                             <ListItem
                                 key={"Club " + index}
