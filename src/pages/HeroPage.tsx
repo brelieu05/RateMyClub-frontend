@@ -54,6 +54,14 @@ export default function HeroPage() {
             backgroundSize='cover'
             backgroundPosition='center'
           />
+          <Box
+            position='absolute'
+            top='0'
+            left='0'
+            right='0'
+            bottom='0'
+            backgroundColor='rgba(197, 60, 60, 0.3)' // Adjust opacity as needed
+          />
           <Badge
             position='absolute'
             top='10px'
@@ -86,6 +94,7 @@ export default function HeroPage() {
           </Box>
         </Card>
       ))}
+
       </Flex>
     </>
   )
