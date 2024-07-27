@@ -22,7 +22,7 @@ export default function HeroPage() {
 
   return (
     <>
-      <Flex backgroundColor='#C53C3C' m='10' rounded='10'>
+      <Flex backgroundColor='#C53C3C' mx='10' mb='6' rounded='10'>
           <VStack my='36' mx='20'>
 
               <HStack m='4'>
@@ -31,8 +31,8 @@ export default function HeroPage() {
               <Search width={'sm'}/>
           </VStack>
       </Flex>
-          <Heading ml='10'>Top Clubs</Heading>
-      <Flex m='10' >
+          <Heading ml='50px'>Top Clubs</Heading>
+      <Flex mx='10' >
       {clubs.slice(0, 5).map((club, index) => (
         <Card
           key={index}

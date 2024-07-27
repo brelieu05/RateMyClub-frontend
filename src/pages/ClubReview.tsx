@@ -227,7 +227,7 @@ export function ClubReview(){
                         left='0'
                         right='0'
                         bottom='0'
-                        backgroundColor='rgba(197, 60, 60, 0.85)' // Adjust the alpha for desired transparency
+                        backgroundColor='rgba(197, 60, 60, 0.75)' // Adjust the alpha for desired transparency
                         zIndex='1' // Ensure this is on top of the background image
                     />
             <Box zIndex='2'>
