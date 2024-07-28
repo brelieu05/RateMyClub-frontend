@@ -78,6 +78,7 @@ interface Club{
     club_type : string,
 }
 
+const getRandomIndex = (length) => Math.floor(Math.random() * length);
 
 export function ClubReview(){
     const { club_name, university } = useParams();
@@ -93,6 +94,8 @@ export function ClubReview(){
     const { isOpen : isReportModalOpen, onOpen : onReportModalOpen, onClose : onReportModalClose} = useDisclosure();
 
     const {userLoggedIn, userData} = useAuth();
+
+    const [randomPhoto, setRandomPhoto] = useState(``);
 
     const [formData, setFormData] = useState<ReviewFormData>({
         description: "",
@@ -114,6 +117,8 @@ export function ClubReview(){
             const response = await getClubReviews(university, club_name);
             setallClubReviews(response);
             setClubName(response[0].club_name);
+            
+            setRandomPhoto(response[0].club[0].photos[getRandomIndex(3)])
         }
         
         fetchClubReviews();
@@ -220,7 +225,7 @@ export function ClubReview(){
                 </ModalContent>
             </Modal>
 
-            <Stack position="relative" backgroundImage={`url(${alexInTheAir})`} backgroundSize='cover' backgroundPosition='center'>
+            <Stack position="relative" backgroundImage={`url(${randomPhoto})`} backgroundSize='cover' backgroundPosition='center'>
             <Box
                         position='absolute'
                         top='0'
@@ -263,7 +268,7 @@ export function ClubReview(){
                                 ))
                                 }
                             </HStack>
-                    { userData?.role === "club" && userLoggedIn && userData?.club_id === allClubReviews[0]?.club[0]?.club_id ?  <Button color='white' variant='link' rightIcon={<EditIcon/>} onClick={onDescriptionModalOpen}>Edit Description</Button> : <></>}
+                    { userData?.role === "club" && userLoggedIn && userData?.club_id === allClubReviews[0]?.club[0]?.club_id || userData?.role === "admin" ?  <Button color='white' variant='link' rightIcon={<EditIcon/>} onClick={onDescriptionModalOpen}>Edit Description</Button> : <></>}
                         <Button backgroundColor='black' color='white' w='auto' onClick={onReviewModalOpen}>Add a Review</Button>
                     </VStack>
                     

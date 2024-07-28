@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { updateClub } from '../utils/clubsUtils';
+import { UploadButton } from "../assets/uploadButton"
 
 interface DescriptionModalProps {
     isDescriptionModalOpen: boolean;
@@ -13,6 +14,7 @@ interface DescriptionModalProps {
 }
 
 export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClose, clubName, clubId }: DescriptionModalProps) {
+    const [userPhotos, setUserPhotos] = useState([]);
     const [meetingDays, setMeetingDays] = useState([{ day: '', time1: '', time2: '' }]);
     const [formData, setFormData] = useState({
         club_type: "Sports",
@@ -60,24 +62,25 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // Create a copy of formData and add meeting_days
             const updatedFormData = {
                 ...formData,
                 meeting_days: changeMeetingDays(),
+            };
+    
+            // Conditionally add the photos field if userPhotos is not empty
+            if (userPhotos.length > 0) {
+                updatedFormData.photos = userPhotos;
             }
+    
             const response = await updateClub(clubId, updatedFormData);
             window.location.reload();
         } catch (error) {
             console.error('Error submitting review:', error);
         }
     };
+    
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(event.target.files || []);
-        setFormData({
-            ...formData,
-            photos: [...formData.photos, ...files],
-        });
-    };
 
     const handleAddMeetingDay = () => {
         setMeetingDays([...meetingDays, { day: '', time1: '', time2: '' }]);
@@ -206,18 +209,38 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                         </FormControl>
                     <Stack my='5'>
                         <FormLabel>Insert Up To 3 Photos</FormLabel>
-                        <Input type="file" onChange={handleFileChange} />
-                        {formData.photos.length > 0 && (
-                            <VStack mt={4} spacing={4}>
-                                {formData.photos.map((file, index) => (
-                                    <Image
-                                        key={index}
-                                        src={URL.createObjectURL(file)}
-                                        objectFit="cover"
-                                    />
-                                ))}
-                            </VStack>
-                        )}
+                        
+                        {userPhotos.length === 0 &&
+                        <UploadButton
+                            endpoint="imageUploader"
+                            skipPolling
+                            onClientUploadComplete={(file) => {
+                                const urls = file.map((f) => f.url);
+                                console.log("uploaded", urls);
+                                setUserPhotos(urls);
+                            }}
+                            appearance={{
+                                container: {
+                                  display: 'grid',
+                                  padding: '5px',
+                                  gap: '10px'
+                                },
+                              }}
+                        />}
+
+                    <HStack spacing={4} mt={4}>
+                            {userPhotos.map((file, index) => (
+                            <Box key={index} boxSize="150px">
+                                <Image
+                                src={file}
+                                alt={`preview-${index}`}
+                                boxSize="100%"
+                                objectFit="contain" // Use "contain" to keep aspect ratio
+                                />
+                            </Box>
+                            ))}
+                        </HStack>
+
                     </Stack>
                 </ModalBody>
                 <ModalFooter>

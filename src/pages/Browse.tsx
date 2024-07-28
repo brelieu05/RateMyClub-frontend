@@ -48,7 +48,6 @@ export function Browse(){
 
     return(
         <>
-            <Heading>Browse</Heading>
             {selectedUniversity ? (
                 <Flex justifyContent='end' mx='24'>
                     <Select onChange={(e) => setClubType(e.target.value)} w='sm'>
