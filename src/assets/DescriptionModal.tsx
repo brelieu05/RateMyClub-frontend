@@ -219,6 +219,10 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                                 console.log("uploaded", urls);
                                 setUserPhotos(urls);
                             }}
+                            onUploadError={(error) => {
+                                console.error(error, error.cause);
+                                alert("Upload failed");
+                              }}
                             appearance={{
                                 container: {
                                   display: 'grid',
