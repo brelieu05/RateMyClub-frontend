@@ -86,7 +86,7 @@ import {
                                       navigate('/');
                                       window.location.reload();
                                   }}>Rate My Club</Button>
-                                  {location.pathname !== '/' && <Search width={undefined} />}
+                                  {location.pathname !== '/' && <Search width={'250px'} />}
                                   <Button><Link to='/Browse'>Browse</Link></Button>
                                   {userData?.role === "admin" && (
                                       <Button variant='nav'><Link to='/Reports'>Reports</Link></Button>
