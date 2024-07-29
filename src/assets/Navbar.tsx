@@ -41,7 +41,7 @@ import {
                       }}>Rate My Club</Button>
                   </HStack>
   
-                  <Box display={{ base: 'none', md: 'flex' }}>
+                  <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
                       {location.pathname !== '/' && <Search width={undefined} />}
                       <Button><Link to='/Browse'>Browse</Link></Button>
                       {userData?.role === "admin" && (
@@ -65,7 +65,7 @@ import {
                               )}
                           </>
                       )}
-                  </Box>
+                  </Flex>
   
                   <IconButton
                       display={{ base: 'flex', md: 'none' }}
