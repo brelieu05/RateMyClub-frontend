@@ -377,7 +377,7 @@ function Search({width}) {
             </InputGroup>
             {isDropdownOpen && (
             <Box position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
-                <List spacing={2} w='sm'>
+                <List spacing={2} w={width}>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
                         .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))

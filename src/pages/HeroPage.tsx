@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Search from '../assets/Search';
-import { Center, HStack, VStack, Text, Flex, Heading, Card, Tag, Image, Box, Badge } from '@chakra-ui/react';
+import { Center, HStack, VStack, Text, Flex, Heading, Card, Tag, Image, Box, Badge, Grid } from '@chakra-ui/react';
 import { getUniversityClubs } from '../utils/universityUtils';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,18 +43,28 @@ export default function HeroPage() {
 
   return (
     <>
-      <Flex backgroundColor='#C53C3C' mx='10' mb='6' rounded='10'>
-        <VStack my='36' mx='20'>
+      <Flex
+          backgroundColor='#C53C3C'
+          mx={{ base: '4', md: '10' }}
+          mb='6'
+          rounded='10'
+        >
+        <VStack my={{ base: '12', md: '36' }} mx={{ base: '5', md: '20' }}>
           <HStack m='4'>
-            <Text as='h1' fontSize='3xl' fontWeight='bold' color='white'>
+          <Text as='h1' fontSize={{ base: 'xl', md: '3xl' }} fontWeight='bold' color='white'>
               Join The Best Club For You.
             </Text>
           </HStack>
-          <Search width={'sm'} />
+          <Search width={{ base: 'full', md: 'sm' }} />
         </VStack>
       </Flex>
-      <Heading ml='50px'>Featured Clubs</Heading>
-      <Flex mx='10'>
+      <Heading ml={{ base: '10px', md: '50px' }} mb='5'>Featured Clubs</Heading>
+      <Grid
+          templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+          gap={10}
+          mx={{ base: '2', md: '10' }}
+          mb='10'
+        >
         {clubs
           .sort((a, b) => a.club_id - b.club_id)
           .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Furry Club")
@@ -65,16 +75,15 @@ export default function HeroPage() {
 
             return (
               <Card
-                key={index}
-                border='2'
-                h='300px'
-                w='600px'
-                m='5'
-                position='relative'
-                overflow='hidden'
-                borderRadius='lg'
-                onClick={() => navigate(`/${club.university}/${club.club_name}`)}
-              >
+                  key={index}
+                  border='2'
+                  h={{ base: '200px', md: '300px' }}
+                  w='full'
+                  position='relative'
+                  overflow='hidden'
+                  borderRadius='lg'
+                  onClick={() => navigate(`/${club.university}/${club.club_name}`)}
+                >
                 <Box
                   position="absolute"
                   top="0"
@@ -136,7 +145,7 @@ export default function HeroPage() {
               </Card>
             );
           })}
-      </Flex>
+      </Grid>
     </>
   );
 }
