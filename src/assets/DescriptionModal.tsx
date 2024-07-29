@@ -126,12 +126,12 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                             <Select name='club_type' onChange={handleChange} value={formData.club_type}>
                                 <option value='Sports'>Sports Club</option>
                                 <option value='Social'>Social Club</option>
-                                <option value='HobbySpecialInterest'>Hobby/Special Interest Club</option>
-                                <option value='AcademicProfessional'>Academic/Professional Club</option>
+                                <option value='Hobby/Special/Interest'>Hobby/Special Interest Club</option>
+                                <option value='Academic/Professional'>Academic/Professional Club</option>
                                 <option value='Community Service'>Community Service Club</option>
                                 <option value='Cultural'>Cultural Club</option>
-                                <option value='ArtsMusicPerformance'>Arts/Music/Performance Club</option>
-                                <option value='PoliticalActivism'>Political and Activism Club</option>
+                                <option value='Arts/Music/Performance'>Arts/Music/Performance Club</option>
+                                <option value='Political and Activism'>Political and Activism Club</option>
                                 <option value='Other'>Other</option>
                             </Select>
                         </Stack>
