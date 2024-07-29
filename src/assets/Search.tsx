@@ -31,6 +31,7 @@ import {
     PopoverTrigger,
     InputGroup,
     InputRightElement,
+    Text
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -203,7 +204,7 @@ function Search({width}) {
         onDropdownClose();
       };
     
-    const isSubmitDisabled = userRating === 0 || reviewData.description.trim() === '' || reviewData.club_name.trim() === '';
+    const isSubmitDisabled = userRating === 0 || reviewData.description.trim() === '' || reviewData.club_name.trim() === '' || reviewData.description.length > 255;
     
 
     return(
@@ -347,6 +348,7 @@ function Search({width}) {
                         <Stack mt='5'>
                             <FormLabel>Write a Review</FormLabel>
                             <Textarea minHeight='200px' size='lg' name='description' value={reviewData.description} onChange={handleReviewChange} placeholder='Oozma Kappa is a mess. The house is cluttered, the members are odd misfits, and their "scare training" is a joke. Social events are awful with bad music and terrible snacks. Save yourself the disappointment and find a club that actually has their act together.'/>
+                            <Text textAlign='right'>{reviewData.description.length}/255</Text>
                         </Stack>
                         </FormControl>
                     </ModalBody>
