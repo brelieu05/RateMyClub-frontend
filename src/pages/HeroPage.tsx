@@ -20,6 +20,27 @@ export default function HeroPage() {
     return Math.floor(Math.random() * Math.min(max));
   };
 
+  const getClubTypeColor = (club_type) => {
+    switch (club_type) {
+      case 'Sports':
+        return 'red';
+      case 'Social':
+        return 'orange.400';
+      case 'Hobby/Special/Interest':
+        return 'pink.400';
+      case 'Academic/Professional':
+        return 'purple.600';
+      case 'Community Service':
+        return 'green.500';
+      case 'Cultural':
+        return 'blue.500';
+      case 'Political/Activism':
+        return 'cyan.500';
+      default:
+        return 'gray.500';
+    }
+  };
+
   return (
     <>
       <Flex backgroundColor='#C53C3C' mx='10' mb='6' rounded='10'>
@@ -36,7 +57,7 @@ export default function HeroPage() {
       <Flex mx='10'>
         {clubs
           .sort((a, b) => a.club_id - b.club_id)
-          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change")
+          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Furry Club")
           .slice(0, 5)
           .map((club, index) => {
             const randomIndex = getRandomIndex(club.photos.length);
@@ -46,7 +67,8 @@ export default function HeroPage() {
               <Card
                 key={index}
                 border='2'
-                boxSize='300px'
+                h='300px'
+                w='600px'
                 m='5'
                 position='relative'
                 overflow='hidden'
@@ -54,14 +76,24 @@ export default function HeroPage() {
                 onClick={() => navigate(`/${club.university}/${club.club_name}`)}
               >
                 <Box
-                  position='absolute'
-                  top='0'
-                  left='0'
-                  right='0'
-                  bottom='0'
+                  position="absolute"
+                  top="0"
+                  left="0"
+                  right="0"
+                  bottom="0"
                   backgroundImage={backgroundImageUrl}
-                  backgroundSize='cover'
-                  backgroundPosition='center'
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  _before={{
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backdropFilter: 'blur(0.4px)', // Adjust the blur intensity as needed
+                    zIndex: 1,
+                  }}
                 />
                 <Box
                   position='absolute'
@@ -75,7 +107,7 @@ export default function HeroPage() {
                   position='absolute'
                   top='10px'
                   right='10px'
-                  backgroundColor='tomato'
+                  backgroundColor={getClubTypeColor(club.club_type)}
                   color='white'
                   borderRadius='md'
                   px='2'
