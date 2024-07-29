@@ -115,10 +115,11 @@ export function ClubReview(){
     useEffect(() => {
         const fetchClubReviews = async () =>{
             const response = await getClubReviews(university, club_name);
+            console.log(response);
             setallClubReviews(response);
             setClubName(response[0].club_name);
             
-            setRandomPhoto(response[0].club[0].photos[getRandomIndex(3)])
+            setRandomPhoto(response[0].club[0].photos[getRandomIndex(response[0].club[0].photos.length)])
         }
         
         fetchClubReviews();
