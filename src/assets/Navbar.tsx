@@ -42,7 +42,7 @@ import {
                   </HStack>
   
                   <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
-                      {location.pathname !== '/' && <Search width={undefined} />}
+                      {location.pathname !== '/' && <Search width={'sm'} />}
                       <Button><Link to='/Browse'>Browse</Link></Button>
                       {userData?.role === "admin" && (
                           <Button variant='nav'><Link to='/Reports'>Reports</Link></Button>

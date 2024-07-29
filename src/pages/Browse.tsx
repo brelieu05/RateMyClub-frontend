@@ -1,4 +1,4 @@
-import {  Card, Divider, Flex,  Heading, Select, SimpleGrid, Tag, Text } from "@chakra-ui/react";
+import {  Card, Divider, Flex,  Grid,  Heading, Select, SimpleGrid, Tag, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubs } from '../utils/universityUtils'
@@ -49,8 +49,13 @@ export function Browse(){
     return(
         <>
             {selectedUniversity ? (
-                <Flex justifyContent='end' mx='24'>
-                    <Select onChange={(e) => setClubType(e.target.value)} w='sm'>
+                <Flex 
+                        justifyContent='start' 
+                        flexDirection={{ base: 'column', md: 'row' }} 
+                        alignItems='start'
+                        gap={4} // Add spacing between the selects
+                    >
+                    <Select onChange={(e) => setClubType(e.target.value)} >
                         <option value=''>All Club Types</option>
                         <option disabled>---Club Types---</option>
                         <option value='Sports'>Sports Club</option>
@@ -63,7 +68,7 @@ export function Browse(){
                         <option value='Political/Activism'>Political and Activism Club</option>
                         <option value='Other'>Other</option>
                     </Select>
-                    <Select onChange={(e) => {setClubSize(e.target.value)}} w='sm'>
+                    <Select onChange={(e) => {setClubSize(e.target.value)}} >
                         <option value=''>All Sizes</option>
                         <option disabled>---Club Sizes---</option>
                         <option value='Small (1-15)'>Small (1-15)</option>
@@ -76,7 +81,11 @@ export function Browse(){
             <></>
             }
 
-            <SimpleGrid columns='3' m='24' spacing='24'>
+            <Grid
+                    templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' , xl: 'repeat(4, 1fr)'}}
+                    gap={24}
+                    m='10'
+                    >
             {selectedUniversity ? (
     Array.isArray(clubJson) && clubJson.length > 0 ? (
         clubJson
@@ -110,7 +119,7 @@ export function Browse(){
     )
 )}
 
-            </SimpleGrid>
+            </Grid>
         </>
     );
 }
