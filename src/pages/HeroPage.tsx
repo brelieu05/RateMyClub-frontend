@@ -3,6 +3,7 @@ import Search from '../assets/Search';
 import { Center, HStack, VStack, Text, Flex, Heading, Card, Tag, Image, Box, Badge, Grid } from '@chakra-ui/react';
 import { getUniversityClubs } from '../utils/universityUtils';
 import { useNavigate } from 'react-router-dom';
+import alex_in_the_air from '../assets/images/alex_in_the_air.jpg'
 
 export default function HeroPage() {
   const [clubs, setClubs] = useState([]);
@@ -44,14 +45,28 @@ export default function HeroPage() {
   return (
     <>
       <Flex
-          backgroundColor='#C53C3C'
-          mx={{ base: '4', md: '10' }}
-          mb='6'
+        backgroundColor='#C53C3C'
+        mx={{ base: '4', md: '10' }}
+        mb='6'
+        rounded='10'
+        backgroundImage={alex_in_the_air}
+        backgroundSize='cover' 
+        backgroundPosition='center'
+        position='relative'
+      >
+        <Box
+          position='absolute'
+          top='0'
+          left='0'
+          right='0'
+          bottom='0'
+          backgroundColor='rgba(197, 60, 60, 0.75)' // Adjust opacity as needed
           rounded='10'
-        >
-        <VStack my={{ base: '12', md: '36' }} mx={{ base: '5', md: '20' }}>
+          zIndex='1'
+        />
+        <VStack my={{ base: '12', md: '36' }} mx={{ base: '5', md: '20' }} zIndex='2'>
           <HStack m='4'>
-          <Text as='h1' fontSize={{ base: 'xl', md: '3xl' }} fontWeight='bold' color='white'>
+            <Text as='h1' fontSize={{ base: 'xl', md: '3xl' }} fontWeight='bold' color='white'>
               Join The Best Club For You.
             </Text>
           </HStack>
@@ -60,11 +75,11 @@ export default function HeroPage() {
       </Flex>
       <Heading ml={{ base: '10px', md: '50px' }} mb='5'>Featured Clubs</Heading>
       <Grid
-          templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
-          gap={10}
-          mx={{ base: '2', md: '10' }}
-          mb='10'
-        >
+        templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+        gap={10}
+        mx={{ base: '2', md: '10' }}
+        mb='10'
+      >
         {clubs
           .sort((a, b) => a.club_id - b.club_id)
           .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Furry Club")
@@ -75,15 +90,15 @@ export default function HeroPage() {
 
             return (
               <Card
-                  key={index}
-                  border='2'
-                  h={{ base: '200px', md: '300px' }}
-                  w='full'
-                  position='relative'
-                  overflow='hidden'
-                  borderRadius='lg'
-                  onClick={() => navigate(`/${club.university}/${club.club_name}`)}
-                >
+                key={index}
+                border='2'
+                h={{ base: '200px', md: '300px' }}
+                w='full'
+                position='relative'
+                overflow='hidden'
+                borderRadius='lg'
+                onClick={() => navigate(`/${club.university}/${club.club_name}`)}
+              >
                 <Box
                   position="absolute"
                   top="0"
