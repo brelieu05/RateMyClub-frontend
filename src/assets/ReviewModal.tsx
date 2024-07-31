@@ -26,9 +26,10 @@ interface ReviewModalProps {
         university: string;
         club_id : number;
     }>>;
+    setallClubReviews: (newReview: Review) => void;  
 }
 
-export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, setUserRating, userRating, formData, setFormData} : ReviewModalProps){
+export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, setUserRating, userRating, formData, setFormData, setallClubReviews} : ReviewModalProps){
 
     const handleChange = (e: { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
@@ -45,9 +46,15 @@ export function ReviewModal({isReviewModalOpen, onReviewModalClose, clubName, se
             rating: userRating,
         };
         try {
-            // const response = await axios.post('http://localhost:5000/reviews', updatedFormData);
-            await postReview(updatedFormData);
-            window.location.reload();
+            const newReview = await postReview(updatedFormData);
+            setallClubReviews((prevReviews) => [
+                ...prevReviews,
+                {
+                    ...newReview,
+                    num_reports: 0, // Assuming no reports on new reviews
+                },
+            ]);
+            onReviewModalClose(); // Close the modal after submission
         } catch (error) {
             console.error('Error submitting review:', error);
         }

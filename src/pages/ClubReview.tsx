@@ -97,6 +97,7 @@ export function ClubReview(){
 
     const [randomPhoto, setRandomPhoto] = useState(``);
 
+
     const [formData, setFormData] = useState<ReviewFormData>({
         description: "",
         club_name: "",
@@ -118,13 +119,11 @@ export function ClubReview(){
             console.log(response);
             setallClubReviews(response);
             setClubName(response[0].club_name);
-            
             setRandomPhoto(response[0].club[0].photos[getRandomIndex(response[0].club[0].photos.length)])
         }
         
         fetchClubReviews();
-        
-    }, [club_name, university])
+    }, [club_name, university]);
     
     useEffect(() => {
         setFormData((prevFormData) => ({
@@ -180,7 +179,6 @@ export function ClubReview(){
     const handleReportSubmit = async () => {
         try {
             await postReport(reportData);
-            window.location.reload();
             
         } catch (error) {
             console.error("Error submitting report:", error);
@@ -189,10 +187,9 @@ export function ClubReview(){
 
     const isSubmitDisabled = reportData.report_description.trim() === '';
 
-
     return(
         <>
-           <ReviewModal isReviewModalOpen={isReviewModalOpen} onReviewModalClose={onReviewModalClose} clubName={clubName} setUserRating={setUserRating} formData={formData} setFormData={setFormData} userRating={userRating} />
+           <ReviewModal isReviewModalOpen={isReviewModalOpen} onReviewModalClose={onReviewModalClose} clubName={clubName} setUserRating={setUserRating} formData={formData} setFormData={setFormData} userRating={userRating} setallClubReviews={setallClubReviews} />
 
             <DescriptionModal isDescriptionModalOpen={isDescriptionModalOpen} onDescriptionModalClose={onDescriptionModalClose} clubName={clubName} clubId={allClubReviews[0]?.club[0]?.club_id} />
 
@@ -226,7 +223,7 @@ export function ClubReview(){
                 </ModalContent>
             </Modal>
 
-            <Stack position="relative" backgroundImage={`url(${randomPhoto})`} backgroundSize='cover' backgroundPosition='center'>
+            <Stack position="relative" backgroundImage={`url(${randomPhoto})`} backgroundSize='cover' backgroundPosition='center' >
             <Box
                         position='absolute'
                         top='0'
@@ -239,7 +236,7 @@ export function ClubReview(){
             <Box zIndex='2'>
             <Flex m='20' justifyContent='space-between'>
                 <Box>
-                    <Heading size='4xl' maxW="500px" wordBreak="break-word" color='white'>{clubName ? clubName : "Loading..."}</Heading>
+                    <Heading size={{ base: 'xl', md: '4xl' }} maxW="500px" wordBreak="break-word" color='white'>{clubName ? clubName : "Loading..."}</Heading>
                     <VStack spacing='2' my='2' alignItems='start'>           
                             {/* <Text color='white'>{allClubReviews[0]?.club[0]?.club_size}, {allClubReviews[0]?.club[0]?.club_type} Club at {university}</Text>  */}
                             <HStack>
@@ -289,9 +286,9 @@ export function ClubReview(){
                     )}
                 </Box>
                 <Box>
-                    <Heading color='white' size='4xl'>{getTier()}</Heading>
+                    <Heading color='white' size={{ base: 'xl', md: '4xl' }}>{getTier()}</Heading>
                     <HStack justifyContent='flex-end'>
-                        <Heading color='white' size='4xl'>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
+                        <Heading color='white' size={{ base: 'xl', md: '4xl' }}>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
                         <Heading size='lg' color='white'>/5</Heading>
                         
                     </HStack>
@@ -303,7 +300,7 @@ export function ClubReview(){
             <PhotoAlbum />
          <Container maxW='container.md'>
             {/* Give it a proper JSON type */}
-           {allClubReviews.filter(item => item.num_reports < 3).sort((a, b) => new Date(b.review_date).getTime() - new Date(a.review_date).getTime()).map((item, index) => (
+           {allClubReviews.length > 0 && allClubReviews.filter(item => item.num_reports < 3).sort((a, b) => new Date(b.review_date).getTime() - new Date(a.review_date).getTime()).map((item, index) => (
                 <Stack my='10' p='5' key={"Stack" + index} backgroundColor='#C35454' minH='200px'>
                     <HStack key={"HStack" + index} justifyContent='space-between'>
                         <Heading size='lg' key={"Item Rating" + index}>{item.rating}</Heading>
