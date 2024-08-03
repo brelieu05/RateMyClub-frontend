@@ -33,12 +33,10 @@ import { getIdToken } from 'firebase/auth';
         const signIn = async () => {
             await anonymousSignIn();
         };
-        if(userData){
+        if(!userData){
             signIn();
-            console.log("Anonymous sign in");
         }
-        
-    }, []);
+    }, [userData]);
 
 
       const handleLogout = () => {
