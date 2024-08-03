@@ -179,7 +179,7 @@ export function ClubReview(){
     const handleReportSubmit = async () => {
         try {
             await postReport(reportData);
-            
+            onReportModalClose();
         } catch (error) {
             console.error("Error submitting report:", error);
         }
