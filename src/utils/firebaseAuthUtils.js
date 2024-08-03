@@ -5,6 +5,11 @@ import {
     sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signOut,    
+    signInAnonymously,
+    GoogleAuthProvider,
+    EmailAuthProvider,
+    linkWithCredential,
+    getIdToken 
 } from "firebase/auth";
 
 
@@ -31,10 +36,17 @@ const auth = getAuth(app);
  */
 export const createUserInFirebase = async (email, password, redirect, navigate) => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const credential = await EmailAuthProvider.credential(email, password);
+      
+      linkWithCredential(auth.currentUser, credential)
+      .then((usercred) => {
+        const user = usercred.user;
+        console.log("Anonymous account successfully upgraded", user);
+      }).catch((error) => {
+        console.log("Error upgrading anonymous account", error);
+      });
+
       navigate(redirect);
-  
-      return user.user;
     } catch (error) {
       console.log(`${error.code}: ${error.message}`);
       throw error;
@@ -98,6 +110,24 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
     // Success will return null, and falure will raise an error that should
     // be caught by UI layer.
     await sendPasswordResetEmail(auth, email);
+  };
+
+  export const anonymousSignIn = async () => {
+    try{
+      const response = await signInAnonymously(auth);
+    }
+    catch(error) {
+      console.log(`${error.code}: ${error.message}`);
+    }
+  }
+
+  export const getIdTokenFromUser = async (user) => {
+    if (!user) {
+      throw new Error("No user is currently signed in.");
+    }
+  
+    const token = await getIdToken(user);
+    return token;
   };
 
   

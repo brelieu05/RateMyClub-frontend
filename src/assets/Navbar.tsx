@@ -15,17 +15,31 @@ import {
   } from '@chakra-ui/react'
   import { HamburgerIcon } from '@chakra-ui/icons'
   import { Link, useLocation, useNavigate } from 'react-router-dom';
-  import React from 'react';
+  import React, { useEffect } from 'react';
   import { useAuth } from '../contexts/authContext/authContext';
+  import { anonymousSignIn } from '../utils/firebaseAuthUtils';
   import { logout } from '../utils/firebaseAuthUtils'
   import Search from './Search';
+import { getIdToken } from 'firebase/auth';
   
   export default function Navbar() {
       const location = useLocation();
       const navigate = useNavigate();
       const { userLoggedIn, userData } = useAuth();
       const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
+
+    useEffect(() => {
+        const signIn = async () => {
+            await anonymousSignIn();
+        };
+        if(userData){
+            signIn();
+        }
+        
+    }, []);
+
+
       const handleLogout = () => {
           logout('/', navigate);
           window.location.reload();
@@ -47,24 +61,25 @@ import {
                       {userData?.role === "admin" && (
                           <Button variant='nav'><Link to='/Reports'>Reports</Link></Button>
                       )}
-                      {userLoggedIn ? (
-                          <Button variant='nav' onClick={handleLogout}>
-                              <Link to='/'>Logout</Link>
-                          </Button>
-                      ) : (
-                          <>
-                              {location.pathname !== '/SignUp' && (
-                                  <Button variant='nav'>
-                                      <Link to='/SignUp'>Sign Up</Link>
-                                  </Button>
-                              )}
-                              {location.pathname !== '/Login' && (
-                                  <Button variant='nav'>
-                                      <Link to='/Login'>Login</Link>
-                                  </Button>
-                              )}
-                          </>
-                      )}
+                      {userData ? (
+                            <Button variant='nav' onClick={handleLogout}>
+                                <Link to='/'>Logout</Link>
+                            </Button>
+                        ) : (
+                            <>
+                                {location.pathname !== '/SignUp' && (
+                                    <Button variant='nav'>
+                                        <Link to='/SignUp'>Sign Up</Link>
+                                    </Button>
+                                )}
+                                {location.pathname !== '/Login' && (
+                                    <Button variant='nav'>
+                                        <Link to='/Login'>Login</Link>
+                                    </Button>
+                                )}
+                            </>
+                        )
+                      }
                   </Flex>
   
                   <IconButton

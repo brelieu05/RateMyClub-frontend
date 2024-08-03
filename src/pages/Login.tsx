@@ -5,7 +5,7 @@ import { logInWithEmailAndPassword } from '../utils/firebaseAuthUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 
 export function Login(){
-    const { userLoggedIn } = useAuth();
+    const { userLoggedIn, currentUser, userData } = useAuth();
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         "email" : "",
@@ -34,10 +34,10 @@ export function Login(){
     };
     
     useEffect(() => {
-        if (userLoggedIn) {
+        if (userData) {
           navigate('/');
         }
-      }, [userLoggedIn, navigate]);
+      }, [userData, navigate]);
 
     return(
         <>

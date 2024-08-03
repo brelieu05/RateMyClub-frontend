@@ -8,6 +8,7 @@ const getReviews = async () => {
 
 const postReview = async (formData) => {
     const response = await Backend.post('/reviews', formData);
+    console.log(response);
     return response.data;
 }
 

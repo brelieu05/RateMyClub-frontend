@@ -29,25 +29,26 @@ export default function AuthContextProvider({ children }: AuthContextProviderPro
   const [currentUser, setCurrentUser] = useState<User>(null);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [userData, setUserData ] = useState(null);
-
-  
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async (firebaseUID: string) => {
-        try {
+      try {
+        if (firebaseUID){
           const user = await getUserFromDatabase(firebaseUID);
-          setUserData(user)
-        } catch (error) {
-          console.error('Error fetching user data:', error);
+          setUserData(user);
         }
-      };
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
         setUserLoggedIn(true);
-        await fetchUserData(user.uid);
+        if(!(user.auth.currentUser?.isAnonymous))
+          await fetchUserData(user.uid);
       } else {
         setCurrentUser(null);
         setUserLoggedIn(false);

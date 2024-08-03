@@ -4,24 +4,26 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { createUserInDatabase } from '../utils/userUtils'
 import { useAuth } from "../contexts/authContext/authContext.js";
+import { getAuth } from "firebase/auth";
+import { auth } from "../utils/firebaseAuthUtils.js";
 
 export function SignUp(){
-    const { userLoggedIn } = useAuth();
+    const { userLoggedIn, userData, currentUser } = useAuth();
     const [formData, setFormData] = useState({
         email : "",
         role : "club",
         firebase_uid : "",
         password : "",
         confirmPassword : "",
-    });
+    }); 
     
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (userLoggedIn) {
+        if (userData) {
           navigate('/');
         }
-      }, [userLoggedIn, navigate]);
+      }, [userData, navigate]);
 
     const onSubmit = async () => {
         const { email, password, confirmPassword } = formData;  
@@ -29,14 +31,13 @@ export function SignUp(){
         try {
             if(password === confirmPassword){
                 const newUser = await createUserInFirebase(email, password, '/', navigate);
-                
                 const updatedFormData = {
                     ...formData,
-                    firebase_uid : newUser.uid,
+                    firebase_uid : auth.currentUser.uid,
                 };
 
                 await createUserInDatabase(updatedFormData);
-
+                
             }
             else{
                 console.log("Passwords must match")
