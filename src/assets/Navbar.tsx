@@ -35,6 +35,7 @@ import { getIdToken } from 'firebase/auth';
         };
         if(userData){
             signIn();
+            console.log("Anonymous sign in");
         }
         
     }, []);
