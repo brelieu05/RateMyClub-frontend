@@ -83,6 +83,9 @@ const getRandomIndex = (length) => Math.floor(Math.random() * length);
 export function ClubReview(){
     const { club_name, university } = useParams();
     
+    const decodedUniversity = university?.replace(/-/g, ' ');
+    const decodedClub = club_name?.replace(/-/g, ' ');
+    
     const [allClubReviews, setallClubReviews] = useState<Review[]>([]);
     const [clubName, setClubName] = useState('');
     const [userRating, setUserRating] = useState(0);
@@ -102,7 +105,7 @@ export function ClubReview(){
         description: "",
         club_name: "",
         rating: 0,
-        university: university,
+        university: decodedUniversity,
         club_id: 0,
         review_date : "",
         
@@ -115,7 +118,7 @@ export function ClubReview(){
 
     useEffect(() => {
         const fetchClubReviews = async () =>{
-            const response = await getClubReviews(university, club_name);
+            const response = await getClubReviews(decodedUniversity, decodedClub);
             console.log(response);
             setallClubReviews(response);
             setClubName(response[0].club_name);
@@ -242,7 +245,7 @@ export function ClubReview(){
                             <HStack>
                                 <Tag colorScheme='red'>
                                     <TagLabel as='b'>
-                                        {university}
+                                        {decodedUniversity}
                                     </TagLabel>
                                 </Tag>
                                 <Tag colorScheme='red'>

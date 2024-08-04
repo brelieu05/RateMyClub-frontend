@@ -94,7 +94,10 @@ function Search({width}) {
 
             await postReview(updatedReviewData);
             onClose();
-            navigate(`/${reviewData.university}/${reviewData.club_name}`);
+
+            const universityWithDashes = reviewData.university.replace(/ /g, '-');
+            const clubNameWithDashes = reviewData.club_name.replace(/ /g, '-');
+            navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
         }
         catch (err){
             console.log(err);
@@ -198,7 +201,9 @@ function Search({width}) {
       };
     
       const handleClubClick = (club) => {
-        navigate(`/${university.university}/${club}`);
+        const universityWithDashes = university.university.replace(/ /g, '-');
+        const clubNameWithDashes = club.replace(/ /g, '-');
+        navigate(`/${universityWithDashes}/${clubNameWithDashes}`)
         setUniversity('');
         setQuery('');
         onDropdownClose();

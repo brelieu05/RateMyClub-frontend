@@ -97,7 +97,11 @@ export default function HeroPage() {
                 position='relative'
                 overflow='hidden'
                 borderRadius='lg'
-                onClick={() => navigate(`/${club.university}/${club.club_name}`)}
+                onClick={() => {
+                  const universityWithDashes = club.university.replace(/ /g, '-');
+                  const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                  navigate(`/${universityWithDashes}/${clubNameWithDashes}`)
+                }}
               >
                 <Box
                   position="absolute"

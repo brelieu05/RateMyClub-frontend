@@ -102,7 +102,12 @@ export function Browse(){
                         .filter(filterClubs)
                         .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                         .map((club, index) => (
-                            <Card key={'Club ' + index} p='4' onClick={() => navigate(`/${selectedUniversity}/${club.club_name}`)}>
+                            <Card key={'Club ' + index} p='4' onClick={() => {
+                                    const universityWithDashes = selectedUniversity.replace(/ /g, '-');
+                                    const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                                    navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+                                    
+                                }}>
                                 <Heading textAlign='center' size='lg'>
                                     {club.club_name}
                                 </Heading>
