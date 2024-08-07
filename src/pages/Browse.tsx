@@ -103,20 +103,22 @@ export function Browse(){
                         .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                         .map((club, index) => (
                             <Card key={'Club ' + index} p='4' onClick={() => {
-                                    const universityWithDashes = selectedUniversity.replace(/ /g, '-');
-                                    const clubNameWithDashes = club.club_name.replace(/ /g, '-');
-                                    navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
-                                    
-                                }}>
-                                <Heading textAlign='center' size='lg'>
-                                    {club.club_name}
-                                </Heading>
-                                <Divider m='3'/>
+                                const universityWithDashes = selectedUniversity.replace(/ /g, '-');
+                                const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                                navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+                            }} maxH='150px'>
+                                <Box maxH='50px' overflow='hidden'>
+                                    <Heading textAlign='center' size='lg' whiteSpace='nowrap' overflow='hidden' textOverflow='ellipsis'>
+                                        {club.club_name.length > 17 ? club.club_name.substring(0, club.club_name.indexOf(' ')) : club.club_name}
+                                    </Heading>
+                                </Box>
+                                <Divider m='3' />
                                 <Flex justifyContent='center'>
                                     <Tag mx='2'>{club.club_type}</Tag>
                                     <Tag mx='2'>{club.club_size}</Tag>
                                 </Flex>
                             </Card>
+                            
                         ))
             ) : (
                 <Text textAlign='center'>No clubs available</Text>

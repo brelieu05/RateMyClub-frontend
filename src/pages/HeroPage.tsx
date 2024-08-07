@@ -82,7 +82,7 @@ export default function HeroPage() {
       >
         {clubs
           .sort((a, b) => a.club_id - b.club_id)
-          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Furry Club")
+          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "CADC (Chinese Association Dance Crew)")
           .slice(0, 5)
           .map((club, index) => {
             const randomIndex = getRandomIndex(club.photos.length);
