@@ -31,7 +31,8 @@ import {
     PopoverTrigger,
     InputGroup,
     InputRightElement,
-    Text
+    Text,
+    Heading
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -427,7 +428,7 @@ function Search({width}) {
                         p={2}
                         borderRadius='md'
                     >
-                        {"Don't see your club? Add a Review"}
+                        <Heading as='h6' size='p'>Don't see your club? Add a Review</Heading>
                     </ListItem>
                     )}
                 </List>
