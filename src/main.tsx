@@ -13,7 +13,7 @@ import { Login } from './pages/Login.tsx'
 import { ClubReview } from './pages/ClubReview.tsx'
 import { Browse } from './pages/Browse.tsx'
 import { Reports } from './pages/Reports.tsx'
-import HeroPage from './pages/HeroPage.tsx'
+import NewHeroPage from './pages/NewHeroPage.tsx'
 // import '@fontsource-variable/inter';
 
 const theme = extendTheme({
@@ -21,7 +21,19 @@ const theme = extendTheme({
     heading: `'Inter', sans-serif`,
     body: `'Inter', sans-serif`,
   },
-})
+  colors: {
+    text: {
+      primary: '#1E1E1E',
+    },
+  },
+  styles: {
+    global: {
+      body: {
+        color: 'text.primary', // Set the default text color
+      },
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -30,7 +42,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <HeroPage/>,
+        element: <NewHeroPage/>,
       },
       {
         path: '/SignUp',

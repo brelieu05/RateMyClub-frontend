@@ -13,19 +13,19 @@ import {
     IconButton,
     VStack
   } from '@chakra-ui/react'
-  import { HamburgerIcon } from '@chakra-ui/icons'
-  import { Link, useLocation, useNavigate } from 'react-router-dom';
-  import React, { useEffect } from 'react';
-  import { useAuth } from '../contexts/authContext/authContext';
-  import { anonymousSignIn } from '../utils/firebaseAuthUtils';
-  import { logout } from '../utils/firebaseAuthUtils'
-  import Search from './Search';
+import { HamburgerIcon } from '@chakra-ui/icons'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useAuth } from '../contexts/authContext/authContext';
+import { anonymousSignIn } from '../utils/firebaseAuthUtils';
+import { logout } from '../utils/firebaseAuthUtils'
+import Search from './Search';
 import { getIdToken } from 'firebase/auth';
   
   export default function Navbar() {
       const location = useLocation();
       const navigate = useNavigate();
-      const { userLoggedIn, userData } = useAuth();
+      const { userLoggedIn, userData, currentUser } = useAuth();
       const { isOpen, onOpen, onClose } = useDisclosure();
 
 
@@ -36,6 +36,7 @@ import { getIdToken } from 'firebase/auth';
         if(!userData){
             signIn();
         }
+        console.log(userData, currentUser);
     }, [userData]);
 
 
@@ -45,35 +46,42 @@ import { getIdToken } from 'firebase/auth';
       }
   
       return (
-          <>
-              <Flex justifyContent='space-between' p='5' mx='5' alignItems='center'>
+          <Box borderBottom='2px' borderColor='#D9D9D9'>
+              <Flex justifyContent='space-between' p='5' alignItems='center'>
                   <HStack spacing={{ base: '0', md: '5' }}>
-                      <Button variant='nav' onClick={() => {
+                      <Button variant='nav' as='b' fontSize='2xl' onClick={() => {
                           navigate('/');
                           window.location.reload();
-                      }}>Rate My Club</Button>
+                      }}>RateMyClub</Button>
                   </HStack>
   
                   <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
                       {location.pathname !== '/' && <Search width={'sm'} />}
-                      <Button><Link to='/Browse'>Browse</Link></Button>
+                        <Button variant='none' fontWeight='400' fontSize='16px'>
+                            <Link to='/Browse'>Browse</Link>
+                        </Button>
                       {userData?.role === "admin" && (
                           <Button variant='nav'><Link to='/Reports'>Reports</Link></Button>
                       )}
-                      {userData ? (
+                      {!(currentUser?.isAnonymous) ? (
+                        <>
+                        <Button variant='nav'>
+                            <Link to='/'>Account</Link>
+                        </Button>
                             <Button variant='nav' onClick={handleLogout}>
                                 <Link to='/'>Logout</Link>
-                            </Button>
+                        </Button>
+                        </>
                         ) : (
                             <>
-                                {location.pathname !== '/SignUp' && (
+                                {location.pathname === '/Login' && (
                                     <Button variant='nav'>
                                         <Link to='/SignUp'>Sign Up</Link>
                                     </Button>
                                 )}
                                 {location.pathname !== '/Login' && (
-                                    <Button variant='nav'>
-                                        <Link to='/Login'>Login</Link>
+                                    <Button variant='nav' backgroundColor='#2C2C2C' color='#F5F5F5' fontSize='16px' fontWeight='400' px='10'>
+                                        <Link to='/Login'>Club Owner?</Link>
                                     </Button>
                                 )}
                             </>
@@ -100,11 +108,20 @@ import { getIdToken } from 'firebase/auth';
                                       navigate('/');
                                       window.location.reload();
                                   }}>Rate My Club</Button>
+
                                   {location.pathname !== '/' && <Search width={'250px'} />}
-                                  <Button><Link to='/Browse'>Browse</Link></Button>
-                                  {userData?.role === "admin" && (
-                                      <Button variant='nav'><Link to='/Reports'>Reports</Link></Button>
-                                  )}
+
+                                  <Button>
+                                    <Link to='/Browse'>Browse</Link>
+                                    </Button>
+                                  {userData?.role === "admin" && 
+                                    (
+                                        <Button variant='nav'>
+                                            <Link to='/Reports'>Reports</Link>
+                                        </Button>
+                                    )
+                                  }
+
                                   {userLoggedIn ? (
                                       <Button variant='nav' onClick={handleLogout}>
                                           <Link to='/'>Logout</Link>
@@ -128,7 +145,7 @@ import { getIdToken } from 'firebase/auth';
                       </DrawerContent>
                   </Drawer>
               </Flex>
-          </>
+          </Box>
       );
   }
   

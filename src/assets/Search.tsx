@@ -51,7 +51,7 @@ interface UniversityData {
     uni_abbr : string;
 }
 
-function Search({width}) {
+function Search({width, height}) {
     const [query, setQuery] = useState('');
     const [clubs, setClubs] = useState<ClubData[]>([]);
     const [userRating, setUserRating] = useState(0);
@@ -368,19 +368,14 @@ function Search({width}) {
             </Modal>
 
 
-        <Box alignSelf='center'>
-            <InputGroup>
-                <InputRightElement mr='1' mt='1'>
-                    <SearchIcon color='gray.300'/>
-                </InputRightElement>
+        <Box w={width} >
+            <InputGroup >
                 <Input
                     placeholder={university ? `Find a club at ${university.university}` : 'Search your university'}
                     value={query}
                     onChange={handleSearchChange}
-                    w={width || 'sm'}
-                    p='6'
                     backgroundColor='white'
-                    
+                    h={height || "auto"}
                 />
             </InputGroup>
             {isDropdownOpen && (
