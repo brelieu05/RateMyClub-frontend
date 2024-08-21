@@ -56,7 +56,7 @@ import { getIdToken } from 'firebase/auth';
                   </HStack>
   
                   <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
-                      {location.pathname !== '/' && <Search width={'sm'} />}
+                      {location.pathname !== '/' && <Search width={'sm'} height='40px' />}
                         <Button variant='none' fontWeight='400' fontSize='16px'>
                             <Link to='/Browse'>Browse</Link>
                         </Button>
