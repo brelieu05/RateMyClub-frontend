@@ -69,7 +69,7 @@ export default function NewHeroPage() {
         >
         {clubs
           .sort((a, b) => a.club_id - b.club_id)
-          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "CADC (Chinese Association Dance Crew)")
+          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Chinese Association Dance Crew (CADC)")
           .slice(0, 5)
           .map((club, index) => {
             const randomIndex = getRandomIndex(club.photos.length);
@@ -117,7 +117,7 @@ export default function NewHeroPage() {
                   right='0'
                   bottom='0'
                 //   backgroundColor='rgba(197, 60, 60, 0.3)' 
-                    backgroundColor='rgba(255, 255, 255, 0.35)'
+                    backgroundColor='rgba(255, 255, 255, 0.2)'
                 />
                 <Badge
                   position='absolute'
