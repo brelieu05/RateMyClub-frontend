@@ -14,6 +14,7 @@ import { ClubReview } from './pages/ClubReview.tsx'
 import { Browse } from './pages/Browse.tsx'
 import { Reports } from './pages/Reports.tsx'
 import NewHeroPage from './pages/NewHeroPage.tsx'
+import NewBrowse from './pages/NewBrowse.tsx';
 // import '@fontsource-variable/inter';
 
 const theme = extendTheme({
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/Browse',
-        element: <Browse/>
+        element: <NewBrowse/>
       },
       {
         path: '/Reports',

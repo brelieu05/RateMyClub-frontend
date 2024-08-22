@@ -78,7 +78,7 @@ interface Club{
     club_type : string,
 }
 
-const getRandomIndex = (length) => Math.floor(Math.random() * length);
+const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
 
 export function ClubReview(){
     const { club_name, university } = useParams();

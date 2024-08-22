@@ -102,22 +102,48 @@ export function Browse(){
                         .filter(filterClubs)
                         .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                         .map((club, index) => (
-                            <Card key={'Club ' + index} p='4' onClick={() => {
-                                const universityWithDashes = selectedUniversity.replace(/ /g, '-');
-                                const clubNameWithDashes = club.club_name.replace(/ /g, '-');
-                                navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
-                            }} maxH='150px'>
-                                <Box maxH='50px' overflow='hidden'>
-                                    <Heading textAlign='center' size='lg' whiteSpace='nowrap' overflow='hidden' textOverflow='ellipsis'>
-                                        {club.club_name.length > 17 ? club.club_name.substring(0, club.club_name.indexOf(' ')) : club.club_name}
+                            <Card
+                                key={'Club ' + index}
+                                p="4"
+                                onClick={() => {
+                                    const universityWithDashes = selectedUniversity.replace(/ /g, '-');
+                                    const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                                    navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+                                }}
+                                maxH="150px"
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                                justifyContent="center"
+                                textAlign="center"
+                                >
+                                <Box maxH="60px" overflow="hidden" width="100%">
+                                    <Heading
+                                    size="lg"
+                                    whiteSpace="nowrap"
+                                    overflow="hidden"
+                                    textOverflow="ellipsis"
+                                    >
+                                    {club.club_name.length > 17
+                                        ? club.club_name.substring(
+                                            club.club_name.indexOf('(') + 1,
+                                            club.club_name.indexOf(')')
+                                        )
+                                        : club.club_name}
                                     </Heading>
+                                    <Text textAlign="center" color="gray.600">
+                                    {club.club_name.length > 17
+                                        ? club.club_name.substring(0, club.club_name.indexOf('('))
+                                        : ""}
+                                    </Text>
                                 </Box>
-                                <Divider m='3' />
-                                <Flex justifyContent='center'>
-                                    <Tag mx='2'>{club.club_type}</Tag>
-                                    <Tag mx='2'>{club.club_size}</Tag>
+                                <Divider m="3" width="100%" />
+                                <Flex justifyContent="center">
+                                    <Tag mx="2">{club.club_type}</Tag>
+                                    <Tag mx="2">{club.club_size}</Tag>
                                 </Flex>
                             </Card>
+
                             
                         ))
             ) : (
@@ -126,10 +152,19 @@ export function Browse(){
         ) : (
         Array.isArray(universities) && universities.length > 0 ? (
             universities.map((uni, index) => (
-                <Card key={"Card " + index} p='4' onClick={() => setSelectedUniversity(uni.university)}>
-                    <Heading textAlign='center' size='lg'>{uni.uni_abbr}</Heading>
-                    <Divider m='3'/>
-                    <Text fontSize='lg' textAlign='center'>{uni.university}</Text>
+                <Card
+                    key={"Card " + index}
+                    p="4"
+                    onClick={() => setSelectedUniversity(uni.university)}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                >
+                    <Heading size="lg">{uni.uni_abbr}</Heading>
+                    <Divider m="3" />
+                    <Text fontSize="lg">{uni.university}</Text>
                 </Card>
             ))
         ) : (

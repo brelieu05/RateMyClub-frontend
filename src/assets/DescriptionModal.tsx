@@ -139,9 +139,9 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                             <FormLabel>Club Size</FormLabel>
                             <RadioGroup name='club_size' onChange={handleSizeChange} value={formData.club_size}>
                                 <Grid gap='4'>
-                                    <Radio value='Small'>Small Size (1-15 Members)</Radio>
-                                    <Radio value='Medium'>Medium Size (15-40 Members)</Radio>
-                                    <Radio value='Large'>Large Size (40+ Members)</Radio>
+                                    <Radio value='Small (1-15)'>Small Size (1-15 Members)</Radio>
+                                    <Radio value='Medium (15-40)'>Medium Size (15-40 Members)</Radio>
+                                    <Radio value='Large (40+)'>Large Size (40+ Members)</Radio>
                                 </Grid>
                             </RadioGroup>
                         </Stack>

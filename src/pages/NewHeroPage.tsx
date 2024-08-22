@@ -4,9 +4,7 @@ import Search from '../assets/Search';
 import { useNavigate } from 'react-router-dom';
 import { getUniversityClubs } from '../utils/universityUtils';
 
-const getRandomIndex = (max) => {
-    return Math.floor(Math.random() * Math.min(max));
-  };
+const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
 
 
 export default function NewHeroPage() {

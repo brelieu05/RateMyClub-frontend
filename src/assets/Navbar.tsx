@@ -36,7 +36,6 @@ import { getIdToken } from 'firebase/auth';
         if(!userData){
             signIn();
         }
-        console.log(userData, currentUser);
     }, [userData]);
 
 
