@@ -118,9 +118,9 @@ export function ClubReview(){
         const fetchClubReviews = async () =>{
             const response = await getClubReviews(club_id);
             setallClubReviews(response);
-            setClub(response[0].club[0])
-            setClubName(response[0].club[0].club_name);
-            setRandomPhoto(response[0].club[0].photos[getRandomIndex(response[0].club[0].photos.length)])
+            setClub(response[0]?.club[0])
+            setClubName(response[0]?.club[0]?.club_name);
+            setRandomPhoto(response[0]?.club[0]?.photos[getRandomIndex(response[0].club[0].photos.length)])
         }
         
         fetchClubReviews();
