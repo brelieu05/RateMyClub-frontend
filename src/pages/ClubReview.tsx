@@ -114,60 +114,22 @@ export function ClubReview(){
         report_description : "",
     }); 
 
-    // useEffect(() => {
-    //     const fetchClubReviews = async () => {
-    //         try {
-    //             const response = await getClubReviews(club_id);
-    //             setallClubReviews(response);
-    //             setClub(response[0]?.club[0]);
-    //             setClubName(response[0]?.club[0]?.club_name);
-    //             setRandomPhoto(response[0]?.club[0]?.photos[getRandomIndex(response[0].club[0].photos.length)]);
-    //         } catch (error) {
-    //             console.error('Error fetching club reviews:', error);
-    //         }
-    //     };
-        
-    //     fetchClubReviews();
-    // }, []);
-
     useEffect(() => {
         const fetchClubReviews = async () => {
             try {
                 const response = await getClubReviews(club_id);
-                
-                if (response.length > 0) {
-                    // Assuming response[0]?.club[0] exists and has the required properties
-                    const firstClub = response[0]?.club[0];
-                    
-                    setallClubReviews(response);
-                    setClub(firstClub || null);
-                    setClubName(firstClub?.club_name || 'Unknown Club');
-                    
-                    if (firstClub?.photos?.length) {
-                        setRandomPhoto(firstClub.photos[getRandomIndex(firstClub.photos.length)]);
-                    } else {
-                        setRandomPhoto(null); // Or set a default photo
-                    }
-                } else {
-                    // Handle case where there are no reviews
-                    setallClubReviews([]);
-                    setClub(null);
-                    setClubName('No Club Found');
-                    setRandomPhoto(null); // Or set a default photo
-                }
+                setallClubReviews(response);
+                setClub(response[0].club[0]);
+                setClubName(response[0].club[0].club_name);
+                setRandomPhoto(response[0].club[0].photos[getRandomIndex(response[0].club[0].photos.length)]);
             } catch (error) {
                 console.error('Error fetching club reviews:', error);
-                // Handle error state if necessary
             }
         };
-    
+        
         fetchClubReviews();
-    
-        // Optionally, handle cleanup if necessary
-        return () => {
-            // Cleanup logic if needed
-        };
-    }, [club_id]); // Include `club_id` as a dependency if it might change
+    }, [club_id]);
+
     
     useEffect(() => {
         setFormData((prevFormData) => ({
