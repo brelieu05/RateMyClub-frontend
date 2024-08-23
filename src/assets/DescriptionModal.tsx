@@ -75,6 +75,7 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
     
             const response = await updateClub(clubId, updatedFormData);
             window.location.reload();
+            // console.log(updatedFormData);
         } catch (error) {
             console.error('Error submitting review:', error);
         }

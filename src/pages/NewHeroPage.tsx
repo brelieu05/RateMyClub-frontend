@@ -28,11 +28,11 @@ export default function NewHeroPage() {
             return 'orange.400';
           case 'Hobby/Special/Interest':
             return 'pink.400';
-          case 'Academic/Professional':
+          case 'Dance':
             return 'purple.600';
           case 'Community Service':
             return 'green.500';
-          case 'Cultural':
+          case 'Computer Science':
             return 'blue.500';
           case 'Political/Activism':
             return 'cyan.500';
@@ -121,14 +121,14 @@ export default function NewHeroPage() {
                   position='absolute'
                   top='10px'
                   right='10px'
-                  backgroundColor={getClubTypeColor(club.club_type)}
+                  backgroundColor={getClubTypeColor(club.tags[0])}
                   color='white'
                   borderRadius='md'
                   px='2'
                   py='1'
                   fontSize='sm'
                 >
-                  {club.club_type}
+                  {club.tags[0]}
                 </Badge>
                 <Box
                   position='absolute'

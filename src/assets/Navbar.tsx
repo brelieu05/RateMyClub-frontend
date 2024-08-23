@@ -80,7 +80,9 @@ import { getIdToken } from 'firebase/auth';
                                 )}
                                 {location.pathname !== '/Login' && (
                                     <Button variant='nav' backgroundColor='#2C2C2C' color='#F5F5F5' fontSize='16px' fontWeight='400' px='10'>
-                                        <Link to='/Login'>Club Owner?</Link>
+                                        {/* <Link to='/Login'> */}
+                                            Club Owner?
+                                        {/* </Link> */}
                                     </Button>
                                 )}
                             </>

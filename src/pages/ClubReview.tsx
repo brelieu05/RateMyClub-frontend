@@ -44,7 +44,6 @@ import alexInTheAir from '../assets/images/alex_in_the_air.jpg';
 interface ReviewFormData {
     description: string,
     review_date: string;
-    club_name: string
     rating: number,
     club_id : number,
     university: string | undefined,
@@ -53,7 +52,6 @@ interface ReviewFormData {
 
 interface Review {
     club: Club[];
-    club_name: string;
     review_date: string;
     rating: number;
     description: string;
@@ -68,7 +66,6 @@ interface Report {
 
 interface Club{
     club_id : number,
-    club_name : string,
     club_size : string,
     university: string, 
     uni_abbr : string,
@@ -81,16 +78,18 @@ interface Club{
 const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
 
 export function ClubReview(){
-    const { club_name, university } = useParams();
+    const { club_id } = useParams();
     
-    const decodedUniversity = university?.replace(/-/g, ' ');
-    const decodedClub = club_name?.replace(/-/g, ' ');
+    // const decodedUniversity = university?.replace(/-/g, ' ');
+    // const decodedClub = club_name?.replace(/-/g, ' ');
     
     const [allClubReviews, setallClubReviews] = useState<Review[]>([]);
     const [clubName, setClubName] = useState('');
     const [userRating, setUserRating] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
     const [reportDescription, setReportDescription] = useState('');
+
+    const [club, setClub] = useState(null);
     
     const { isOpen : isReviewModalOpen, onOpen : onReviewModalOpen, onClose : onReviewModalClose } = useDisclosure();
     const { isOpen : isDescriptionModalOpen, onOpen : onDescriptionModalOpen, onClose : onDescriptionModalClose} = useDisclosure();
@@ -103,9 +102,8 @@ export function ClubReview(){
 
     const [formData, setFormData] = useState<ReviewFormData>({
         description: "",
-        club_name: "",
         rating: 0,
-        university: decodedUniversity,
+        university: "",
         club_id: 0,
         review_date : "",
         
@@ -118,20 +116,19 @@ export function ClubReview(){
 
     useEffect(() => {
         const fetchClubReviews = async () =>{
-            const response = await getClubReviews(decodedUniversity, decodedClub);
-            console.log(response);
+            const response = await getClubReviews(club_id);
             setallClubReviews(response);
-            setClubName(response[0].club_name);
+            setClub(response[0].club[0])
+            setClubName(response[0].club[0].club_name);
             setRandomPhoto(response[0].club[0].photos[getRandomIndex(response[0].club[0].photos.length)])
         }
         
         fetchClubReviews();
-    }, [club_name, university]);
+    }, [club_id]);
     
     useEffect(() => {
         setFormData((prevFormData) => ({
             ...prevFormData,
-            club_name: clubName,
             club_id: allClubReviews[0]?.club[0]?.club_id,
         }));
 
@@ -245,19 +242,16 @@ export function ClubReview(){
                             <HStack>
                                 <Tag colorScheme='red'>
                                     <TagLabel as='b'>
-                                        {decodedUniversity}
+                                        {club?.university}
                                     </TagLabel>
                                 </Tag>
-                                <Tag colorScheme='red'>
-                                    <TagLabel as='b'>
-                                        {allClubReviews[0]?.club[0]?.club_size}
-                                    </TagLabel>
-                                </Tag>
-                                <Tag colorScheme='red'>
-                                    <TagLabel as='b'>
-                                        {allClubReviews[0]?.club[0]?.club_type}
-                                    </TagLabel>
-                                </Tag>
+                                {club?.tags.map((element, index) => (
+                                    <Tag colorScheme='red'>
+                                        <TagLabel as='b'>
+                                            {element}
+                                        </TagLabel>
+                                    </Tag>
+                                ))}
                             </HStack>
                             <HStack>
                                 {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (

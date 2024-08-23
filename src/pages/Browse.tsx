@@ -31,7 +31,6 @@ export function Browse(){
           if (selectedUniversity) {
             const data = await getUniversityClubs(selectedUniversity);
             setClubJson(data);
-            // setClubs(data.map((club: { club_name: string; }) => club.club_name));
           }
         };
         fetchUniversityClubs();
@@ -107,8 +106,8 @@ export function Browse(){
                                 p="4"
                                 onClick={() => {
                                     const universityWithDashes = selectedUniversity.replace(/ /g, '-');
-                                    const clubNameWithDashes = club.club_name.replace(/ /g, '-');
-                                    navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+                                    // const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                                    navigate(`/${universityWithDashes}/${club.club_id}`);
                                 }}
                                 maxH="150px"
                                 display="flex"

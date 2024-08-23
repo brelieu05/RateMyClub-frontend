@@ -1,4 +1,4 @@
-import {  Box, Card, Divider, Flex,  Grid,  Heading, HStack, Input, Select, SimpleGrid, Stack, Tag, Text, Image, Container, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
+import {  Box, Card, Divider, Flex,  Grid,  Heading, HStack, Input, Select, SimpleGrid, Stack, Tag, Text, Image, Container, InputGroup, InputRightElement, Button, TagLabel, Badge } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubs } from '../utils/universityUtils';
@@ -49,14 +49,34 @@ export default function NewBrowse() {
       }, [selectedUniversity]);
 
       const filterClubs = (club) => {
-        if (clubType && clubType !== '' && club.club_type !== clubType) {
+        if(club.tags.indexOf(clubSize) < 0 && clubSize != "")
             return false;
-        }
-        if (clubSize && clubSize !== '' && club.club_size !== clubSize) {
+        if(club.tags.indexOf(clubType) < 0 && clubType != "")
             return false;
-        }
         return true;
     };
+
+    const getClubTypeColor = (club_type) => {
+        switch (club_type) {
+          case 'Sports':
+            return 'red';
+          case 'Engineering':
+            return 'orange';
+          case 'Hobby/Special/Interest':
+            return 'pink';
+          case 'KPOP':
+            return 'purple';
+          case 'Community Service':
+            return 'green';
+          case 'Computer Science':
+            return 'blue';
+          case 'Dance':
+            return 'cyan';
+          default:
+            return 'blackAlpha';
+        }
+      };
+
     return (
         <> 
             <Box backgroundColor='#F5F5F5' minHeight="100vh" pb='5'>
@@ -91,7 +111,7 @@ export default function NewBrowse() {
                                     <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Cultural')}}>Cultural</Button>
                                     <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Social')}}>Social</Button>
                                 </Card>
-                                <Container maxW="container.md" gap='12'>
+                                <Box maxW="container.md" gap='12'>
                                     <Stack spacing='12'>
                                     {Array.isArray(clubJson) && clubJson.length > 0 ? (
                                         clubJson
@@ -104,12 +124,11 @@ export default function NewBrowse() {
                                                         p="4"
                                                         onClick={() => {
                                                             const universityWithDashes = selectedUniversity.replace(/ /g, '-');
-                                                            const clubNameWithDashes = club.club_name.replace(/ /g, '-');
-                                                            navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+                                                            // const clubNameWithDashes = club.club_name.replace(/ /g, '-');
+                                                            navigate(`/${club.club_id}`);
                                                         }}
                                                     >
-                                                        <Flex >
-
+                                                        <Flex mx='3'>
                                                             <Stack alignSelf='center'>
                                                                 <Image src={club.photos[3] || bookStack} boxSize='120px' objectFit="cover" />
                                                             </Stack>
@@ -135,22 +154,23 @@ export default function NewBrowse() {
                                                                         : ""}
                                                                     </Text>
                                                                 </Box>
-                                                                <Divider m="3" width="100%" />
-                                                                <Flex justifyContent="center">
-                                                                    <Tag mx="2">{club.club_type}</Tag>
-                                                                    <Tag mx="2">{club.club_size}</Tag>
+                                                                <Divider m="3" borderColor='blackAlpha' />
+                                                                <Flex justifyContent="center" gap='4' flexWrap="wrap" >
+                                                                    {club.tags.map((element, index) => (
+                                                                        <Tag colorScheme={getClubTypeColor(element)}>
+                                                                            <TagLabel as='b'>
+                                                                                {element}
+                                                                            </TagLabel>
+                                                                        </Tag>
+                                                                    ))}
                                                                 </Flex>
                                                             </Stack>
                                                         </Flex>
-                                                           
-                                           
                                                     </Card>
-
-
                                                 ))
                                     ) : (<></>)}
                                     </Stack>
-                                </Container>
+                                </Box>
                             </Flex>
                         </Container>
                         
@@ -183,7 +203,7 @@ export default function NewBrowse() {
                                 </Stack>
                                 <Stack alignItems="end">
                                 <Heading size="3xl">{uni.uni_abbr}</Heading>
-                                <Divider mt="2" />
+                                <Divider mt="2" borderColor='blackAlpha'/>
                                 <Text fontSize="lg">{uni.university}</Text>
                                 </Stack>
                             </Flex>

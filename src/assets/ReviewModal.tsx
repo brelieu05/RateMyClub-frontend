@@ -13,7 +13,6 @@ interface ReviewModalProps {
     formData: {
         description: string;
         review_date: string;
-        club_name: string;
         rating: number;
         university: string | undefined,
         club_id : number,
@@ -21,7 +20,6 @@ interface ReviewModalProps {
     setFormData: React.Dispatch<React.SetStateAction<{
         description: string;
         review_date: string;
-        club_name: string;
         rating: number;
         university: string;
         club_id : number;

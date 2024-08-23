@@ -3,15 +3,14 @@ import React, { useEffect, useState } from "react";
 import {getAllReportsWithReview, deleteReviewAndReport, deleteReportAndResetNumReports} from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 import { useNavigate } from "react-router-dom";
+import { getReviewById } from "../utils/reviewsUtils";
 
 
 interface Review {
     review_id: number;
-    club_name: string;
     class_year: number;
     rating: number;
     review_date: string;
-    university: string;
     description: string;
 }
 

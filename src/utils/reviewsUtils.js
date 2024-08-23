@@ -8,12 +8,12 @@ const getReviews = async () => {
 
 const postReview = async (formData) => {
     const response = await Backend.post('/reviews', formData);
-    console.log(response);
     return response.data;
 }
 
-const getClubReviews = async (university, clubName) => {
-    const response = await Backend.get(`/reviews/${university}/${clubName}/reviews`);
+const getClubReviews = async (club_id) => {
+    // const response = await Backend.get(`/reviews/${university}/${clubName}/reviews`);
+    const response = await Backend.get(`/reviews/${club_id}/`);
     const reviews = response.data;
 
     const reviewsWithClubData = await Promise.all(reviews.map(async review => {
@@ -30,7 +30,7 @@ const deleteReview = async (review_id) => {
 }
 
 const getReviewById = async (reviewId) => {
-    const response = await Backend.get(`/reviews/${reviewId}`);
+    const response = await Backend.get(`/reviews/id/${reviewId}`);
     return response.data;
 }
 

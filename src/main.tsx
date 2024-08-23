@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         element: <Login/>
       },
       {
-        path: '/:university/:club_name',
+        path: '/:club_id',
         element: <ClubReview/>
       },
       {

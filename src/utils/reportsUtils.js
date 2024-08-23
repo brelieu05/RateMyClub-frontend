@@ -19,6 +19,7 @@ const getAllReportsWithReview = async () => {
     const reportsWithReviews = await Promise.all(reports.map(async report => {
         const review = await getReviewById(report.review_id);
         return { ...report, review };
+        
     }));
 
     return reportsWithReviews;

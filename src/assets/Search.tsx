@@ -36,7 +36,7 @@ import {
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUniversities, getUniversityClubNames } from '../utils/universityUtils'
+import { getUniversities, getUniversityClubNames, getUniversityClubs } from '../utils/universityUtils'
 import { postReview } from '../utils/reviewsUtils'
 import { postClub } from '../utils/clubsUtils'
 import { SearchIcon } from "@chakra-ui/icons";
@@ -63,7 +63,6 @@ function Search({width, height}) {
     const { isOpen : isDropdownOpen, onOpen: openDropdown, onClose : onDropdownClose } = useDisclosure();
 
     const [reviewData, setReviewData] = useState({
-        club_name: "",
         university: "",
         rating: 0,
         description: ""
@@ -71,10 +70,9 @@ function Search({width, height}) {
 
     const [clubData, setClubData] = useState({
         club_name: "",
-        club_type: "Social",
-        club_size: "Small",
         university: "",
         uni_abbr : "",
+        tags : [],
     })
 
     const navigate = useNavigate();
@@ -85,20 +83,20 @@ function Search({width, height}) {
             club_size : userClubSize,
         }
         try{
-            const clubResponse = await postClub(updatedClubData);
+            console.log(updatedClubData)
+            // const clubResponse = await postClub(updatedClubData);
             
-            const updatedReviewData = {
-                ...reviewData,
-                rating : Number(userRating),
-                club_id : clubResponse.club_id,
-            };
+            // const updatedReviewData = {
+            //     ...reviewData,
+            //     rating : Number(userRating),
+            //     club_id : clubResponse.club_id,
+            // };
 
-            await postReview(updatedReviewData);
-            onClose();
 
-            const universityWithDashes = reviewData.university.replace(/ /g, '-');
-            const clubNameWithDashes = reviewData.club_name.replace(/ /g, '-');
-            navigate(`/${universityWithDashes}/${clubNameWithDashes}`);
+            // await postReview(updatedReviewData);
+            // onClose();
+
+            // navigate(`/${club_id}`);
         }
         catch (err){
             console.log(err);
@@ -109,7 +107,7 @@ function Search({width, height}) {
     
     const fetchClubs = async (uni: UniversityData) => {
         try {
-            const response = await getUniversityClubNames(uni.university);
+            const response = await getUniversityClubs(uni.university);
             setClubs(response);
         }
         catch (err) {
@@ -124,35 +122,6 @@ function Search({width, height}) {
         }
         fetchUniversity();
     }, [])
-
-    // useEffect(() => {
-    //     function handleClickOutside(event) {
-    //     if (searchDropdownRef.current && !searchDropdownRef.current.contains(event.target)) {
-    //         onDropdownClose();
-    //     }
-    //     }
-
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //     document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, [onDropdownClose]);
-
-    // useEffect(() => {
-    //     function handleClickOutside(event: MouseEvent) {
-    //       if (
-    //         (searchDropdownRef.current && !searchDropdownRef.current.contains(event.target)) &&
-    //         (modalDropdownRef.current && !modalDropdownRef.current.contains(event.target))
-    //       ) {
-    //         onDropdownClose();
-    //       }
-    //     }
-    
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //       document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    //   }, [onDropdownClose]);
     
     const handleReviewChange = (e: { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
@@ -202,9 +171,7 @@ function Search({width, height}) {
       };
     
       const handleClubClick = (club) => {
-        const universityWithDashes = university.university.replace(/ /g, '-');
-        const clubNameWithDashes = club.replace(/ /g, '-');
-        navigate(`/${universityWithDashes}/${clubNameWithDashes}`)
+        navigate(`/${club.club_id}`)
         setUniversity('');
         setQuery('');
         onDropdownClose();
@@ -399,7 +366,7 @@ function Search({width, height}) {
                         ))
                 ) : (
                     (Array.isArray(clubs) ? clubs : [])
-                        .filter(club => query.toLowerCase() === '' || club.toLowerCase().includes(query.toLowerCase()))
+                        .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                         .slice(0,5)
                         .map((club, index) => (
                             <ListItem
@@ -410,7 +377,7 @@ function Search({width, height}) {
                                 p={2}
                                 borderRadius='md'
                             >
-                                {club}
+                                {club.club_name}
                             </ListItem>
                         ))
                 )}
