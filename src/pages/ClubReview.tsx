@@ -118,8 +118,6 @@ export function ClubReview(){
         const fetchClubReviews = async () => {
             try {
                 const response = await getClubReviews(club_id);
-                const response2 = await getClubReviews(1);
-                console.log(response2);
                 setallClubReviews(response);
                 setClub(response[0].club[0]);
                 setClubName(response[0].club[0].club_name);
