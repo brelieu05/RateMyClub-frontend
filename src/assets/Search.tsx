@@ -384,7 +384,8 @@ function Search({width, height}) {
                                                                 key={index}
                                                                 colorScheme={getClubTypeColor(tag)}
                                                                 onClick={() => {
-                                                                    if (!clubData.tags.includes(tag) && clubData.tags.length < 6) {
+                                                                    //will still do up to 5, but it will always be one update behind
+                                                                    if (!clubData.tags.includes(tag) && clubData.tags.length < 5) {
                                                                         setClubData(prevState => ({
                                                                             ...prevState,
                                                                             tags: [...prevState.tags, tag]

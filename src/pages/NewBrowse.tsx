@@ -1,15 +1,36 @@
-import {  Box, Card, Divider, Flex,  Grid,  Heading, HStack, Input, Select, SimpleGrid, Stack, Tag, Text, Image, Container, InputGroup, InputRightElement, Button, TagLabel, Badge } from "@chakra-ui/react";
+import {  Box, Card, Divider, Flex,  Grid,  Heading, HStack, Input, Select, SimpleGrid, Stack, Tag, Text, Image, Container, InputGroup, InputRightElement, Button, TagLabel, Badge, IconButton, TagCloseButton } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubs } from '../utils/universityUtils';
 import bookStack from '../assets/images/book-icon-150.png';
-import { SearchIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, SearchIcon } from "@chakra-ui/icons";
 
 const universityLogos = new Map([
     ['University of California Irvine', 'https://www.logolynx.com/images/logolynx/83/83ab2bc19c486a4e1162ecca410c13ec.png'],
     ['University of California Berkeley', 'https://www.popupgelato.com/wp-content/uploads/2014/05/500px-University_of_California_Berkeley_athletic_logo.svg_1.png'],
     ['San Jose State University', 'https://clipground.com/images/san-jose-state-university-logo-png.png']
   ]);
+
+  const clubTags = [
+    "Small (1-15)",
+    "Medium (15-40)",
+    "Large (40+)",
+    "Computer Science",
+    "Community Service",
+    "Art",
+    "Dance",
+    "KPOP",
+    "Competition",
+    "Sports",
+    "Social",
+    "Hobby/Special Interest",
+    "Academic/Professional",
+    "Cultural",
+    "Music",
+    "Performance",
+    "Political",
+    "Activism"
+  ]
   
   
   function getUniversityLogo(universityName) {
@@ -19,17 +40,16 @@ const universityLogos = new Map([
 export default function NewBrowse() {
     const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState('');
-    const [clubType, setClubType] = useState('');
-    const [clubSize, setClubSize] = useState('');
     const [clubJson, setClubJson] = useState([]);
     const [query, setQuery] = useState('');
     const navigate = useNavigate();
+
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         const fetchUniversities = async () => {
             try {
                 const response = await getUniversities();
-                console.log(response);
                 setUniversities(response);
             }
             catch (err) {
@@ -48,14 +68,6 @@ export default function NewBrowse() {
         };
         fetchUniversityClubs();
       }, [selectedUniversity]);
-
-      const filterClubs = (club) => {
-        if(club.tags.indexOf(clubSize) < 0 && clubSize != "")
-            return false;
-        if(club.tags.indexOf(clubType) < 0 && clubType != "")
-            return false;
-        return true;
-    };
 
     const getClubTypeColor = (club_type) => {
         switch (club_type) {
@@ -81,6 +93,7 @@ export default function NewBrowse() {
     return (
         <> 
             <Box backgroundColor='#F5F5F5' minHeight="100vh" pb='5'>
+                {selectedUniversity ? <IconButton icon={<ChevronLeftIcon />} aria-label={"Back to university"} onClick={() => {setSelectedUniversity("")}} backgroundColor='transparent' m='4' position='absolute'/> : <></>}
                 {selectedUniversity ? (
                     <>
                         <Container maxW="container.xl" pt={12}>
@@ -90,33 +103,60 @@ export default function NewBrowse() {
                                     <SearchIcon color='gray.500' />
                                 </InputRightElement>
                             </InputGroup>
+                            <Flex gap='2' my='4' justifyContent='end'>
+                                {tags.map((tag) => (
+                                    <Tag colorScheme={getClubTypeColor(tag)}>
+                                        <TagCloseButton ml='-1' mr='1' onClick={() => {
+                                                setTags(prevState => 
+                                                    prevState.filter(t => t !== tag)
+                                                );
+                                            }} />
+                                        <TagLabel as='b'>
+                                            {tag}
+                                        </TagLabel>
+                                    </Tag>
+                                ))}
+                            </Flex>
                             <Flex justifyContent='space-between'>
-                                <Card w='320px' h='420px' p='8' gap='4' >
-                                    <Heading  size='md'>Filters</Heading>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {
-                                        setClubType('');
-                                        setClubSize('');
-                                    }}> All Results </Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {
-                                        setClubSize('Small (1-15)');
-                                    }}>Small (1-15)</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {
-                                        setClubSize('Medium (15-40)');
-                                    }}>Medium (15-40)</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {
-                                        setClubSize('Large (40+)');
-                                    }}>Large (40+)</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Sports')}}>Sports</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Dance')}}>Dance</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Academic/Professional')}}>Academic/Professional</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Cultural')}}>Cultural</Button>
-                                    <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Social')}}>Social</Button>
-                                </Card>
+                            <Card w='320px' h='420px' p='8' gap='4' overflowY='scroll'>
+                                <Heading size='md'>Filters</Heading>
+                                <Button  variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => (setTags([]))}> All Results </Button>
+                                
+                                {clubTags.map((tag, index) => (
+                                    <Button
+                                        key={index}
+                                        variant='link'
+                                        color='black'
+                                        fontWeight="normal"
+                                        alignSelf="flex-start"
+                                        onClick={() => {
+                                            if (!tags.includes(tag)) {
+                                                setTags(prevState => [
+                                                    ...prevState, 
+                                                    tag
+                                                ]);
+                                            } else {
+                                                setTags(prevState => 
+                                                    prevState.filter(t => t !== tag)
+                                                );
+                                            }
+                                        }}
+                                        justifyContent='flex-start'
+                                    >
+                                        {tag}
+                                    </Button>
+                                ))}
+                            </Card>
                                 <Box w="container.md" gap='12'>
                                     <Stack spacing='12'>
                                     {Array.isArray(clubJson) && clubJson.length > 0 ? (
                                         clubJson
-                                        .filter(filterClubs)
+                                        .filter(club => 
+                                            tags.length === 0 || // If no tags are specified, return all clubs
+                                            tags.every(searchTag => 
+                                                club.tags.map(tag => tag.toLowerCase()).includes(searchTag.toLowerCase())
+                                            )
+                                        )
                                         .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                                         .sort((a, b) => a.club_id - b.club_id ) // Sort by club_id in descending order
                                         .map((club, index) => (
@@ -126,6 +166,7 @@ export default function NewBrowse() {
                                                         onClick={() => {
                                                             navigate(`/${club.club_id}`);
                                                         }}
+                                                        cursor='pointer'
                                                     >
                                                         <Flex mx='3'>
                                                             <Stack alignSelf='center'>
@@ -156,8 +197,8 @@ export default function NewBrowse() {
                                                                 <Divider m="3" borderColor='blackAlpha' />
                                                                 <Flex justifyContent="center" gap='4' flexWrap="wrap" >
                                                                     {club.tags.map((element, index) => (
-                                                                        <Tag colorScheme={getClubTypeColor(element)}>
-                                                                            <TagLabel as='b'>
+                                                                        <Tag colorScheme={getClubTypeColor(element)} key={index}>
+                                                                            <TagLabel as='b' key={index}>
                                                                                 {element}
                                                                             </TagLabel>
                                                                         </Tag>
@@ -192,22 +233,22 @@ export default function NewBrowse() {
                             )
                             .sort((a, b) => a.club_id - b.club_id) // Sort by club_id in descending order
                             .map((uni, index) => (
-                            <Box key={index} borderWidth="1px" borderRadius="sm" overflow="hidden" backgroundColor='#FFFFFF' py='12' px='12' onClick={() => setSelectedUniversity(uni.university)}>
-                            <Flex justifyContent="space-between" alignItems="center">
-                                <Stack alignSelf="start">
-                                <Image 
-                                    src={getUniversityLogo(uni.university)} 
-                                    alt={uni.uni_abbr} 
-                                    boxSize="180px" 
-                                    objectFit="contain" 
-                                    />
-                                </Stack>
-                                <Stack alignItems="end">
-                                <Heading size="3xl">{uni.uni_abbr}</Heading>
-                                <Divider mt="2" borderColor='blackAlpha'/>
-                                <Text fontSize="lg">{uni.university}</Text>
-                                </Stack>
-                            </Flex>
+                            <Box key={index} cursor='pointer' borderWidth="1px" borderRadius="sm" overflow="hidden" backgroundColor='#FFFFFF' py='12' px='12' onClick={() => setSelectedUniversity(uni.university)}>
+                                <Flex justifyContent="space-between" alignItems="center">
+                                    <Stack alignSelf="start">
+                                    <Image 
+                                        src={getUniversityLogo(uni.university)} 
+                                        alt={uni.uni_abbr} 
+                                        boxSize="180px" 
+                                        objectFit="contain" 
+                                        />
+                                    </Stack>
+                                    <Stack alignItems="end">
+                                    <Heading size="3xl">{uni.uni_abbr}</Heading>
+                                    <Divider mt="2" borderColor='blackAlpha'/>
+                                    <Text fontSize="lg">{uni.university}</Text>
+                                    </Stack>
+                                </Flex>
                             </Box>
                         ))}
                     </Grid>

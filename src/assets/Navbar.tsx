@@ -48,7 +48,7 @@ import { getIdToken } from 'firebase/auth';
           <Box borderBottom='2px' borderColor='#D9D9D9'>
               <Flex justifyContent='space-between' p='5' alignItems='center'>
                   <HStack spacing={{ base: '0', md: '5' }}>
-                      <Button variant='nav' as='b' fontSize='2xl' onClick={() => {
+                      <Button variant='nav' as='b' fontSize='2xl' cursor='pointer' onClick={() => {
                           navigate('/');
                           window.location.reload();
                       }}>RateMyClub</Button>
