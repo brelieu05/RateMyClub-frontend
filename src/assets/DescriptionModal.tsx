@@ -1,6 +1,6 @@
-import { Image, IconButton, Box, Modal, Text, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, Stack, FormLabel, Input, Select, RadioGroup, Grid, Radio, ModalFooter, HStack, Button, VStack } from "@chakra-ui/react";
+import { Image, IconButton, Box, Modal, Text, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, Stack, FormLabel, Input, Select, RadioGroup, Grid, Radio, ModalFooter, HStack, Button, VStack, Flex, Popover, PopoverBody, PopoverContent, PopoverTrigger, Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { updateClub } from '../utils/clubsUtils';
@@ -13,12 +13,54 @@ interface DescriptionModalProps {
     clubId: string; // Added clubId to the props interface
 }
 
+const clubTags = [
+    "Computer Science",
+    "Community Service",
+    "Dance",
+    "KPOP",
+    "Competition",
+    "Sports",
+    "Social",
+    "Hobby/Special Interest",
+    "Academic/Professional",
+    "Cultural",
+    "Art",
+    "Music",
+    "Performance",
+    "Political",
+    "Activism",
+
+  ]
+
+  const getClubTypeColor = (club_type) => {
+    switch (club_type) {
+      case 'Sports':
+        return 'red';
+      case 'Engineering':
+        return 'orange';
+      case 'Hobby/Special/Interest':
+        return 'pink';
+      case 'KPOP':
+        return 'purple';
+      case 'Community Service':
+        return 'green';
+      case 'Computer Science':
+        return 'blue';
+      case 'Dance':
+        return 'cyan';
+      default:
+        return 'blackAlpha';
+    }
+  };
+
 export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClose, clubName, clubId }: DescriptionModalProps) {
     const [userPhotos, setUserPhotos] = useState([]);
     const [meetingDays, setMeetingDays] = useState([{ day: '', time1: '', time2: '' }]);
+    const [tagSearch, setTagSearch] = useState('');
+    const clubTagsInputRef = useRef();
+    const [clubSize, setClubSize] = useState('')
     const [formData, setFormData] = useState({
-        club_type: "Sports",
-        club_size: "Small",
+        tags: [],
         meeting_days: [],
         photos: [],
     });
@@ -44,20 +86,13 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
         return meetingDayTimeArray;
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleSizeChange = (value: string) => {
-        setFormData({
-            ...formData,
-            club_size: value,
-        });
-    };
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value
+    //     });
+    // };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,6 +101,7 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
             const updatedFormData = {
                 ...formData,
                 meeting_days: changeMeetingDays(),
+                tags: [...formData.tags, clubSize]
             };
     
             // Conditionally add the photos field if userPhotos is not empty
@@ -75,7 +111,6 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
     
             const response = await updateClub(clubId, updatedFormData);
             window.location.reload();
-            // console.log(updatedFormData);
         } catch (error) {
             console.error('Error submitting review:', error);
         }
@@ -123,22 +158,84 @@ export function DescriptionModal({ isDescriptionModalOpen, onDescriptionModalClo
                             <Input value={clubName} disabled />
                         </Stack>
                         <Stack my='5'>
-                            <FormLabel>Club Type</FormLabel>
-                            <Select name='club_type' onChange={handleChange} value={formData.club_type}>
-                                <option value='Sports'>Sports Club</option>
-                                <option value='Social'>Social Club</option>
-                                <option value='Hobby/Special/Interest'>Hobby/Special Interest Club</option>
-                                <option value='Academic/Professional'>Academic/Professional Club</option>
-                                <option value='Community Service'>Community Service Club</option>
-                                <option value='Cultural'>Cultural Club</option>
-                                <option value='Arts/Music/Performance'>Arts/Music/Performance Club</option>
-                                <option value='Political and Activism'>Political and Activism Club</option>
-                                <option value='Other'>Other</option>
-                            </Select>
+                        <FormLabel>Club Tags</FormLabel>
+                                <Flex columnGap='2' flexWrap='wrap' rowGap='2' mx='2'>
+                                    {formData.tags.map((tag, index) => (
+                                        <Tag key={index} colorScheme={getClubTypeColor(tag)}>
+                                            <TagCloseButton ml='-1' mr='1' onClick={() => {
+                                                setFormData(prevState => ({
+                                                    ...prevState,
+                                                    tags: prevState.tags.filter((_, i) => i !== index)
+                                                }));
+                                            }} />
+                                            <TagLabel as='b'>
+                                                {tag}
+                                            </TagLabel>
+                                        </Tag>
+                                    ))}
+                                </Flex>
+                                {/* <Select name='club_type' value={clubData.club_type} onChange={(e) => {tags.push(e.target.value)}}>
+                                    <option value='Sports'>Sports Club</option>
+                                    <option value='Social'>Social Club</option>
+                                    <option value='Hobby/Special/Interest'>Hobby/Special Interest Club</option>
+                                    <option value='Academic/Professional'>Academic/Professional Club</option>
+                                    <option value='Community Service'>Community Service Club</option>
+                                    <option value='Cultural'>Cultural Club</option>
+                                    <option value='Arts/Music/Performance'>Arts/Music/Performance Club</option>
+                                    <option value='Political/Activism'>Political and Activism Club</option>
+                                    <option value='Other'>Other</option>
+                                </Select> */}
+
+                                <Popover trigger='hover' placement='bottom' matchWidth={true}>
+                                        <PopoverTrigger>
+                                            <Input
+                                                onChange={(e) => {setTagSearch(e.target.value)}}
+                                                value={tagSearch}
+                                                ref={clubTagsInputRef}
+                                                placeholder="Select up to 5 club tags"
+                                                autoComplete="off"
+                                            />
+                                        </PopoverTrigger>
+                                        <PopoverContent w={clubTagsInputRef.current?.offsetWidth || 'auto'}>
+                                            <PopoverBody>
+                                                <Flex flexWrap='wrap' gap='2'>
+                                                    {clubTags
+                                                        .filter(tag => tag.toLowerCase().includes(tagSearch.toLowerCase()))
+                                                        .map((tag, index) => (
+                                                            <Tag
+                                                                key={index}
+                                                                colorScheme={getClubTypeColor(tag)}
+                                                                onClick={() => {
+                                                                    if (!formData.tags.includes(tag) && formData.tags.length < 6) {
+                                                                        setFormData(prevState => ({
+                                                                            ...prevState,
+                                                                            tags: [...prevState.tags, tag]
+                                                                        }));
+                                                                    } else {
+                                                                        setFormData(prevState => ({
+                                                                            ...prevState,
+                                                                            tags: prevState.tags.filter(t => t !== tag) 
+                                                                        }));
+                                                                    }
+                                                                }}
+                                                                cursor='pointer'
+                                                                borderRadius='md'
+                                                                fontSize='sm'
+                                                            >
+                                                                <TagLabel as='b'>
+                                                                    {tag}
+                                                                </TagLabel>
+                                                            </Tag>
+                                                        ))
+                                                    }
+                                                </Flex>
+                                            </PopoverBody>
+                                        </PopoverContent>
+                                    </Popover>
                         </Stack>
                         <Stack my='5'>
                             <FormLabel>Club Size</FormLabel>
-                            <RadioGroup name='club_size' onChange={handleSizeChange} value={formData.club_size}>
+                            <RadioGroup onChange={setClubSize} value={clubSize}>
                                 <Grid gap='4'>
                                     <Radio value='Small (1-15)'>Small Size (1-15 Members)</Radio>
                                     <Radio value='Medium (15-40)'>Medium Size (15-40 Members)</Radio>

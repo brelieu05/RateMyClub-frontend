@@ -32,7 +32,10 @@ import {
     InputGroup,
     InputRightElement,
     Text,
-    Heading
+    Heading,
+    Tag,
+    TagLabel,
+    TagCloseButton
  } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -44,12 +47,53 @@ import { SearchIcon } from "@chakra-ui/icons";
 interface ClubData {
     club_name: string;
     university: string;
+    tag: string[]
 }
 
 interface UniversityData {
     university : string;
     uni_abbr : string;
 }
+
+const getClubTypeColor = (club_type) => {
+    switch (club_type) {
+      case 'Sports':
+        return 'red';
+      case 'Engineering':
+        return 'orange';
+      case 'Hobby/Special/Interest':
+        return 'pink';
+      case 'KPOP':
+        return 'purple';
+      case 'Community Service':
+        return 'green';
+      case 'Computer Science':
+        return 'blue';
+      case 'Dance':
+        return 'cyan';
+      default:
+        return 'blackAlpha';
+    }
+  };
+
+  const clubTags = [
+    "Computer Science",
+    "Community Service",
+    "Dance",
+    "KPOP",
+    "Competition",
+    "Sports",
+    "Social",
+    "Hobby/Special Interest",
+    "Academic/Professional",
+    "Cultural",
+    "Art",
+    "Music",
+    "Performance",
+    "Political",
+    "Activism",
+
+  ]
 
 function Search({width, height}) {
     const [query, setQuery] = useState('');
@@ -59,8 +103,13 @@ function Search({width, height}) {
     const [universities, setUniversities] = useState<UniversityData[]>([])
     const [university, setUniversity] = useState('');
     const [userClubSize, setUserClubSize] = useState('Small');
-
     const { isOpen : isDropdownOpen, onOpen: openDropdown, onClose : onDropdownClose } = useDisclosure();
+
+    const [tagSearch, setTagSearch] = useState('');
+
+    const schoolAbbrInputRef = useRef();
+    const clubTagsInputRef = useRef();
+    const schoolNameInputRef = useRef();
 
     const [reviewData, setReviewData] = useState({
         university: "",
@@ -80,23 +129,25 @@ function Search({width, height}) {
     const handleSubmit = async () => {
         const updatedClubData = {
             ...clubData,
-            club_size : userClubSize,
+            tags : [...clubData.tags, userClubSize],
         }
         try{
-            console.log(updatedClubData)
-            // const clubResponse = await postClub(updatedClubData);
+            // console.log(updatedClubData)
+            const clubResponse = await postClub(updatedClubData);
             
-            // const updatedReviewData = {
-            //     ...reviewData,
-            //     rating : Number(userRating),
-            //     club_id : clubResponse.club_id,
-            // };
+            const updatedReviewData = {
+                ...reviewData,
+                rating : Number(userRating),
+                club_id : clubResponse.club_id,
+            };
+
+            // console.log(updatedReviewData)
 
 
-            // await postReview(updatedReviewData);
-            // onClose();
+            await postReview(updatedReviewData);
+            onClose();
 
-            // navigate(`/${club_id}`);
+            navigate(`/${clubResponse.club_id}`);
         }
         catch (err){
             console.log(err);
@@ -177,7 +228,7 @@ function Search({width, height}) {
         onDropdownClose();
       };
     
-    const isSubmitDisabled = userRating === 0 || reviewData.description.trim() === '' || reviewData.club_name.trim() === '' || reviewData.description.length > 255;
+    const isSubmitDisabled = userRating === 0 || reviewData.description.trim() === '' || clubData.club_name.trim() === '' || reviewData.description.length > 255;
     
 
     return(
@@ -191,18 +242,18 @@ function Search({width, height}) {
                         <FormControl isRequired>
                             <Stack>
                                 <FormLabel>Club Name</FormLabel>
-                                <Input name='club_name' value={reviewData.club_name} onChange={handleReviewChange} placeholder="Oozma Kappa (OK)"/>
+                                <Input name='club_name' value={reviewData.club_name} onChange={handleReviewChange} placeholder="Oozma Kappa (OK)" autoComplete="off"/>
                             </Stack>
                             <Flex mt='3'>
-                                <Stack flexGrow='1' pr='2'>
+                                <Stack flexGrow='1'>
                                     <FormLabel>School Name</FormLabel>
                                     {/* <Input name='university' placeholder="Monsters University" onChange={handleReviewChange} value={reviewData.university} /> */}
 
-                                    <Popover closeOnBlur={true}>
-                                        <PopoverTrigger>
-                                        <Input name='university' placeholder="Monsters University" onChange={handleReviewChange} value={reviewData.university} />
+                                    <Popover trigger='hover' matchWidth={true}>
+                                        <PopoverTrigger >
+                                        <Input name='university' placeholder="Monsters University" onChange={handleReviewChange} value={reviewData.university} ref={schoolNameInputRef} autoComplete="off"/>
                                         </PopoverTrigger>
-                                        <PopoverContent w='250px'>
+                                        <PopoverContent w={schoolNameInputRef.current?.offsetWidth} >
                                             <PopoverBody>
                                                 <List>
                                                     {universities
@@ -238,17 +289,19 @@ function Search({width, height}) {
                                 <Stack flexGrow='1' pl='2'>
                                     <FormLabel>School Abbreviation</FormLabel>
                                     {/* <Input name='uni_abbr' placeholder="MU" onChange={handleClubChange} value={clubData.uni_abbr}/> */}
-
-                                    <Popover closeOnBlur={true}>
+                                        
+                                    <Popover trigger='hover' matchWidth={true}>
                                         <PopoverTrigger>
                                             <Input
                                                 name='uni_abbr'
                                                 placeholder="MU"
                                                 onChange={handleClubChange}
                                                 value={clubData.uni_abbr}
+                                                ref={schoolAbbrInputRef}
+                                                autoComplete="off"
                                             />
                                         </PopoverTrigger>
-                                        <PopoverContent w='250px'>
+                                        <PopoverContent w={schoolAbbrInputRef.current?.offsetWidth || 'auto'}>
                                             <PopoverBody>
                                                 <List>
                                                     {universities
@@ -282,9 +335,24 @@ function Search({width, height}) {
                                     </Popover>
                                 </Stack>
                             </Flex>
-                        <Stack my='5'>
-                            <FormLabel>Club Type</FormLabel>
-                                <Select name='club_type' value={clubData.club_type} onChange={handleClubChange}>
+                        <Stack my='4'>
+                            <FormLabel>Club Tags</FormLabel>
+                                <Flex columnGap='2' flexWrap='wrap' rowGap='2' mx='2'>
+                                    {clubData.tags.map((tag, index) => (
+                                        <Tag key={index} colorScheme={getClubTypeColor(tag)}>
+                                            <TagCloseButton ml='-1' mr='1' onClick={() => {
+                                                setClubData(prevState => ({
+                                                    ...prevState,
+                                                    tags: prevState.tags.filter((_, i) => i !== index)
+                                                }));
+                                            }} />
+                                            <TagLabel as='b'>
+                                                {tag}
+                                            </TagLabel>
+                                        </Tag>
+                                    ))}
+                                </Flex>
+                                {/* <Select name='club_type' value={clubData.club_type} onChange={(e) => {tags.push(e.target.value)}}>
                                     <option value='Sports'>Sports Club</option>
                                     <option value='Social'>Social Club</option>
                                     <option value='Hobby/Special/Interest'>Hobby/Special Interest Club</option>
@@ -294,7 +362,55 @@ function Search({width, height}) {
                                     <option value='Arts/Music/Performance'>Arts/Music/Performance Club</option>
                                     <option value='Political/Activism'>Political and Activism Club</option>
                                     <option value='Other'>Other</option>
-                                </Select>
+                                </Select> */}
+
+                                <Popover trigger='hover' placement='bottom' matchWidth={true}>
+                                        <PopoverTrigger>
+                                            <Input
+                                                onChange={(e) => {setTagSearch(e.target.value)}}
+                                                value={tagSearch}
+                                                ref={clubTagsInputRef}
+                                                placeholder="Select up to 5 club tags"
+                                                autoComplete="off"
+                                            />
+                                        </PopoverTrigger>
+                                        <PopoverContent w={clubTagsInputRef.current?.offsetWidth || 'auto'}>
+                                            <PopoverBody>
+                                                <Flex flexWrap='wrap' gap='2'>
+                                                    {clubTags
+                                                        .filter(tag => tag.toLowerCase().includes(tagSearch.toLowerCase()))
+                                                        .map((tag, index) => (
+                                                            <Tag
+                                                                key={index}
+                                                                colorScheme={getClubTypeColor(tag)}
+                                                                onClick={() => {
+                                                                    if (!clubData.tags.includes(tag) && clubData.tags.length < 6) {
+                                                                        setClubData(prevState => ({
+                                                                            ...prevState,
+                                                                            tags: [...prevState.tags, tag]
+                                                                        }));
+                                                                    } else {
+                                                                        setClubData(prevState => ({
+                                                                            ...prevState,
+                                                                            tags: prevState.tags.filter(t => t !== tag) 
+                                                                        }));
+                                                                    }
+                                                                }}
+                                                                cursor='pointer'
+                                                                borderRadius='md'
+                                                                fontSize='sm'
+                                                            >
+                                                                <TagLabel as='b'>
+                                                                    {tag}
+                                                                </TagLabel>
+                                                            </Tag>
+                                                        ))
+                                                    }
+                                                </Flex>
+                                            </PopoverBody>
+                                        </PopoverContent>
+                                    </Popover>
+                                
                                 <Stack my='3'>
                                     <FormLabel>Club Size</FormLabel>
                                     <RadioGroup name='club_size' value={userClubSize} onChange={(value) => setUserClubSize(value)}>

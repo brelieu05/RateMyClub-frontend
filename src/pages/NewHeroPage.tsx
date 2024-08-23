@@ -83,10 +83,9 @@ export default function NewHeroPage() {
                 overflow='hidden'
                 borderRadius='lg'
                 onClick={() => {
-                  const universityWithDashes = club.university.replace(/ /g, '-');
-                  const clubNameWithDashes = club.club_name.replace(/ /g, '-');
-                  navigate(`/${universityWithDashes}/${clubNameWithDashes}`)
+                  navigate(`/${club.club_id}`)
                 }}
+                cursor='pointer'
               >
                 <Box
                   position="absolute"

@@ -29,6 +29,7 @@ export default function NewBrowse() {
         const fetchUniversities = async () => {
             try {
                 const response = await getUniversities();
+                console.log(response);
                 setUniversities(response);
             }
             catch (err) {
@@ -111,7 +112,7 @@ export default function NewBrowse() {
                                     <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Cultural')}}>Cultural</Button>
                                     <Button variant='link' color='black' fontWeight="normal" alignSelf="flex-start" onClick={() => {setClubType('Social')}}>Social</Button>
                                 </Card>
-                                <Box maxW="container.md" gap='12'>
+                                <Box w="container.md" gap='12'>
                                     <Stack spacing='12'>
                                     {Array.isArray(clubJson) && clubJson.length > 0 ? (
                                         clubJson
@@ -123,8 +124,6 @@ export default function NewBrowse() {
                                                         key={'Club ' + index}
                                                         p="4"
                                                         onClick={() => {
-                                                            const universityWithDashes = selectedUniversity.replace(/ /g, '-');
-                                                            // const clubNameWithDashes = club.club_name.replace(/ /g, '-');
                                                             navigate(`/${club.club_id}`);
                                                         }}
                                                     >
@@ -190,7 +189,9 @@ export default function NewBrowse() {
                             .filter(uni => 
                                 query.toLowerCase() === '' || 
                                 uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase())
-                            ).map((uni, index) => (
+                            )
+                            .sort((a, b) => a.club_id - b.club_id) // Sort by club_id in descending order
+                            .map((uni, index) => (
                             <Box key={index} borderWidth="1px" borderRadius="sm" overflow="hidden" backgroundColor='#FFFFFF' py='12' px='12' onClick={() => setSelectedUniversity(uni.university)}>
                             <Flex justifyContent="space-between" alignItems="center">
                                 <Stack alignSelf="start">

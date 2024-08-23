@@ -236,10 +236,10 @@ export function ClubReview(){
             <Box zIndex='2'>
             <Flex m='20' justifyContent='space-between'>
                 <Box>
-                    <Heading size={{ base: 'xl', md: '4xl' }} maxW="500px" wordBreak="break-word" color='white'>{clubName ? clubName : "Loading..."}</Heading>
+                    <Heading size={{ base: 'xl', md: '4xl' }} maxW="500px" wordBreak="break-word" color='white' my='4'>{clubName ? clubName : "Loading..."}</Heading>
                     <VStack spacing='2' my='2' alignItems='start'>           
                             {/* <Text color='white'>{allClubReviews[0]?.club[0]?.club_size}, {allClubReviews[0]?.club[0]?.club_type} Club at {university}</Text>  */}
-                            <HStack>
+                            <Flex gap='2' flexWrap='wrap' maxW='550px'>
                                 <Tag colorScheme='red'>
                                     <TagLabel as='b'>
                                         {club?.university}
@@ -252,8 +252,6 @@ export function ClubReview(){
                                         </TagLabel>
                                     </Tag>
                                 ))}
-                            </HStack>
-                            <HStack>
                                 {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
                                     <Tag colorScheme='red' key={"Tag " + index}>
                                         <TagLabel as='b' key={"TagLabel " + index}>
@@ -262,7 +260,17 @@ export function ClubReview(){
                                     </Tag>
                                 ))
                                 }
-                            </HStack>
+                            </Flex>
+                            {/* <HStack>
+                                {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
+                                    <Tag colorScheme='red' key={"Tag " + index}>
+                                        <TagLabel as='b' key={"TagLabel " + index}>
+                                            {day}
+                                        </TagLabel>
+                                    </Tag>
+                                ))
+                                }
+                            </HStack> */}
                     { userData?.role === "club" && userLoggedIn && userData?.club_id === allClubReviews[0]?.club[0]?.club_id || userData?.role === "admin" ?  <Button color='white' variant='link' rightIcon={<EditIcon/>} onClick={onDescriptionModalOpen}>Edit Description</Button> : <></>}
                         <Button backgroundColor='black' color='white' w='auto' onClick={onReviewModalOpen}>Add a Review</Button>
                     </VStack>
