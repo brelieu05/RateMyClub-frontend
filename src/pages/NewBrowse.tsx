@@ -103,7 +103,7 @@ export default function NewBrowse() {
                                     <SearchIcon color='gray.500' />
                                 </InputRightElement>
                             </InputGroup>
-                            <Flex gap='2' my='4' justifyContent='end'>
+                            <Flex gap='2' my='4' justifyContent='end' flexWrap='wrap'>
                                 {tags.map((tag) => (
                                     <Tag colorScheme={getClubTypeColor(tag)}>
                                         <TagCloseButton ml='-1' mr='1' onClick={() => {
