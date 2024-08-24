@@ -244,7 +244,7 @@ export default function NewBrowse() {
                                                 objectFit="contain" 
                                                 />
                                         </Stack>
-                                        <Stack alignItems="end" w='50%'>
+                                        <Stack alignItems="end" w='50%' justifyContent='center'>
                                             <Heading size={{base: "2xl", lg: "3xl"}}>{uni.uni_abbr}</Heading>
                                             <Divider mt="2" borderColor='blackAlpha'/>
                                             <Text fontSize={{base: "sm", md: "md", lg: "lg"}} textAlign='end'>{uni.university}</Text>
