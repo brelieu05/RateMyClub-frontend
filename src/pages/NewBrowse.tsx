@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getUniversities, getUniversityClubs } from '../utils/universityUtils';
 import bookStack from '../assets/images/book-icon-150.png';
 import { ChevronLeftIcon, SearchIcon } from "@chakra-ui/icons";
+import school from '../assets/images/school-house-icon-14383.png'
 
 const universityLogos = new Map([
     ['University of California Irvine', 'https://www.logolynx.com/images/logolynx/83/83ab2bc19c486a4e1162ecca410c13ec.png'],
@@ -34,7 +35,7 @@ const universityLogos = new Map([
   
   
   function getUniversityLogo(universityName) {
-    return universityLogos.get(universityName) || bookStack;
+    return universityLogos.get(universityName) || school;
   }
 
 export default function NewBrowse() {
@@ -237,7 +238,7 @@ export default function NewBrowse() {
                                 <Flex justifyContent="space-between" alignItems="center">
                                     <Stack alignSelf="start">
                                     <Image 
-                                        src={getUniversityLogo(uni.university)} 
+                                        src={universityLogos.get(uni.university) || school} 
                                         alt={uni.uni_abbr} 
                                         boxSize="180px" 
                                         objectFit="contain" 
