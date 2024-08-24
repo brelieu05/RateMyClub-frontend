@@ -48,14 +48,14 @@ import { getIdToken } from 'firebase/auth';
           <Box borderBottom='2px' borderColor='#D9D9D9'>
               <Flex justifyContent='space-between' p='5' alignItems='center'>
                   <HStack spacing={{ base: '0', md: '5' }}>
-                      <Button variant='nav' as='b' fontSize='2xl' cursor='pointer' onClick={() => {
+                      <Button variant='nav' as='b' fontSize={{lg:'2xl'}} cursor='pointer' onClick={() => {
                           navigate('/');
                           window.location.reload();
                       }}>RateMyClub</Button>
                   </HStack>
   
-                  <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
-                      {location.pathname !== '/' && <Search width={'sm'} height='40px' />}
+                <Flex display={{ base: 'none', md: 'flex' }} gap={4} alignItems='center'>
+                    {location.pathname !== '/' && <Search width={'sm'} height='40px' />}
                         <Button variant='none' fontWeight='400' fontSize='16px'>
                             <Link to='/Browse'>Browse</Link>
                         </Button>
@@ -87,8 +87,8 @@ import { getIdToken } from 'firebase/auth';
                                 )}
                             </>
                         )
-                      }
-                  </Flex>
+                    }
+                </Flex>
   
                   <IconButton
                       display={{ base: 'flex', md: 'none' }}
@@ -110,11 +110,11 @@ import { getIdToken } from 'firebase/auth';
                                       window.location.reload();
                                   }}>Rate My Club</Button>
 
-                                  {location.pathname !== '/' && <Search width={'250px'} />}
+                                  {location.pathname !== '/' && <Search width={'250px'} height='50px'/>}
 
-                                  <Button>
+                                  <Button variant='none' fontWeight='400' fontSize='16px'>
                                     <Link to='/Browse'>Browse</Link>
-                                    </Button>
+                                </Button>
                                   {userData?.role === "admin" && 
                                     (
                                         <Button variant='nav'>
@@ -123,24 +123,32 @@ import { getIdToken } from 'firebase/auth';
                                     )
                                   }
 
-                                  {userLoggedIn ? (
-                                      <Button variant='nav' onClick={handleLogout}>
-                                          <Link to='/'>Logout</Link>
-                                      </Button>
-                                  ) : (
-                                      <>
-                                          {location.pathname !== '/SignUp' && (
-                                              <Button variant='nav'>
-                                                  <Link to='/SignUp'>Sign Up</Link>
-                                              </Button>
-                                          )}
-                                          {location.pathname !== '/Login' && (
-                                              <Button variant='nav'>
-                                                  <Link to='/Login'>Login</Link>
-                                              </Button>
-                                          )}
-                                      </>
-                                  )}
+                                    {!(currentUser?.isAnonymous) ? (
+                                        <>
+                                        <Button variant='nav'>
+                                            <Link to='/'>Account</Link>
+                                        </Button>
+                                            <Button variant='nav' onClick={handleLogout}>
+                                                <Link to='/'>Logout</Link>
+                                        </Button>
+                                        </>
+                                        ) : (
+                                            <>
+                                                {location.pathname === '/Login' && (
+                                                    <Button variant='nav'>
+                                                        <Link to='/SignUp'>Sign Up</Link>
+                                                    </Button>
+                                                )}
+                                                {location.pathname !== '/Login' && (
+                                                    <Button variant='nav' backgroundColor='#2C2C2C' color='#F5F5F5' fontSize='16px' fontWeight='400' px='10'>
+                                                        {/* <Link to='/Login'> */}
+                                                            Club Owner?
+                                                        {/* </Link> */}
+                                                    </Button>
+                                                )}
+                                            </>
+                                        )
+                                    }
                               </VStack>
                           </DrawerBody>
                       </DrawerContent>

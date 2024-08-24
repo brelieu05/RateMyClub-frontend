@@ -43,13 +43,13 @@ export default function NewHeroPage() {
 
   return (
     <>
-        <Flex backgroundColor="#F5F5F5" h='500px' alignItems='center' >
-            <Stack ml='128px' w='lg' gap='8'>
-                <Stack gap='4'>
-                    <Heading size='3xl'>RateMyClub</Heading>
-                    <Heading fontSize='28px' as='h2' fontWeight='400' color='#757575'>Join The Best Club For You.</Heading>
+        <Flex backgroundColor="#F5F5F5" h='500px' alignItems='center' justifyContent={{base: 'center', md: 'start'}}>
+            <Stack gap='8' mx={{md:'128px'}}>
+                <Stack gap='4' alignItems={{base: 'center', md: 'start'}}>
+                    <Heading size={{base: '2xl', md:'3xl'}}>RateMyClub</Heading>
+                    <Heading fontSize={{base: '20px', md:'28px'}} as='h2' fontWeight='400' color='#757575'>Join The Best Club For You.</Heading>
                 </Stack>
-                <Search width='lg' height="50px"/>
+                <Search width={{base: '70vw', lg:'lg'}} height="50px"/>
             </Stack>
         </Flex>
         
