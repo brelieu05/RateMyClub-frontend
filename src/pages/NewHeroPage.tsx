@@ -3,6 +3,7 @@ import { Badge, Box, Card, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/r
 import Search from '../assets/Search';
 import { useNavigate } from 'react-router-dom';
 import { getUniversityClubs } from '../utils/universityUtils';
+import cadc from '../assets/images/cadc.jpg'
 
 const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
 
@@ -43,15 +44,26 @@ export default function NewHeroPage() {
 
   return (
     <>
-        <Flex backgroundColor="#F5F5F5" h='500px' alignItems='center' justifyContent={{base: 'center', md: 'start'}}>
-            <Stack gap='8' mx={{md:'128px'}}>
-                <Stack gap='4' alignItems={{base: 'center', md: 'start'}}>
-                    <Heading size={{base: '2xl', md:'3xl'}}>RateMyClub</Heading>
-                    <Heading fontSize={{base: '20px', md:'28px'}} as='h2' fontWeight='400' color='#757575'>Join The Best Club For You.</Heading>
-                </Stack>
-                <Search width={{base: '70vw', lg:'lg'}} height="50px"/>
-            </Stack>
-        </Flex>
+        <Stack position="relative" backgroundImage={cadc} backgroundSize='cover' backgroundPosition='center'>
+          <Box
+                position="absolute"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                background={"rgba(215, 215, 215, 0.75)"}
+                zIndex="1" // Ensure this is on top of the background image
+                />
+          <Flex  h='500px' alignItems='center' justifyContent={{base: 'center', md: 'start'}} zIndex='2'>
+              <Stack gap='8' mx={{md:'128px'}}>
+                  <Stack gap='4' alignItems={{base: 'center', md: 'start'}}>
+                      <Heading size={{base: '2xl', md:'3xl'}}>RateMyClub</Heading>
+                      <Heading fontSize={{base: '20px', md:'28px'}} as='h2' fontWeight='400' color='#757575'>Join The Best Club For You.</Heading>
+                  </Stack>
+                  <Search width={{base: '70vw', lg:'lg'}} height="50px"/>
+              </Stack>
+          </Flex>
+        </Stack>
         
 
         <Stack>

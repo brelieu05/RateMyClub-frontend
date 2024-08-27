@@ -111,6 +111,8 @@ function Search({width, height}) {
     const clubTagsInputRef = useRef();
     const schoolNameInputRef = useRef();
 
+    const searchInputRef = useRef();
+
     const [reviewData, setReviewData] = useState({
         university: "",
         rating: 0,
@@ -453,37 +455,45 @@ function Search({width, height}) {
 
 
         <Box w={width} >
-            <InputGroup >
-                <Input
-                    placeholder={university ? `Find a club at ${university.university}` : 'Search your university'}
-                    value={query}
-                    onChange={handleSearchChange}
-                    backgroundColor='white'
-                    h={height || "auto"}
-                />
-            </InputGroup>
-            {isDropdownOpen && (
-            <Box position="absolute"  bg="white" borderRadius="md" boxShadow="md" zIndex="1" mt="2">
-                <List spacing={2} w={width}>
+
+            <Popover trigger='click' gutter='0'>
+                <PopoverTrigger>
+                    <InputGroup justifyContent='center'>
+                        <Input
+                            placeholder={university ? `Find a club at ${university.university}` : 'Search your university'}
+                            value={query}
+                            onChange={handleSearchChange}
+                            backgroundColor='white'
+                            h={height || "auto"}
+                            ref={searchInputRef}
+                            />
+                        <InputRightElement h='50px' color='gray'>
+                            <SearchIcon/>
+                        </InputRightElement>
+                    </InputGroup>
+                </PopoverTrigger>
+                <PopoverContent w={clubTagsInputRef.current?.offsetWidth || 'auto'} >
+
+                <List spacing={2} w={width} maxH='190px' overflowY='scroll' overflowX='hidden'>
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
-                        .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
+                    .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
                         .slice(0,5)
                         .map((uni, index) => (
                             <ListItem
-                                key={"University " + index}
-                                onClick={() => handleUniversityClick(uni)}
-                                cursor='pointer'
-                                _hover={{ bg: 'gray.100' }}
+                            key={"University " + index}
+                            onClick={() => handleUniversityClick(uni)}
+                            cursor='pointer'
+                            _hover={{ bg: 'gray.100' }}
                                 p={2}
                                 borderRadius='md'
-                            >
+                                >
                                 {uni.university}
                             </ListItem>
                         ))
                 ) : (
                     (Array.isArray(clubs) ? clubs : [])
-                        .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
+                    .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
                         .slice(0,5)
                         .map((club, index) => (
                             <ListItem
@@ -493,26 +503,26 @@ function Search({width, height}) {
                                 _hover={{ bg: 'gray.100' }}
                                 p={2}
                                 borderRadius='md'
-                            >
+                                >
                                 {club.club_name}
                             </ListItem>
                         ))
-                )}
+                    )}
 
                     {query  && (
-                    <ListItem
+                        <ListItem
                         onClick={onOpen}
                         cursor='pointer'
                         _hover={{ bg: 'gray.100' }}
                         p={2}
                         borderRadius='md'
-                    >
+                        >
                         <Heading as='h6' size='p'>Don't see your club? Add a Review</Heading>
                     </ListItem>
                     )}
                 </List>
-            </Box> 
-        )}
+                </PopoverContent>
+            </Popover> 
         </Box>
     </>
     );

@@ -193,7 +193,7 @@ export function ClubReview(){
     const isSubmitDisabled = reportData.report_description.trim() === '';
 
     return(
-        <>
+        <Box >
            <ReviewModal isReviewModalOpen={isReviewModalOpen} onReviewModalClose={onReviewModalClose} clubName={clubName} setUserRating={setUserRating} formData={formData} setFormData={setFormData} userRating={userRating} setallClubReviews={setallClubReviews} />
 
             <DescriptionModal isDescriptionModalOpen={isDescriptionModalOpen} onDescriptionModalClose={onDescriptionModalClose} clubName={clubName} clubId={allClubReviews[0]?.club[0]?.club_id} />
@@ -228,43 +228,45 @@ export function ClubReview(){
                 </ModalContent>
             </Modal>
 
-            <Stack position="relative" backgroundImage={`url(${randomPhoto})`} backgroundSize='cover' backgroundPosition='center' >
+            <Stack position="relative" backgroundImage={`url(${randomPhoto})`} backgroundSize='cover' backgroundPosition='center'>
             <Box
-                        position='absolute'
-                        top='0'
-                        left='0'
-                        right='0'
-                        bottom='0'
-                        backgroundColor={allClubReviews[0]?.club[0]?.photos.length > 0 ? ('rgba(197, 60, 60, 0.75)') : '#AA3E3E'} // Adjust the alpha for desired transparency
-                        zIndex='1' // Ensure this is on top of the background image
-                    />
+                position="absolute"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                background={allClubReviews[0]?.club[0]?.photos.length > 0 
+                    ? "rgba(255, 255, 255, 0.6)" 
+                    : "#F5F5F5"
+                }
+                zIndex="1" // Ensure this is on top of the background image
+                />
             <Box zIndex='2'>
-            <Flex m='20' justifyContent='space-between'>
+            <Flex m='20' justifyContent='space-between' direction={{base: "column", md: "row"}}>
                 <Box>
-                    <Heading size={{ base: 'xl', md: '4xl' }} maxW="500px" wordBreak="break-word" color='white' my='4'>{clubName ? clubName : "Loading..."}</Heading>
+                    <Heading size={{ md: '4xl' }} maxW="500px" wordBreak="break-word" my='4'>{clubName ? clubName : "Loading..."}</Heading>
                     <VStack spacing='2' my='2' alignItems='start'>           
                             {/* <Text color='white'>{allClubReviews[0]?.club[0]?.club_size}, {allClubReviews[0]?.club[0]?.club_type} Club at {university}</Text>  */}
-                            <Flex gap='2' flexWrap='wrap' maxW='550px'>
-                                <Tag colorScheme='red'>
+                            <Flex gap='2' flexWrap='wrap' maxW='550px' direction={{ base: "column", md: "row" }}>
+                                <Tag> {/* Adjust the size to 'sm' for smaller tags */}
                                     <TagLabel as='b'>
                                         {club?.university}
                                     </TagLabel>
                                 </Tag>
                                 {club?.tags.map((element, index) => (
-                                    <Tag colorScheme='red'>
+                                    <Tag key={index} maxW='max-content' > {/* Set maxW to 'max-content' */}
                                         <TagLabel as='b'>
                                             {element}
                                         </TagLabel>
                                     </Tag>
                                 ))}
                                 {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
-                                    <Tag colorScheme='red' key={"Tag " + index}>
-                                        <TagLabel as='b' key={"TagLabel " + index}>
+                                    <Tag key={"Tag " + index} maxW='max-content'> {/* Set maxW to 'max-content' */}
+                                        <TagLabel as='b'>
                                             {day}
                                         </TagLabel>
                                     </Tag>
-                                ))
-                                }
+                                ))}
                             </Flex>
                             {/* <HStack>
                                 {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
@@ -296,10 +298,10 @@ export function ClubReview(){
                     )}
                 </Box>
                 <Box>
-                    <Heading color='white' size={{ base: 'xl', md: '4xl' }}>{getTier()}</Heading>
+                    <Heading size={{ base: 'xl', md: '4xl' }}>{getTier()}</Heading>
                     <HStack justifyContent='flex-end'>
-                        <Heading color='white' size={{ base: 'xl', md: '4xl' }}>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
-                        <Heading size='lg' color='white'>/5</Heading>
+                        <Heading whiteSpace='nowrap' noOfLines={1} size={{ md: '4xl' }}>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
+                        <Heading size={{ md: 'lg' }} >/5</Heading>
                         
                     </HStack>
                 </Box>
@@ -307,26 +309,36 @@ export function ClubReview(){
             </Box>
                 
             </Stack>
-            <PhotoAlbum />
-         <Container maxW='container.md'>
-            {/* Give it a proper JSON type */}
-           {allClubReviews.length > 0 && allClubReviews.filter(item => item.num_reports < 3).sort((a, b) => new Date(b.review_date).getTime() - new Date(a.review_date).getTime()).map((item, index) => (
-                <Stack my='10' p='5' key={"Stack" + index} backgroundColor='#C35454' minH='200px'>
-                    <HStack key={"HStack" + index} justifyContent='space-between'>
-                        <Heading size='lg' key={"Item Rating" + index}>{item.rating}</Heading>
-                        <Heading size='lg' key={"Item Review Date" + index}>{item.review_date.substring(0,10)}</Heading>
+            <Box >
+                <Heading  textAlign='center' my='8'>Reviews</Heading>
+                <Container maxW='container.md'>
+                    {/* Give it a proper JSON type */}
+                {allClubReviews.length > 0 && allClubReviews.filter(item => item.num_reports < 3).sort((a, b) => new Date(b.review_date).getTime() - new Date(a.review_date).getTime()).map((item, index) => (
+                        <Stack 
+                                my='10' 
+                                p='5' 
+                                key={"Stack" + index} 
+                                // backgroundColor='#EFF3FF' 
+                                backgroundColor='#F5F5F5'
+                                minH='200px' 
+                                borderRadius="lg" // Add this line for rounded corners
+                            >
+                            <HStack key={"HStack" + index} justifyContent='space-between'>
+                                <Heading size='lg' key={"Item Rating" + index}>{item.rating}</Heading>
+                                <Heading size='lg' key={"Item Review Date" + index}>{item.review_date.substring(0,10)}</Heading>
 
-                    </HStack>
-                    <Text>{item.description}</Text>
-                    <Spacer/>
-                    <HStack justifyContent='end'>
-                        <IconButton aria-label="Report Review" icon={<FaRegFlag />} variant='nav' onClick={() => handleReportDescription(item)}/>
-                    </HStack>
-                </Stack>
-           ))}
-        </Container>  
+                            </HStack>
+                            <Text>{item.description}</Text>
+                            <Spacer/>
+                            <HStack justifyContent='end'>
+                                <IconButton aria-label="Report Review" icon={<FaRegFlag />} variant='nav' onClick={() => handleReportDescription(item)}/>
+                            </HStack>
+                        </Stack>
+                ))}
+                </Container>  
 
         
-        </>
+            </Box>
+        </Box>
     );
 }
