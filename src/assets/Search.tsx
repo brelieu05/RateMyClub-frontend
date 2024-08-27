@@ -474,11 +474,15 @@ function Search({width, height}) {
                 </PopoverTrigger>
                 <PopoverContent w={clubTagsInputRef.current?.offsetWidth || 'auto'} >
 
-                <List spacing={2} w={width} maxH='190px' overflowY='scroll' overflowX='hidden'>
+                <List
+                    spacing={2}
+                    w={width}
+                    maxH="140px"
+                    >
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
-                    .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
-                        .slice(0,5)
+                    .filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()))
+                        .slice(0,3)
                         .map((uni, index) => (
                             <ListItem
                             key={"University " + index}
@@ -494,7 +498,7 @@ function Search({width, height}) {
                 ) : (
                     (Array.isArray(clubs) ? clubs : [])
                     .filter(club => query.toLowerCase() === '' || club.club_name.toLowerCase().includes(query.toLowerCase()))
-                        .slice(0,5)
+                        .slice(0,3)
                         .map((club, index) => (
                             <ListItem
                                 key={"Club " + index}
@@ -509,18 +513,17 @@ function Search({width, height}) {
                         ))
                     )}
 
-                    {query  && (
-                        <ListItem
+                </List>
+                    <Box
                         onClick={onOpen}
                         cursor='pointer'
                         _hover={{ bg: 'gray.100' }}
                         p={2}
                         borderRadius='md'
+                        zIndex='2'
                         >
                         <Heading as='h6' size='p'>Don't see your club? Add a Review</Heading>
-                    </ListItem>
-                    )}
-                </List>
+                    </Box>
                 </PopoverContent>
             </Popover> 
         </Box>
