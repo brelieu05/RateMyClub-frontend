@@ -456,7 +456,7 @@ function Search({width, height}) {
 
         <Box w={width} >
 
-            <Popover trigger='click' gutter='0'>
+            <Popover trigger='click' gutter='0' placement="bottom">
                 <PopoverTrigger>
                     <InputGroup justifyContent='center'>
                         <Input
@@ -472,11 +472,12 @@ function Search({width, height}) {
                         </InputRightElement>
                     </InputGroup>
                 </PopoverTrigger>
-                <PopoverContent w={clubTagsInputRef.current?.offsetWidth || 'auto'} >
+                <PopoverContent w={searchInputRef.current?.offsetWidth || 'auto'}  >
 
                 <List
                     spacing={2}
-                    w={width}
+                    maxH='200px' 
+                    overflowY='scroll'
                     >
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
@@ -512,8 +513,7 @@ function Search({width, height}) {
                         ))
                     )}
 
-                </List>
-                    <Box
+                    <ListItem
                         onClick={onOpen}
                         cursor='pointer'
                         _hover={{ bg: 'gray.100' }}
@@ -522,7 +522,8 @@ function Search({width, height}) {
                         zIndex='2'
                         >
                         <Heading as='h6' size='p'>Don't see your club? Add a Review</Heading>
-                    </Box>
+                    </ListItem>
+                </List>
                 </PopoverContent>
             </Popover> 
         </Box>
