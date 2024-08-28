@@ -28,8 +28,10 @@ import { Box,
         PopoverContent,
         PopoverTrigger,
         TagLeftIcon,
+        useBreakpointValue,
+        PopoverHeader
     } from "@chakra-ui/react";
-import { EditIcon, WarningTwoIcon } from "@chakra-ui/icons";
+import { EditIcon, TriangleDownIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaRegFlag } from "react-icons/fa6";
@@ -76,6 +78,27 @@ interface Club{
 }
 
 const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
+
+const getClubTypeColor = (club_type) => {
+    switch (club_type) {
+      case 'Sports':
+        return 'red';
+      case 'Engineering':
+        return 'orange';
+      case 'Hobby/Special/Interest':
+        return 'pink';
+      case 'KPOP':
+        return 'purple';
+      case 'Community Service':
+        return 'green';
+      case 'Computer Science':
+        return 'blue';
+      case 'Dance':
+        return 'cyan';
+      default:
+        return 'blackAlpha';
+    }
+  };
 
 export function ClubReview(){
     const { club_id } = useParams();
@@ -153,22 +176,22 @@ export function ClubReview(){
 
     const getTier = () => {
         if(averageRating >= 4.5 && averageRating <= 5){
-            return("S-Tier");
+            return("S‑Tier");
         }
         else if (averageRating >= 4 && averageRating < 4.5){
-            return("A-Tier");
+            return("A‑Tier");
         }
         else if (averageRating >= 3.5 && averageRating < 4){
-            return("B-Tier");
+            return("B‑Tier");
         }
         else if (averageRating >= 3.0 && averageRating < 3.5){
-            return("C-Tier");
+            return("C‑Tier");
         }
         else if (averageRating >= 2.0 && averageRating < 3.0){
-            return("D-Tier");
+            return("D‑Tier");
         }
         else{
-            return("F-Tier");
+            return("F‑Tier");
         }
     }  
 
@@ -242,32 +265,71 @@ export function ClubReview(){
                 zIndex="1" // Ensure this is on top of the background image
                 />
             <Box zIndex='2'>
-            <Flex m='20' justifyContent='space-between' direction={{base: "column", md: "row"}}>
+            <Flex m={{base: '12', md: '14', lg: '20'}} justifyContent='space-between' gap='4'>
                 <Box>
-                    <Heading size={{ md: '4xl' }} maxW="500px" wordBreak="break-word" my='4'>{clubName ? clubName : "Loading..."}</Heading>
+                    <Heading size={{ base: 'lg', sm: '2xl', md: '2xl', lg: '4xl' }} maxW="500px" wordBreak="break-word" >{clubName ? clubName : "Loading..."}</Heading>
                     <VStack spacing='2' my='2' alignItems='start'>           
                             {/* <Text color='white'>{allClubReviews[0]?.club[0]?.club_size}, {allClubReviews[0]?.club[0]?.club_type} Club at {university}</Text>  */}
-                            <Flex gap='2' flexWrap='wrap' maxW='550px' direction={{ base: "column", md: "row" }}>
-                                <Tag> {/* Adjust the size to 'sm' for smaller tags */}
-                                    <TagLabel as='b'>
-                                        {club?.university}
-                                    </TagLabel>
-                                </Tag>
-                                {club?.tags.map((element, index) => (
-                                    <Tag key={index} maxW='max-content' > {/* Set maxW to 'max-content' */}
-                                        <TagLabel as='b'>
-                                            {element}
+                            
+                            
+
+                            {useBreakpointValue({ base: true, md: false }) ? (
+                                <Popover>
+                                    <PopoverTrigger>
+                                        <IconButton aria-label={"Tags Button"} icon={<TriangleDownIcon />} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent' }} _active={{ backgroundColor: 'transparent' }} maxW='max-content' />
+                                    </PopoverTrigger>
+                                    <PopoverContent p={4}>
+                                        <PopoverHeader fontWeight='bold' border='0' textAlign='center' mt='-2'>Tags</PopoverHeader>
+                                        <PopoverArrow />
+                                        <PopoverCloseButton />
+                                        <Flex gap='2' flexWrap='wrap' maxW='550px'>
+                                            <Tag maxW='max-content'> 
+                                                <TagLabel as='b'>
+                                                    {club?.university}
+                                                </TagLabel>
+                                            </Tag>
+                                            {club?.tags.map((element, index) => (
+                                                <Tag key={index} maxW='max-content' colorScheme={getClubTypeColor(element)}> 
+                                                    <TagLabel as='b'>
+                                                        {element}
+                                                    </TagLabel>
+                                                </Tag>
+                                            ))}
+                                            {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
+                                                <Tag key={"Tag " + index} maxW='max-content'> 
+                                                    <TagLabel as='b'>
+                                                        {day}
+                                                    </TagLabel>
+                                                </Tag>
+                                            ))}
+                                        </Flex>
+                                    </PopoverContent>
+                                </Popover>
+                            ) : (
+                                <Flex gap='2' flexWrap='wrap' maxW='550px' direction={{ base: "column", md: "row" }}>
+                                    <Tag maxW='max-content'> 
+                                        <TagLabel as='b' >
+                                            {club?.university}
                                         </TagLabel>
                                     </Tag>
-                                ))}
-                                {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
-                                    <Tag key={"Tag " + index} maxW='max-content'> {/* Set maxW to 'max-content' */}
-                                        <TagLabel as='b'>
-                                            {day}
-                                        </TagLabel>
-                                    </Tag>
-                                ))}
-                            </Flex>
+                                    {club?.tags.map((element, index) => (
+                                        <Tag key={index}  > 
+                                            <TagLabel as='b'>
+                                                {element}
+                                            </TagLabel>
+                                        </Tag>
+                                    ))}
+                                    {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
+                                        <Tag key={"Tag " + index} maxW='max-content'> 
+                                            <TagLabel as='b'>
+                                                {day}
+                                            </TagLabel>
+                                        </Tag>
+                                    ))}
+                                </Flex>
+                            )}
+
+
                             {/* <HStack>
                                 {allClubReviews[0]?.club[0]?.meeting_days?.map((day, index) => (
                                     <Tag colorScheme='red' key={"Tag " + index}>
@@ -298,10 +360,10 @@ export function ClubReview(){
                     )}
                 </Box>
                 <Box>
-                    <Heading size={{ base: 'xl', md: '4xl' }}>{getTier()}</Heading>
+                    <Heading size={{ base: 'xl', md: '2xl', lg: '4xl'}}>{getTier()}</Heading>
                     <HStack justifyContent='flex-end'>
-                        <Heading whiteSpace='nowrap' noOfLines={1} size={{ md: '4xl' }}>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
-                        <Heading size={{ md: 'lg' }} >/5</Heading>
+                        <Heading whiteSpace='nowrap' noOfLines={1} size={{ base: 'xl', md: '2xl', lg: '4xl' }}>{String(averageRating) === "NaN" || String(averageRating) === "0" ? "" : String(averageRating)}</Heading>
+                        <Heading size={{ base: 'md', md: 'lg', lg: 'xl'}} >/5</Heading>
                         
                     </HStack>
                 </Box>
