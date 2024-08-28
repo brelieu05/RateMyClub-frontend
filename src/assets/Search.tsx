@@ -478,6 +478,7 @@ function Search({width, height}) {
                     spacing={2}
                     maxH='200px' 
                     overflowY='scroll'
+                    w={searchInputRef.current?.offsetWidth || 'auto'}
                     >
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
