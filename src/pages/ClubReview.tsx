@@ -96,7 +96,7 @@ const getClubTypeColor = (club_type) => {
       case 'Dance':
         return 'cyan';
       default:
-        return 'blackAlpha';
+        return 'gray';
     }
   };
 
@@ -307,13 +307,13 @@ export function ClubReview(){
                                 </Popover>
                             ) : (
                                 <Flex gap='2' flexWrap='wrap' maxW='550px' direction={{ base: "column", md: "row" }}>
-                                    <Tag maxW='max-content'> 
-                                        <TagLabel as='b' >
+                                    <Tag maxW='max-content' > 
+                                        <TagLabel as='b'>
                                             {club?.university}
                                         </TagLabel>
                                     </Tag>
                                     {club?.tags.map((element, index) => (
-                                        <Tag key={index}  > 
+                                        <Tag key={index} colorScheme={getClubTypeColor(element)} > 
                                             <TagLabel as='b'>
                                                 {element}
                                             </TagLabel>
