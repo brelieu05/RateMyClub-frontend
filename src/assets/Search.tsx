@@ -477,7 +477,6 @@ function Search({width, height}) {
                 <List
                     spacing={2}
                     w={width}
-                    maxH="140px"
                     >
                 {university === '' ? (
                     (Array.isArray(universities) ? universities : [])
