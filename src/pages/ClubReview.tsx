@@ -40,8 +40,6 @@ import { DescriptionModal } from "../assets/DescriptionModal";
 import { getClubReviews } from '../utils/reviewsUtils'
 import { postReport } from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
-import PhotoAlbum from "../assets/PhotoAlbum";
-import alexInTheAir from '../assets/images/alex_in_the_air.jpg';
 
 interface ReviewFormData {
     description: string,
@@ -81,30 +79,51 @@ const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length
 
 const getClubTypeColor = (club_type) => {
     switch (club_type) {
-      case 'Sports':
+    case 'Sports':
         return 'red';
-      case 'Engineering':
+    case 'Engineering':
         return 'orange';
-      case 'Hobby/Special/Interest':
+    case 'Hobby/Special/Interest':
         return 'pink';
-      case 'KPOP':
+    case 'KPOP':
         return 'purple';
-      case 'Community Service':
+    case 'Community Service':
         return 'green';
-      case 'Computer Science':
+    case 'Computer Science':
         return 'blue';
-      case 'Dance':
+    case 'Dance':
         return 'cyan';
-      default:
-        return 'gray';
-    }
-  };
+    case 'Social':
+        return 'teal';
+    case 'Competition':
+        return 'pink';
+    case 'Hobby/Special Interest':
+        return 'blue';
+    case 'Academic/Professional':
+        return 'red';
+    case 'Cultural':
+        return 'purple';
+    case 'Art':
+        return 'pink';
+    case 'Music':
+        return 'cyan'
+    case 'Performance':
+        return 'purple'
+    case 'Political':
+        return 'teal'
+    case 'Activism':
+        return 'green'
+    case 'Fraternity':
+        return 'red';
+    case 'Sorority':
+        return 'purple'
+    default:
+        return 'blackAlpha';
+}
+};;
 
 export function ClubReview(){
     const { club_id } = useParams();
-    
-    // const decodedUniversity = university?.replace(/-/g, ' ');
-    // const decodedClub = club_name?.replace(/-/g, ' ');
     
     const [allClubReviews, setallClubReviews] = useState<Review[]>([]);
     const [clubName, setClubName] = useState('');
@@ -390,7 +409,7 @@ export function ClubReview(){
                                 <Heading size='lg' key={"Item Review Date" + index}>{item.review_date.substring(0,10)}</Heading>
 
                             </HStack>
-                            <Text>{item.description}</Text>
+                            <Text>{item.description}</Text> 
                             <Spacer/>
                             <HStack justifyContent='end'>
                                 <IconButton aria-label="Report Review" icon={<FaRegFlag />} variant='nav' onClick={() => handleReportDescription(item)}/>

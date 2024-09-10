@@ -54,23 +54,47 @@ interface UniversityData {
 }
 
 const getClubTypeColor = (club_type) => {
-    switch (club_type) {
-      case 'Sports':
-        return 'red';
-      case 'Engineering':
-        return 'orange';
-      case 'Hobby/Special/Interest':
-        return 'pink';
-      case 'KPOP':
-        return 'purple';
-      case 'Community Service':
-        return 'green';
-      case 'Computer Science':
-        return 'blue';
-      case 'Dance':
-        return 'cyan';
-      default:
-        return 'blackAlpha';
+        switch (club_type) {
+        case 'Sports':
+            return 'red';
+        case 'Engineering':
+            return 'orange';
+        case 'Hobby/Special/Interest':
+            return 'pink';
+        case 'KPOP':
+            return 'purple';
+        case 'Community Service':
+            return 'green';
+        case 'Computer Science':
+            return 'blue';
+        case 'Dance':
+            return 'cyan';
+        case 'Social':
+            return 'teal';
+        case 'Competition':
+            return 'pink';
+        case 'Hobby/Special Interest':
+            return 'blue';
+        case 'Academic/Professional':
+            return 'red';
+        case 'Cultural':
+            return 'purple';
+        case 'Art':
+            return 'pink';
+        case 'Music':
+            return 'cyan'
+        case 'Performance':
+            return 'purple'
+        case 'Political':
+            return 'teal'
+        case 'Activism':
+            return 'green'
+        case 'Fraternity':
+            return 'red';
+        case 'Sorority':
+            return 'purple'
+        default:
+            return 'blackAlpha';
     }
   };
 

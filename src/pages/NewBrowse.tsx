@@ -1,7 +1,9 @@
 import {  Box, Card, Divider, Flex,  Grid,  Heading, HStack, Input, Select, SimpleGrid, Stack, Tag, Text, Image, Container, InputGroup, InputRightElement, Button, TagLabel, Badge, IconButton, TagCloseButton } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUniversities, getUniversityClubs } from '../utils/universityUtils';
+// import { getUniversities, getUniversityClubs } from '../utils/universityUtils';
+import { getUniversityClubs } from '../utils/universityUtils';
+import { useUniversities } from "../contexts/universitiesContext";
 import bookStack from '../assets/images/book-icon-150.png';
 import { ChevronLeftIcon, SearchIcon } from "@chakra-ui/icons";
 import school from '../assets/images/school-house-icon-14383.png'
@@ -34,7 +36,7 @@ const universityLogos = new Map([
   ]
   
 export default function NewBrowse() {
-    const [universities, setUniversities] = useState([]);
+    // const [universities, setUniversities] = useState([]);
     const [selectedUniversity, setSelectedUniversity] = useState('');
     const [clubJson, setClubJson] = useState([]);
     const [query, setQuery] = useState('');
@@ -43,18 +45,21 @@ export default function NewBrowse() {
 
     const [tags, setTags] = useState([]);
 
-    useEffect(() => {
-        const fetchUniversities = async () => {
-            try {
-                const response = await getUniversities();
-                setUniversities(response);
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        fetchUniversities();
-    }, []);
+    // useEffect(() => {
+    //     const fetchUniversities = async () => {
+    //         try {
+    //             const response = await getUniversities();
+    //             setUniversities(response);
+    //         }
+    //         catch (err) {
+    //             console.log(err)
+    //         }
+    //     }
+    //     fetchUniversities();
+    // }, []);
+
+    const universities = useUniversities();
+
 
     useEffect(() => {
         const fetchUniversityClubs = async () => {
@@ -66,26 +71,50 @@ export default function NewBrowse() {
         fetchUniversityClubs();
       }, [selectedUniversity]);
 
-    const getClubTypeColor = (club_type) => {
+      const getClubTypeColor = (club_type) => {
         switch (club_type) {
-          case 'Sports':
+        case 'Sports':
             return 'red';
-          case 'Engineering':
+        case 'Engineering':
             return 'orange';
-          case 'Hobby/Special/Interest':
+        case 'Hobby/Special/Interest':
             return 'pink';
-          case 'KPOP':
+        case 'KPOP':
             return 'purple';
-          case 'Community Service':
+        case 'Community Service':
             return 'green';
-          case 'Computer Science':
+        case 'Computer Science':
             return 'blue';
-          case 'Dance':
+        case 'Dance':
             return 'cyan';
-          default:
+        case 'Social':
+            return 'teal';
+        case 'Competition':
+            return 'pink';
+        case 'Hobby/Special Interest':
+            return 'blue';
+        case 'Academic/Professional':
+            return 'red';
+        case 'Cultural':
+            return 'purple';
+        case 'Art':
+            return 'pink';
+        case 'Music':
+            return 'cyan'
+        case 'Performance':
+            return 'purple'
+        case 'Political':
+            return 'teal'
+        case 'Activism':
+            return 'green'
+        case 'Fraternity':
+            return 'red';
+        case 'Sorority':
+            return 'purple'
+        default:
             return 'blackAlpha';
-        }
-      };
+    }
+  };
 
     return (
         <> 
@@ -171,7 +200,7 @@ export default function NewBrowse() {
                                                 >
                                                     <Flex mx='3'>
                                                     <Stack flexShrink={0} alignSelf='center'>
-                                                        <Image src={club.photos[3] || bookStack} boxSize={{ base: '100px', md: '120px' }} objectFit="cover" />
+                                                        <Image src={club.photos[3] || bookStack} boxSize={{ base: '100px', md: '120px' }} objectFit="cover" loading="lazy" />
                                                     </Stack>
                                                     <Stack flexGrow={1} alignSelf={{ base: 'center', md: 'flex-start' }} maxW={{ base: '100%', md: 'calc(100% - 140px)' }} ml={{ base: 0, md: 4 }}>
                                                             <Box maxH="60px" overflow="hidden" width="100%">
@@ -242,6 +271,7 @@ export default function NewBrowse() {
                                                 alt={uni.uni_abbr} 
                                                 boxSize={{base: "100px", md: "180px" }}
                                                 objectFit="contain" 
+                                                loading="lazy"
                                                 />
                                         </Stack>
                                         <Stack alignItems="end" w='50%' justifyContent='center'>
