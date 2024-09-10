@@ -29,7 +29,8 @@ const clubTags = [
     "Performance",
     "Political",
     "Activism",
-
+    "Fraternity",
+    "Sorority"
   ]
 
   const getClubTypeColor = (club_type) => {

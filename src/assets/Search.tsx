@@ -17,17 +17,13 @@ import {
     RadioGroup,
     HStack,
     Textarea,
-    Select,
     Box,
     List,
     ListItem, 
     Flex,
     Popover,
-    PopoverArrow,
     PopoverBody,
-    PopoverCloseButton,
     PopoverContent,
-    PopoverHeader,
     PopoverTrigger,
     InputGroup,
     InputRightElement,
@@ -37,16 +33,18 @@ import {
     TagLabel,
     TagCloseButton
  } from "@chakra-ui/react";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUniversities, getUniversityClubNames, getUniversityClubs } from '../utils/universityUtils'
+import { getUniversityClubs } from '../utils/universityUtils'
 import { postReview } from '../utils/reviewsUtils'
 import { postClub } from '../utils/clubsUtils'
 import { SearchIcon } from "@chakra-ui/icons";
+import { useUniversities } from "../contexts/universitiesContext";
 
 interface ClubData {
     club_name: string;
     university: string;
+    uni_abbr: string;
     tag: string[]
 }
 
@@ -92,7 +90,8 @@ const getClubTypeColor = (club_type) => {
     "Performance",
     "Political",
     "Activism",
-
+    "Fraternity",
+    "Sorority"
   ]
 
 function Search({width, height}) {
@@ -100,7 +99,6 @@ function Search({width, height}) {
     const [clubs, setClubs] = useState<ClubData[]>([]);
     const [userRating, setUserRating] = useState(0);
     const { onOpen, isOpen, onClose } = useDisclosure();
-    const [universities, setUniversities] = useState<UniversityData[]>([])
     const [university, setUniversity] = useState('');
     const [userClubSize, setUserClubSize] = useState('Small');
     const { isOpen : isDropdownOpen, onOpen: openDropdown, onClose : onDropdownClose } = useDisclosure();
@@ -112,6 +110,8 @@ function Search({width, height}) {
     const schoolNameInputRef = useRef();
 
     const searchInputRef = useRef();
+
+    const universities = useUniversities();
 
     const [reviewData, setReviewData] = useState({
         university: "",
@@ -134,7 +134,6 @@ function Search({width, height}) {
             tags : [...clubData.tags, userClubSize],
         }
         try{
-            // console.log(updatedClubData)
             const clubResponse = await postClub(updatedClubData);
             
             const updatedReviewData = {
@@ -142,9 +141,6 @@ function Search({width, height}) {
                 rating : Number(userRating),
                 club_id : clubResponse.club_id,
             };
-
-            // console.log(updatedReviewData)
-
 
             await postReview(updatedReviewData);
             onClose();
@@ -157,8 +153,15 @@ function Search({width, height}) {
     };
 
 
+    // useEffect(() => {
+    //     const fetchUniversity = async () => {
+    //         const response = await getUniversities();
+    //         setUniversities(response);
+    //     }
+    //     fetchUniversity();
+    // }, [])
     
-    const fetchClubs = async (uni: UniversityData) => {
+    const fetchClubs = async (uni) => {
         try {
             const response = await getUniversityClubs(uni.university);
             setClubs(response);
@@ -168,15 +171,8 @@ function Search({width, height}) {
         }
     }
     
-    useEffect(() => {
-        const fetchUniversity = async () => {
-            const response = await getUniversities();
-            setUniversities(response);
-        }
-        fetchUniversity();
-    }, [])
     
-    const handleReviewChange = (e: { target: { name: string; value: unknown; }; }) => {
+    const handleReviewChange = (e) => {
         const { name, value } = e.target;
         setReviewData(prevState => ({
             ...prevState,
@@ -207,7 +203,7 @@ function Search({width, height}) {
         }
     };
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setQuery(e.target.value);
         if (e.target.value) {
             openDropdown();
@@ -223,7 +219,7 @@ function Search({width, height}) {
         onDropdownClose();
       };
     
-      const handleClubClick = (club) => {
+      const handleClubClick = (club: ClubData) => {
         navigate(`/${club.club_id}`)
         setUniversity('');
         setQuery('');
