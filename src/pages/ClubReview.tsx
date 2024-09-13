@@ -37,7 +37,7 @@ import { useParams } from "react-router-dom";
 import { FaRegFlag } from "react-icons/fa6";
 import { ReviewModal } from "../assets/ReviewModal";
 import { DescriptionModal } from "../assets/DescriptionModal";
-import { getClubReviews } from '../utils/reviewsUtils'
+import { getClubReviews } from "../utils/reviewsUtils.ts";
 import { postReport } from '../utils/reportsUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 
@@ -51,7 +51,7 @@ interface ReviewFormData {
 
 
 interface Review {
-    club: Club[];
+    club_id : number;
     review_date: string;
     rating: number;
     description: string;
@@ -64,16 +64,16 @@ interface Report {
     report_description : string,
 }
 
-interface Club{
-    club_id : number,
-    club_size : string,
-    university: string, 
-    uni_abbr : string,
-    photos : string[],
-    meeting_days : string[],
-    disclaimer : string,
-    club_type : string,
-}
+// interface Club{
+//     club_id : number,
+//     club_size : string,
+//     university: string, 
+//     uni_abbr : string,
+//     photos : string[],
+//     meeting_days : string[],
+//     disclaimer : string,
+//     club_type : string,
+// }
 
 const getRandomIndex = (length) => Math.floor(Math.random() * Math.min(3, length));
 
@@ -406,7 +406,7 @@ export function ClubReview(){
                             >
                             <HStack key={"HStack" + index} justifyContent='space-between'>
                                 <Heading size='lg' key={"Item Rating" + index}>{item.rating}</Heading>
-                                <Heading size='lg' key={"Item Review Date" + index}>{item.review_date.substring(0,10)}</Heading>
+                                <Heading size='lg' key={"Item Review Date" + index}>{item?.review_date?.substring(0,10)}</Heading>
 
                             </HStack>
                             <Text>{item.description}</Text> 

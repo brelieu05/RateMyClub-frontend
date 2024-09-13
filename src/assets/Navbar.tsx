@@ -15,7 +15,7 @@ import {
   } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAuth } from '../contexts/authContext/authContext';
 import { anonymousSignIn } from '../utils/firebaseAuthUtils';
 import { logout } from '../utils/firebaseAuthUtils'
@@ -43,6 +43,50 @@ import { getIdToken } from 'firebase/auth';
           logout('/', navigate);
           window.location.reload();
       }
+
+      const drawerContent = useMemo(() => (
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody>
+            <VStack spacing='24px'>
+              <Button variant='nav' onClick={() => navigate('/')}>Rate My Club</Button>
+              {location.pathname !== '/' && <Search width={'250px'} height='50px' />}
+              <Button variant='none' fontWeight='400' fontSize='16px'>
+                <Link to='/Browse'>Browse</Link>
+              </Button>
+              {userData?.role === "admin" && (
+                <Button variant='nav'>
+                  <Link to='/Reports'>Reports</Link>
+                </Button>
+              )}
+              {!(currentUser?.isAnonymous) ? (
+                <>
+                  <Button variant='nav'>
+                    <Link to='/'>Account</Link>
+                  </Button>
+                  <Button variant='nav' onClick={handleLogout}>
+                    <Link to='/'>Logout</Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  {location.pathname === '/Login' && (
+                    <Button variant='nav'>
+                      <Link to='/SignUp'>Sign Up</Link>
+                    </Button>
+                  )}
+                  {location.pathname !== '/Login' && (
+                    <Button variant='nav' backgroundColor='#2C2C2C' color='#F5F5F5' fontSize='16px' fontWeight='400' px='10'>
+                      Club Owner?
+                    </Button>
+                  )}
+                </>
+              )}
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      ), [location.pathname, userData, currentUser, navigate, handleLogout]);
   
       return (
           <Box borderBottom='2px' borderColor='#D9D9D9'>
@@ -98,61 +142,10 @@ import { getIdToken } from 'firebase/auth';
                       aria-label='Open Menu'
                   />
   
-                  <Drawer isOpen={isOpen} placement='right' onClose={onClose}>
-                      <DrawerOverlay />
-                      <DrawerContent>
-                          <DrawerCloseButton />
-                          <DrawerHeader>Menu</DrawerHeader>
-                          <DrawerBody>
-                              <VStack spacing='24px'>
-                                  <Button variant='nav' onClick={() => {
-                                      navigate('/');
-                                      window.location.reload();
-                                  }}>Rate My Club</Button>
-
-                                  {location.pathname !== '/' && <Search width={'250px'} height='50px'/>}
-
-                                  <Button variant='none' fontWeight='400' fontSize='16px'>
-                                    <Link to='/Browse'>Browse</Link>
-                                </Button>
-                                  {userData?.role === "admin" && 
-                                    (
-                                        <Button variant='nav'>
-                                            <Link to='/Reports'>Reports</Link>
-                                        </Button>
-                                    )
-                                  }
-
-                                    {!(currentUser?.isAnonymous) ? (
-                                        <>
-                                        <Button variant='nav'>
-                                            <Link to='/'>Account</Link>
-                                        </Button>
-                                            <Button variant='nav' onClick={handleLogout}>
-                                                <Link to='/'>Logout</Link>
-                                        </Button>
-                                        </>
-                                        ) : (
-                                            <>
-                                                {location.pathname === '/Login' && (
-                                                    <Button variant='nav'>
-                                                        <Link to='/SignUp'>Sign Up</Link>
-                                                    </Button>
-                                                )}
-                                                {location.pathname !== '/Login' && (
-                                                    <Button variant='nav' backgroundColor='#2C2C2C' color='#F5F5F5' fontSize='16px' fontWeight='400' px='10'>
-                                                        {/* <Link to='/Login'> */}
-                                                            Club Owner?
-                                                        {/* </Link> */}
-                                                    </Button>
-                                                )}
-                                            </>
-                                        )
-                                    }
-                              </VStack>
-                          </DrawerBody>
-                      </DrawerContent>
-                  </Drawer>
+        <Drawer isOpen={isOpen} placement='right' onClose={onClose}>
+            <DrawerOverlay />
+                {drawerContent}
+            </Drawer>
               </Flex>
           </Box>
       );

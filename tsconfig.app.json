@@ -25,6 +25,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.js" // Include JavaScript files
-, "src/api/uploadthing/core.tsx"  ]
+    "src/api/uploadthing/core.tsx"
+  ]
 }

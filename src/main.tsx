@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import {
@@ -8,14 +8,16 @@ import {
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 
-import { SignUp } from './pages/SignUp.tsx'
-import { Login } from './pages/Login.tsx'
+
 import { ClubReview } from './pages/ClubReview.tsx'
 import { Browse } from './pages/Browse.tsx'
-import { Reports } from './pages/Reports.tsx'
 import NewHeroPage from './pages/NewHeroPage.tsx'
 import NewBrowse from './pages/NewBrowse.tsx';
 // import '@fontsource-variable/inter';
+
+const SignUp = lazy(() => import('./pages/SignUp.tsx'));
+const Login = lazy(() => import('./pages/Login.tsx'));
+const Reports = lazy(() => import('./pages/Reports.tsx'));
 
 const theme = extendTheme({
   fonts: {
@@ -47,11 +49,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/SignUp',
-        element: <SignUp/>
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <SignUp />
+          </Suspense>
+        )
       },
       {
         path: '/Login',
-        element: <Login/>
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login />
+          </Suspense>
+        )
       },
       {
         path: '/:club_id',
@@ -63,7 +73,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/Reports',
-        element: <Reports/>
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Reports />
+          </Suspense>
+        )
       }
     ]
   },

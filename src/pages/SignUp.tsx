@@ -4,12 +4,19 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { createUserInDatabase } from '../utils/userUtils'
 import { useAuth } from "../contexts/authContext/authContext.js";
-import { getAuth } from "firebase/auth";
 import { auth } from "../utils/firebaseAuthUtils.js";
+import { getAuth, GoogleAuthProvider, linkWithCredential, signInWithRedirect  } from "firebase/auth";
 
-export function SignUp(){
-    const { userLoggedIn, userData, currentUser } = useAuth();
-    const [formData, setFormData] = useState({
+interface User {
+    email : string;
+    role : string;
+    firebase_uid : string;
+    password : string;
+    confirmPassword : string;
+}
+export default function SignUp(){
+    const { userData } = useAuth();
+    const [formData, setFormData] = useState<User>({
         email : "",
         role : "club",
         firebase_uid : "",
@@ -30,13 +37,15 @@ export function SignUp(){
         
         try {
             if(password === confirmPassword){
-                const newUser = await createUserInFirebase(email, password, '/', navigate);
-                const updatedFormData = {
-                    ...formData,
-                    firebase_uid : auth.currentUser.uid,
-                };
+                await createUserInFirebase(email, password, '/', navigate);
+                if(auth.currentUser){
+                    const updatedFormData = {
+                        ...formData,
+                        firebase_uid : auth.currentUser.uid,
+                    };
+                    await createUserInDatabase(updatedFormData);
+                }
 
-                await createUserInDatabase(updatedFormData);
                 
             }
             else{
@@ -57,6 +66,29 @@ export function SignUp(){
         });
     };
 
+    const googleRedirect = async () => {
+        try {
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+    
+            // Sign in with Google
+            const result = await signInWithRedirect(auth, provider);
+            const googleUser = result.user;
+            
+            // Get the credential from the Google user
+            const credential = GoogleAuthProvider.credential(
+                googleUser.accessToken
+            );
+    
+            // Link the credential to the currently signed-in anonymous user
+            const usercred = await linkWithCredential(auth.currentUser, credential);
+            const user = usercred.user;
+            console.log("Anonymous account successfully upgraded", user);
+        } catch (error) {
+            console.error("Error upgrading anonymous account", error);
+        }
+    };
+
     return(
         <>
             <Container>
@@ -70,8 +102,9 @@ export function SignUp(){
                     <FormLabel>Confirm Password</FormLabel>
                     <Input type='password' placeholder='Confirm Password' name='confirmPassword' value={formData.confirmPassword} onChange={handleChange}/>
 
-                    <Button type="submit" onClick={onSubmit}> Create Account </Button>
+            <Button type="submit" onClick={onSubmit}> Create Account </Button>
                 </FormControl>
+                    <Button my='5' onClick={googleRedirect}>Sign Up With Google</Button>
             </Container>
         </>
     );

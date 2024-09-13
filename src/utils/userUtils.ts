@@ -1,17 +1,25 @@
 import Backend from './utils'
 import { auth, getIdTokenFromUser  } from './firebaseAuthUtils';
 
-export const createUserInDatabase = async (formData) => {
+interface UserFormData {
+  email : string;
+  role : string;
+  firebase_uid : string;
+  password : string;
+  confirmPassword : string;
+}
+
+export const createUserInDatabase = async (formData : UserFormData) => {
     const response = await Backend.post('/user', formData);
     return response.data;
 }
 
-export const getUserFromDatabase = async (firebaseUID) => {
+export const getUserFromDatabase = async (firebaseUID : string) => {
     const response = await Backend.get(`/user/${firebaseUID}`);
     return response.data;
 }
 
-export const apiRequest = async (endpoint, method = 'GET', data = null) => {
+export const apiRequest = async (endpoint: string, method = 'GET', data = null) => {
     try {
       const user = auth.currentUser;
       if (!user) {

@@ -21,7 +21,7 @@ interface ReportData {
     review: Review[];
 }
 
-export function Reports(){
+export default function Reports(){
     const [allReports, setAllReports] = useState<ReportData[]>([]);
 
     const { userData } = useAuth();

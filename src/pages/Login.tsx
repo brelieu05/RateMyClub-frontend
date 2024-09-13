@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logInWithEmailAndPassword } from '../utils/firebaseAuthUtils'
 import { useAuth } from "../contexts/authContext/authContext";
 
-export function Login(){
+export default function Login(){
     const { userLoggedIn, currentUser, userData } = useAuth();
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({

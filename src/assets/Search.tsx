@@ -102,6 +102,7 @@ const getClubTypeColor = (club_type) => {
     "Computer Science",
     "Community Service",
     "Dance",
+    "Engineering",
     "KPOP",
     "Competition",
     "Sports",

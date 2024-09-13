@@ -20,6 +20,7 @@ const universityLogos = new Map([
     "Large (40+)",
     "Computer Science",
     "Community Service",
+    "Engineering",
     "Art",
     "Dance",
     "KPOP",

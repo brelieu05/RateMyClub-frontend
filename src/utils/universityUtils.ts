@@ -6,12 +6,12 @@ const getUniversities = async () => {
     return response.data;
 }
 
-const getUniversityClubs= async university => {
+const getUniversityClubs= async (university : string) => {
     const response = await Backend.get(`/universities/${university}/`);
     return response.data;
 }
 
-const getUniversityClubNames = async university => {
+const getUniversityClubNames = async (university : string) => {
     const response = await Backend.get(`/universities/${university}/clubs`);
     return response.data;
 }

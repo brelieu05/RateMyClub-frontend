@@ -16,6 +16,7 @@ interface DescriptionModalProps {
 const clubTags = [
     "Computer Science",
     "Community Service",
+    "Engineering",
     "Dance",
     "KPOP",
     "Competition",

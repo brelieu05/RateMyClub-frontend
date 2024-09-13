@@ -1,31 +1,32 @@
 import { initializeApp } from "firebase/app"
 import { 
-    createUserWithEmailAndPassword, 
     getAuth,
     sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signOut,    
     signInAnonymously,
-    GoogleAuthProvider,
     EmailAuthProvider,
     linkWithCredential,
-    getIdToken 
+    getIdToken,
+    User,
+    AuthError
 } from "firebase/auth";
+// import dotenv from 'dotenv';
+// dotenv.config(); // Load .env file
 
-
+//TODO PUT THIS INTO DOTENV
 const firebaseConfig = {
-  apiKey: "AIzaSyCgvQgTzOAEnRcGLfkFc14brlR0QLIPT-A",
-  authDomain: "ratemyclub-b6939.firebaseapp.com",
-  projectId: "ratemyclub-b6939",
-  storageBucket: "ratemyclub-b6939.appspot.com",
-  messagingSenderId: "584298031204",
-  appId: "1:584298031204:web:59837e8a0b0b5ab7d79771",
-  measurementId: "G-ZR07TVJG5E"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDING_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 
 /**
  *
@@ -34,21 +35,23 @@ const auth = getAuth(app);
  * @param {string} redirect Link to redirect to after successful login
  * @param {hook} navigate useNavigate hook
  */
-export const createUserInFirebase = async (email, password, redirect, navigate) => {
+export const createUserInFirebase = async (email : string, password : string, redirect : string, navigate: (arg0: string) => void) => {
     try {
       const credential = await EmailAuthProvider.credential(email, password);
       
-      linkWithCredential(auth.currentUser, credential)
-      .then((usercred) => {
-        const user = usercred.user;
-        console.log("Anonymous account successfully upgraded", user);
-      }).catch((error) => {
-        console.log("Error upgrading anonymous account", error);
-      });
+      if(auth.currentUser){
+        linkWithCredential(auth.currentUser, credential)
+        .then((usercred) => {
+          const user = usercred.user;
+          console.log("Anonymous account successfully upgraded", user);
+        }).catch((error) => {
+          console.log("Error upgrading anonymous account", error);
+        });
+    }
 
       navigate(redirect);
     } catch (error) {
-      console.log(`${error.code}: ${error.message}`);
+      console.log(`${(error as AuthError).code}: ${(error as AuthError).message}`);
       throw error;
     }
   };
@@ -60,16 +63,35 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
    * @param {string} redirect Link to redirect to after successful login
    * @param {hook} navigate useNavigate hook
    */
-  export const logInWithEmailAndPassword = async (email, password, redirect, navigate) => {
+  export const logInWithEmailAndPassword = async (email : string, password : string, redirect : string, navigate: (arg0: string) => void) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
       navigate(redirect);
       return user.user
-    } catch (error) {
-      console.log(`${error.code}: ${error.message}`);
+    } catch (error : unknown) {
+      console.log(`${(error as AuthError).code}: ${(error as AuthError).message}`);
       throw error;
     }
   };
+
+  // export const logInWithGoogle = async (email, password, redirect, navigate) => {
+  //   try {
+  //     const credential = GoogleAuthProvider.credential(
+  //       googleUser.getAuthResponse().id_token);
+  //     linkWithCredential(auth.currentUser, credential)
+  //     .then((usercred) => {
+  //       const user = usercred.user;
+  //       console.log("Anonymous account successfully upgraded", user);
+  //     }).catch((error) => {
+  //       console.log("Error upgrading anonymous account", error);
+  //     });
+
+  //     navigate(redirect);
+  //   }
+  //   catch (err) {
+  //     console.log(err);
+  //   }
+  // }
   
   /**
    * Returns details about the currently logged in user, or null if the user is not logged in.
@@ -96,7 +118,7 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
    * @param {hook} navigate useNavigate hook
    * @see https://firebase.google.com/docs/auth/web/password-auth
    */
-  export const logout = async (redirect, navigate) => {
+  export const logout = async (redirect : string, navigate: (arg0: string) => void) => {
     signOut(auth)
       .then(() => {
         navigate(redirect);
@@ -106,7 +128,7 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
       });
   };
   
-  export const sendResetPasswordPrompt = async email => {
+  export const sendResetPasswordPrompt = async (email : string) => {
     // Success will return null, and falure will raise an error that should
     // be caught by UI layer.
     await sendPasswordResetEmail(auth, email);
@@ -114,14 +136,14 @@ export const createUserInFirebase = async (email, password, redirect, navigate) 
 
   export const anonymousSignIn = async () => {
     try{
-      const response = await signInAnonymously(auth);
+      await signInAnonymously(auth);
     }
-    catch(error) {
-      console.log(`${error.code}: ${error.message}`);
+    catch(error : unknown) {
+      console.log(`${(error as AuthError).code}: ${(error as AuthError).message}`);
     }
   }
 
-  export const getIdTokenFromUser = async (user) => {
+  export const getIdTokenFromUser = async (user: User) => {
     if (!user) {
       throw new Error("No user is currently signed in.");
     }
