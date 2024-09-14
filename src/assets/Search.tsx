@@ -94,7 +94,7 @@ const getClubTypeColor = (club_type) => {
         case 'Sorority':
             return 'purple'
         default:
-            return 'blackAlpha';
+            return 'gray';
     }
   };
 
