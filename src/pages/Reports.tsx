@@ -70,7 +70,7 @@ export default function Reports(){
                             <Divider/>
                             <Stack p='5'>
                                 <HStack justifyContent='space-evenly'>
-                                    <Text key={"Club Name " + index}>{report.review[0].club_name}</Text>
+                                    <Text key={"Club Name " + index}>{report.review[0]?.club_name}</Text>
                                     <Text key={"class_year " + index}>{report.review[0].class_year}</Text>
                                     <Text key={"Rating " + index}>{report.review[0].rating}</Text>
                                     <Text key={"Review Date " + index}>{report.review[0].review_date}</Text>
