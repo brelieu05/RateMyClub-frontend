@@ -14,10 +14,13 @@ interface DescriptionModalProps {
 }
 
 const clubTags = [
+    "Small (1-15)",
+    "Medium (15-40)",
+    "Large (40+)",
     "Computer Science",
     "Community Service",
-    "Engineering",
     "Dance",
+    "Engineering",
     "KPOP",
     "Competition",
     "Sports",
@@ -31,7 +34,8 @@ const clubTags = [
     "Political",
     "Activism",
     "Fraternity",
-    "Sorority"
+    "Sorority",
+    "Religious"
   ]
 
     const getClubTypeColor = (club_type) => {
