@@ -20,9 +20,8 @@ const universityLogos = new Map([
     "Large (40+)",
     "Computer Science",
     "Community Service",
-    "Engineering",
-    "Art",
     "Dance",
+    "Engineering",
     "KPOP",
     "Competition",
     "Sports",
@@ -30,10 +29,14 @@ const universityLogos = new Map([
     "Hobby/Special Interest",
     "Academic/Professional",
     "Cultural",
+    "Art",
     "Music",
     "Performance",
     "Political",
-    "Activism"
+    "Activism",
+    "Fraternity",
+    "Sorority",
+    "Religious"
   ]
   
 export default function NewBrowse() {
