@@ -112,6 +112,8 @@ export default function NewBrowse() {
             return 'red';
         case 'Sorority':
             return 'purple'
+        case 'Religious':
+            return 'teal'
         default:
             return 'gray';
     }

@@ -117,10 +117,12 @@ const getClubTypeColor = (club_type) => {
         return 'red';
     case 'Sorority':
         return 'purple'
+    case 'Religious':
+        return 'teal'
     default:
         return 'gray';
 }
-};;
+};
 
 export function ClubReview(){
     const { club_id } = useParams();
