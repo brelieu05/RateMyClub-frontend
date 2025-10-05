@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { getIdTokenFromUser } from './firebaseAuthUtils'; // Adjust the import based on your file structure
-import { auth } from './firebaseAuthUtils';
+// import { getIdTokenFromUser } from './firebaseAuthUtils'; // Adjust the import based on your file structure
+// import { auth } from './firebaseAuthUtils';
 const Backend = axios.create({
   baseURL: 'https://ratemyclub-backend-production.up.railway.app',
   withCredentials: true,
-  
+
 });
 
 // const Backend = axios.create({
