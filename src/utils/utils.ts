@@ -11,17 +11,17 @@ const Backend = axios.create({
 //   withCredentials: true,
 // });
 
-Backend.interceptors.request.use(async (config) => {
-  const user = auth.currentUser; // Get the current user
-  if (user) {
-    const token = await getIdTokenFromUser(user); // Get the ID token
+// Backend.interceptors.request.use(async (config) => {
+//   const user = auth.currentUser; // Get the current user
+//   if (user) {
+//     const token = await getIdTokenFromUser(user); // Get the ID token
 
-    config.headers.Authorization = `Bearer ${token}`; // Set the Authorization header
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+//     config.headers.Authorization = `Bearer ${token}`; // Set the Authorization header
+//   }
+//   return config;
+// }, (error) => {
+//   return Promise.reject(error);
+// });
 
 
 export default Backend;
