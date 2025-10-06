@@ -9,7 +9,7 @@ import { ChevronLeftIcon, SearchIcon } from "@chakra-ui/icons";
 import school from '../assets/images/school-house-icon-14383.png'
 
 const universityLogos = new Map([
-    ['University of California Irvine', 'https://www.logolynx.com/images/logolynx/83/83ab2bc19c486a4e1162ecca410c13ec.png'],
+    ['University of California Irvine', 'https://socialecology.uci.edu/sites/default/files/users/katdiaz/uci_logo.png'],
     ['University of California Berkeley', 'https://www.popupgelato.com/wp-content/uploads/2014/05/500px-University_of_California_Berkeley_athletic_logo.svg_1.png'],
     ['San Jose State University', 'https://clipground.com/images/san-jose-state-university-logo-png.png']
   ]);
@@ -262,11 +262,7 @@ export default function NewBrowse() {
                         </InputGroup>
                         
                         <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}  gap={8} justifyContent='center'>
-                            {universities
-                                .filter(uni => 
-                                    query.toLowerCase() === '' || 
-                                    uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase())
-                                )
+                            {Array.isArray(universities) && universities?.filter(uni => uni.university.toLowerCase().includes(query.toLowerCase()) || uni.uni_abbr.toLowerCase().includes(query.toLowerCase()))
                                 .sort((a, b) => a.club_id - b.club_id) // Sort by club_id in descending order
                                 .map((uni, index) => (
                                 <Box key={index} cursor='pointer' borderWidth="1px" borderRadius="sm" overflow="hidden" backgroundColor='#FFFFFF' py='12' px='8' onClick={() => setSelectedUniversity(uni.university)}>

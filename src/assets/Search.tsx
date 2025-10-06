@@ -282,8 +282,7 @@ function Search({width, height}) {
                                         <PopoverContent w={schoolNameInputRef.current?.offsetWidth} >
                                             <PopoverBody>
                                                 <List>
-                                                    {universities
-                                                        .filter(uni => uni.university.toLowerCase().includes(reviewData.university.toLowerCase()))
+                                                    {Array.isArray(universities) && universities?.filter(uni => uni.university.toLowerCase().includes(reviewData.university.toLowerCase()))
                                                         .map((uni, index) => (
                                                             <ListItem
                                                                 key={"University " + index}
@@ -330,7 +329,7 @@ function Search({width, height}) {
                                         <PopoverContent w={schoolAbbrInputRef.current?.offsetWidth || 'auto'}>
                                             <PopoverBody>
                                                 <List>
-                                                    {universities
+                                                    {Array.isArray(universities) && universities?.filter(uni => uni.uni_abbr.toLowerCase().includes(clubData.uni_abbr.toLowerCase()))
                                                         .filter(uni => uni.uni_abbr.toLowerCase().includes(clubData.uni_abbr.toLowerCase()))
                                                         .map((uni, index) => (
                                                             <ListItem

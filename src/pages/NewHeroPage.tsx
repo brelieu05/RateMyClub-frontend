@@ -77,9 +77,7 @@ export default function NewHeroPage() {
             mb='10'
             px='8'
         >
-        {clubs
-          .sort((a, b) => a.club_id - b.club_id)
-          .filter(club => club.club_name === "Taekwondo Club" || club.club_name === "Commit The Change" || club.club_name === "Chinese Association Dance Crew (CADC)")
+        {clubs.sort((a, b) => a.club_id - b.club_id)
           .slice(0, 5)
           .map((club, index) => {
             const randomIndex = getRandomIndex(club.photos.length);
