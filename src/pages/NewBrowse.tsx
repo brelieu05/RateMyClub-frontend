@@ -9,9 +9,27 @@ import { ChevronLeftIcon, SearchIcon } from "@chakra-ui/icons";
 import school from '../assets/images/school-house-icon-14383.png'
 
 const universityLogos = new Map([
-    ['University of California Irvine', 'https://socialecology.uci.edu/sites/default/files/users/katdiaz/uci_logo.png'],
-    ['University of California Berkeley', 'https://www.popupgelato.com/wp-content/uploads/2014/05/500px-University_of_California_Berkeley_athletic_logo.svg_1.png'],
-    ['San Jose State University', 'https://clipground.com/images/san-jose-state-university-logo-png.png']
+    ['University of California Irvine', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2025%2F01%2FUniversity-of-California-Irvine-the-Seal-Logo-500x281.png&f=1&nofb=1&ipt=0d34303d64889de52780a419f6adfb189324273efd25bb68e00525c29e82bb93'],
+    ['University of California, Berkeley', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2022%2F02%2FUC-Berkeley-Seal-Logo.png&f=1&nofb=1&ipt=915312ff9cace3a4102b510c41bdf04acd359a90fb79368c79f69a991dd10443'],
+    ['San Jose State University', 'https://clipground.com/images/san-jose-state-university-logo-png.png'],
+    ['Harvard University', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2020%2F12%2FHarvard-Logo.png&f=1&nofb=1&ipt=468d44f399d8f0183109270919b62e7fa3b5ab15b6249ed8339b7782b5756d80'],
+    ['Stanford University', 'https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png'],
+    ['University of California, Los Angeles', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Fimages%2Flarge%2F2x%2Fucla-logo-png-transparent.png&f=1&nofb=1&ipt=4f3b4acfc3f48938c0eb9ebd60a8c63c26d43953408ed0562864d70565376eb9'],
+    ['University of California, San Diego', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2022%2F12%2FUCSD-Seal-Logo.png&f=1&nofb=1&ipt=b473467b2d8c38f0b261f49b016311f013cf068bd87a65fe8576886d75665797'],
+    ['University of Southern California', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2021%2F11%2FUSC-Logo-Seal.png&f=1&nofb=1&ipt=e337a5668bf60978a512f4b38689e932ed9f2fab41b5206736458e7a483ea030'],
+    ['University of Texas', 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.clipartbest.com%2Fcliparts%2FRid%2F6xa%2FRid6xaxpT.png&f=1&nofb=1&ipt=ea3603c73ccc9cc66f746115eb98918b2afdffd81a062aea2cf4ccce62e751dd'],
+    // Add abbreviations for better matching
+    ['UCI', 'https://socialecology.uci.edu/sites/default/files/users/katdiaz/uci_logo.png'],
+    ['UCB', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2022%2F02%2FUC-Berkeley-Seal-Logo.png&f=1&nofb=1&ipt=915312ff9cace3a4102b510c41bdf04acd359a90fb79368c79f69a991dd10443'],
+    ['SJSU', 'https://clipground.com/images/san-jose-state-university-logo-png.png'],
+    ['Harvard', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2020%2F12%2FHarvard-Logo.png&f=1&nofb=1&ipt=468d44f399d8f0183109270919b62e7fa3b5ab15b6249ed8339b7782b5756d80'],
+    ['Stanford', 'https://identity.stanford.edu/wp-content/uploads/sites/3/2020/07/block-s-right.png'],
+    ['UCLA', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Fimages%2Flarge%2F2x%2Fucla-logo-png-transparent.png&f=1&nofb=1&ipt=4f3b4acfc3f48938c0eb9ebd60a8c63c26d43953408ed0562864d70565376eb9'],
+    ['UCSD', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-world.net%2Fwp-content%2Fuploads%2F2022%2F12%2FUCSD-Seal-Logo.png&f=1&nofb=1&ipt=b473467b2d8c38f0b261f49b016311f013cf068bd87a65fe8576886d75665797'],
+    ['USC', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.liblogo.com%2Fimg-logo%2Fus6281ud06-usc-logo-usc-logo.png&f=1&nofb=1&ipt=31ca7175b72726701a185c7bcc42b32ac80d4807e706d5e97832e85d286daa14'],
+    ['University of Texas at Austin', 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.clipartbest.com%2Fcliparts%2FRid%2F6xa%2FRid6xaxpT.png&f=1&nofb=1&ipt=ea3603c73ccc9cc66f746115eb98918b2afdffd81a062aea2cf4ccce62e751dd'],
+    ['Cornell University', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.Uk41Cmx_g2XOat5U4PPqXgHaHa%3Fcb%3D12%26pid%3DApi&f=1&ipt=6d13d60a807135f811a1131e94215cddc93d23d007d826ba775cb67ef7d05baf'],
+    ['Massachusetts Institute of Technology', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdownload.logo.wine%2Flogo%2FMassachusetts_Institute_of_Technology%2FMassachusetts_Institute_of_Technology-Logo.wine.png&f=1&nofb=1&ipt=f8355c44959a116100bc14f9480f473a207e3e23cbdd594992cfca863e0fbd9b']
   ]);
 
   const clubTags = [
@@ -218,15 +236,12 @@ export default function NewBrowse() {
                                                                     textAlign='center'
                                                                 >
                                                                 {club.club_name.length > 17
-                                                                    ? club.club_name.substring(
-                                                                        club.club_name.indexOf('(') + 1,
-                                                                        club.club_name.indexOf(')')
-                                                                    )
+                                                                    ? club.club_name.split(' ').map(word => word.charAt(0)).join('')
                                                                     : club.club_name}
                                                                 </Heading>
                                                                 <Text textAlign="center" color="gray.600">
                                                                 {club.club_name.length > 17
-                                                                    ? club.club_name.substring(0, club.club_name.indexOf('('))
+                                                                    ? club.club_name
                                                                     : ""}
                                                                 </Text>
                                                             </Box>
@@ -271,8 +286,8 @@ export default function NewBrowse() {
                                             <Image 
                                                 src={universityLogos.get(uni.university) || school} 
                                                 alt={uni.uni_abbr} 
-                                                boxSize={{base: "100px", md: "180px" }}
-                                                objectFit="contain" 
+                                                boxSize={{base: "90px", md: "162px" }}
+                                                objectFit="cover" 
                                                 loading="lazy"
                                                 />
                                         </Stack>
